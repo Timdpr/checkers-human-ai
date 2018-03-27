@@ -1,0 +1,21 @@
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.launch
+local.properties
+.settings/
+.loadpath
+.recommenders
+.classpath
+.project
+
+### Java ###
+*.class
+
+###JavaFX###
+*.fxbuild

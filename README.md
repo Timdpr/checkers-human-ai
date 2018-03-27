@@ -1,0 +1,1 @@
+## IST Assignment 1 - AI Checkers Game
