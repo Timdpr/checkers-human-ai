@@ -30,7 +30,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane fx:id="row_h" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000;">
+            <Pane fx:id="boardPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000;">
                <children>
                   <Pane id="row_g" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
                      <children>
@@ -642,7 +642,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Circle layoutX="30.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                        <Circle fx:id="cc1" layoutX="30.0" layoutY="30.0" onDragDetected="#startMovePiece" onDragDropped="#finishMovingPiece" radius="26.0" stroke="BLACK">
                            <fill>
                               <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                                  <stops>
@@ -655,7 +655,7 @@
                               <DropShadow />
                            </effect>
                         </Circle>
-                        <Circle layoutX="150.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                        <Circle layoutX="150.0" layoutY="30.0" onDragDetected="#startMovePiece" onDragDone="#finishMovingPiece" radius="26.0" stroke="BLACK">
                            <fill>
                               <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                                  <stops>
@@ -668,7 +668,7 @@
                               <DropShadow />
                            </effect>
                         </Circle>
-                        <Circle layoutX="270.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                        <Circle layoutX="270.0" layoutY="30.0" onDragDetected="#startMovePiece" onDragExited="#finishMovingPiece" radius="26.0" stroke="BLACK">
                            <fill>
                               <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                                  <stops>
@@ -681,7 +681,7 @@
                               <DropShadow />
                            </effect>
                         </Circle>
-                        <Circle layoutX="390.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                        <Circle layoutX="390.0" layoutY="30.0" onDragDetected="#startMovePiece" onDragOver="#finishMovingPiece" radius="26.0" stroke="BLACK">
                            <fill>
                               <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                                  <stops>
