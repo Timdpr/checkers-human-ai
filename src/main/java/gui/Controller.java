@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -12,27 +11,29 @@ import com.jfoenix.controls.JFXDialogLayout;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import main.java.model.Board;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author tp275
+ */
 public class Controller implements Initializable {
 
     @FXML private StackPane rootStackPane;
-
-    @FXML private JFXButton buttonHelp;
-
     @FXML private Pane boardPane;
 
     @FXML private Pane row_a;
@@ -68,6 +69,10 @@ public class Controller implements Initializable {
         panes.add(row_f);
         panes.add(row_g);
         panes.add(row_h);
+
+        Board board = new Board();
+        board.getInitialBoard();
+        board.printBoard();
     }
 
     @FXML
@@ -224,7 +229,6 @@ public class Controller implements Initializable {
         }
     }
 
-    @FXML
     public void displayHelp(ActionEvent actionEvent) {
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
         dialogLayout.setHeading(new Text("Help"));
@@ -233,7 +237,8 @@ public class Controller implements Initializable {
         JFXDialog dialog = new JFXDialog(rootStackPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
 
         JFXButton buttonExit = new JFXButton("Okay");
-        buttonExit.setButtonType(JFXButton.ButtonType.RAISED);
+        buttonExit.setButtonType(JFXButton.ButtonType.FLAT);
+        buttonExit.setStyle("-fx-background-color:#DCDCDC");
         buttonExit.setOnAction(event -> dialog.close());
 
         dialogLayout.setActions(buttonExit);

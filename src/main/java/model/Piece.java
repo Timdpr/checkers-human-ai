@@ -1,12 +1,19 @@
-package main.java;
+package main.java.model;
 
+import java.awt.Point;
+
+/**
+ * @author tp275
+ */
 public class Piece {
 
     private char colour;
     private boolean isKing;
+    private Point position;
 
-    public Piece(char colour) {
+    public Piece(char colour, int row, int col) {
         this.colour = colour;
+        this.position = new Point(row, col);
         this.isKing = false;
     }
 
@@ -18,6 +25,14 @@ public class Piece {
         this.colour = colour;
     }
 
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
     public boolean isKing() {
         return isKing;
     }
@@ -25,5 +40,4 @@ public class Piece {
     public void setKing(boolean king) {
         isKing = king;
     }
-
 }
