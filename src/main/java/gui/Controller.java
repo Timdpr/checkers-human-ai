@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -47,6 +48,13 @@ public class Controller implements Initializable {
 
     private Point2D offset;
 
+    private Circle selectedPiece;
+    private Rectangle selectedRectangle;
+    
+    private boolean movingPiece;
+    private double startLayoutX;
+    private double startLayoutY;
+
     /**
      * Called after window has finished loading.
      */
@@ -63,13 +71,18 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void startMovePiece(MouseEvent mouseEvent) {
-        Circle circle = (Circle)mouseEvent.getSource();
-        circle.setOpacity(0.4d);
+    public void startMovingPiece(MouseEvent mouseEvent) {
+        selectedPiece = (Circle)mouseEvent.getSource();
+        startLayoutX = selectedPiece.getLayoutX();
+        startLayoutY = selectedPiece.getLayoutY();
+        selectedPiece.setOpacity(0.4d);
         offset = new Point2D(mouseEvent.getX(), mouseEvent.getY());
 
-        circle.setOpacity(1.0d);
+        movingPiece = true;
+    }
 
+    @FXML
+    public void movePiece(MouseEvent mouseEvent) {
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
         Point2D mousePoint_s = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 
@@ -77,8 +90,8 @@ public class Controller implements Initializable {
             return;  // don't relocate() b/c will resize Pane
         }
 
-        Point2D mousePoint_p = circle.localToParent(mousePoint);
-        circle.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
+        Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
+        selectedPiece.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
     }
 
     /**
@@ -95,12 +108,10 @@ public class Controller implements Initializable {
     }
 
     public void finishMovingPiece(MouseEvent mouseEvent) {
-        Circle circle = (Circle)mouseEvent.getSource();
-
         offset = new Point2D(0.0d, 0.0d);
 
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
-        Point2D mousePointScene = circle.localToScene(mousePoint);
+        Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
 
         Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() );
 
@@ -110,26 +121,27 @@ public class Controller implements Initializable {
 
         if( r != null ) {
 
-            Point2D rectScene =r.localToScene(r.getX(), r.getY());
+            Point2D rectScene = r.localToScene(r.getX(), r.getY());
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
 
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
-                            new KeyValue(circle.layoutXProperty(), parent.getX()),
-                            new KeyValue(circle.layoutYProperty(), parent.getY()),
-                            new KeyValue(circle.opacityProperty(), 1.0d)
+                            new KeyValue(selectedPiece.layoutXProperty(), parent.getX()),
+                            new KeyValue(selectedPiece.layoutYProperty(), parent.getY()),
+                            new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                     )
             );
         } else {
 
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
-                            new KeyValue(circle.opacityProperty(), 1.0d)
+                            new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                     )
             );
         }
 
         timeline.play();
+        movingPiece = false;
     }
 
     private Rectangle pickRectangle(MouseEvent evt) {
@@ -154,6 +166,62 @@ public class Controller implements Initializable {
             }
         }
         return pickedRectangle;
+    }
+
+    public void checkReleaseOutOfBoard(MouseEvent evt) {
+        Point2D mousePoint_s = new Point2D(evt.getSceneX(), evt.getSceneY());
+        if( !inBoard(mousePoint_s) ) {
+            leaveBoard(evt);
+            evt.consume();
+        }
+    }
+
+    public void highlightSquare(MouseEvent evt) {
+
+        Rectangle r = pickRectangle(evt);
+
+        if( r == null ) {
+
+            if( selectedRectangle != null ) {
+                // deselect previous
+                selectedRectangle.setEffect( null );
+            }
+
+            selectedRectangle = null;
+            return;  // might be out of area but w/i scene
+        }
+
+        if( r != selectedRectangle ) {
+
+            if( selectedRectangle != null ) {
+                // deselect previous
+                selectedRectangle.setEffect( null );
+            }
+
+            selectedRectangle = r;
+            if( selectedRectangle != null ) {  // new selection
+                selectedRectangle.setEffect(new InnerShadow());
+            }
+        }
+    }
+
+    public void leaveBoard(MouseEvent evt) {
+        if( movingPiece ) {
+
+            final Timeline timeline = new Timeline();
+
+            offset = new Point2D(0.0d, 0.0d);
+            movingPiece = false;
+
+            timeline.getKeyFrames().add(
+                    new KeyFrame(Duration.millis(200),
+                            new KeyValue(selectedPiece.layoutXProperty(), startLayoutX),
+                            new KeyValue(selectedPiece.layoutYProperty(), startLayoutY),
+                            new KeyValue(selectedPiece.opacityProperty(), 1.0d)
+                    )
+            );
+            timeline.play();
+        }
     }
 
     @FXML
