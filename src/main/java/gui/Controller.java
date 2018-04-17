@@ -83,7 +83,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void movePiece(MouseEvent mouseEvent) {
-        Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
+        Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
         Point2D mousePoint_s = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 
         if( !inBoard(mousePoint_s) ) {
@@ -126,8 +126,8 @@ public class Controller implements Initializable {
 
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
-                            new KeyValue(selectedPiece.layoutXProperty(), parent.getX()),
-                            new KeyValue(selectedPiece.layoutYProperty(), parent.getY()),
+                            new KeyValue(selectedPiece.layoutXProperty(), parent.getX()+30),
+                            new KeyValue(selectedPiece.layoutYProperty(), parent.getY()+30),
                             new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                     )
             );

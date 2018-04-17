@@ -182,58 +182,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Circle layoutX="30.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="150.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="270.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="390.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
+
                      </children>
                   </Pane>
                   <Pane id="row_g" fx:id="row_f" layoutY="120.0" prefHeight="60.0" prefWidth="480.0">
@@ -310,58 +259,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Circle layoutX="90.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="210.0" layoutY="30" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="330.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="450.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                                 <stops>
-                                    <Stop color="WHITE" />
-                                    <Stop color="#bfabab" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
+
                      </children>
                   </Pane>
                   <Pane id="row_g" fx:id="row_e" layoutY="180.0" prefHeight="60.0" prefWidth="480.0">
@@ -590,58 +488,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Circle fx:id="cc1" layoutX="30.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="150.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="270.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="390.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
+
                      </children>
                   </Pane>
                   <Pane id="row_g" fx:id="row_b" layoutY="360.0" prefHeight="60.0" prefWidth="480.0">
@@ -718,58 +565,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Circle layoutX="90.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="210.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="330.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="450.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
+
                      </children>
                   </Pane>
                   <Pane id="row_g" fx:id="row_a" layoutY="420.0" prefHeight="60.0" prefWidth="480.0">
@@ -846,58 +642,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Circle layoutX="30.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="150.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="270.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
-                        <Circle layoutX="390.0" layoutY="30.0" radius="26.0" stroke="BLACK">
-                           <fill>
-                              <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff2f2f" />
-                                    <Stop color="RED" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </Circle>
+
                      </children>
                   </Pane>
                   <Circle layoutX="90.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
@@ -913,7 +658,7 @@
                         <DropShadow />
                      </effect>
                   </Circle>
-                  <Circle layoutX="210.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                  <Circle layoutX="210.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
                      <fill>
                         <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
                            <stops>
@@ -926,7 +671,7 @@
                         <DropShadow />
                      </effect>
                   </Circle>
-                  <Circle layoutX="330.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                  <Circle layoutX="330.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
                      <fill>
                         <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
                            <stops>
@@ -939,7 +684,7 @@
                         <DropShadow />
                      </effect>
                   </Circle>
-                  <Circle layoutX="450.0" layoutY="30.0" radius="26.0" stroke="BLACK">
+                  <Circle layoutX="450.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
                      <fill>
                         <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
                            <stops>
@@ -952,6 +697,266 @@
                         <DropShadow />
                      </effect>
                   </Circle>
+                  <Circle layoutX="30.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                           <stops>
+                              <Stop color="WHITE" />
+                              <Stop color="#bfabab" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Circle>
+                  <Circle layoutX="150.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                           <stops>
+                              <Stop color="WHITE" />
+                              <Stop color="#bfabab" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Circle>
+                  <Circle layoutX="270.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                           <stops>
+                              <Stop color="WHITE" />
+                              <Stop color="#bfabab" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Circle>
+                  <Circle layoutX="390.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                           <stops>
+                              <Stop color="WHITE" />
+                              <Stop color="#bfabab" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Circle>
+                   <Circle layoutX="90.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                               <stops>
+                                   <Stop color="WHITE" />
+                                   <Stop color="#bfabab" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="210.0" layoutY="150" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                               <stops>
+                                   <Stop color="WHITE" />
+                                   <Stop color="#bfabab" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="330.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                               <stops>
+                                   <Stop color="WHITE" />
+                                   <Stop color="#bfabab" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="450.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                               <stops>
+                                   <Stop color="WHITE" />
+                                   <Stop color="#bfabab" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="30.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="150.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="270.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="390.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="90.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="210.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="330.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="450.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="30.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="150.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="270.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
+                   <Circle layoutX="390.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
+                       <fill>
+                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
+                               <stops>
+                                   <Stop color="#ff2f2f" />
+                                   <Stop color="RED" offset="1.0" />
+                               </stops>
+                           </RadialGradient>
+                       </fill>
+                       <effect>
+                           <DropShadow />
+                       </effect>
+                   </Circle>
                </children>
             </Pane>
             <GridPane alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -973,7 +978,15 @@
                            </padding>
                            <font>
                               <Font size="14.0" />
-                           </font></JFXButton>
+                           </font>
+                           <ripplerFill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#ff5454" />
+                                    <Stop color="#360000" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </ripplerFill></JFXButton>
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="320.0">
@@ -983,10 +996,10 @@
                               <Font name="System Bold" size="21.0" />
                            </font>
                            <textFill>
-                              <RadialGradient centerX="0.5" centerY="0.8190476190476191" radius="0.5">
+                              <RadialGradient centerX="0.5" centerY="0.5380952380952382" radius="0.5">
                                  <stops>
                                     <Stop color="BLACK" />
-                                    <Stop color="#6b2727" offset="1.0" />
+                                    <Stop color="#5b0000" offset="1.0" />
                                  </stops>
                               </RadialGradient>
                            </textFill>
