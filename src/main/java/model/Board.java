@@ -46,6 +46,9 @@ public class Board {
 
     /**
      *
+     * @param row
+     * @param col
+     * @return
      */
     public Piece getPiece(int row, int col) {
         return board[row][col];

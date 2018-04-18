@@ -1,4 +1,4 @@
-package main.java.gui;
+package main.java;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;

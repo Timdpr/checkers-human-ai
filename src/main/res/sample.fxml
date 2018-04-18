@@ -19,7 +19,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.gui.Controller">
+<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
    <children>
       <GridPane gridLinesVisible="true" prefHeight="480.0" prefWidth="800.0">
         <columnConstraints>
@@ -1024,7 +1024,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" max="10.0" snapToTicks="true" GridPane.rowIndex="2">
+                  <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="50.0" right="50.0" />
                      </GridPane.margin>
