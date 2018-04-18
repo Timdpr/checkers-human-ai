@@ -39,11 +39,12 @@ public class MoveCheck {
      * @return boolean of whether the jump move is valid
      */
     public boolean isJumpValid(Board board, Point inter, Point end, char colour) {
-        if (isSlideValid(board, end)) { // if end location isn't outside board or empty
-            Piece interPiece = board.getPiece(inter.x, inter.y);
-            if (interPiece == null || interPiece.getColour() == colour) {
-                return false; // not valid if intermediate piece is missing or the same colour
-            }
+        if (!isSlideValid(board, end)) { // if end location isn't outside board or empty
+            return false;
+        }
+        Piece interPiece = board.getPiece(inter.x, inter.y);
+        if (interPiece == null || interPiece.getColour() == colour) {
+            return false; // not valid if intermediate piece is missing or the same colour
         }
         return true;
     }
