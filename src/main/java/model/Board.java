@@ -44,6 +44,13 @@ public class Board {
     }
 
     /**
+     *
+     */
+    public Piece getPiece(int row, int col) {
+        return board[row][col];
+    }
+
+    /**
      * Prints a text representation of the current board
      */
     public void printBoard() {
