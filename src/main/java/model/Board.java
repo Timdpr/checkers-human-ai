@@ -25,13 +25,14 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             if (i % 2 == 0) {
                 newBoard[1][i] = new Piece('w', 1, i);
-                newBoard[5][i] = new Piece('w', 5, i);
-                newBoard[7][i] = new Piece('w', 7, i);
+                newBoard[5][i] = new Piece('r', 5, i);
+                newBoard[7][i] = new Piece('r', 7, i);
             } else {
                 newBoard[0][i] = new Piece('w', 0, i);
                 newBoard[2][i] = new Piece('w', 2, i);
-                newBoard[6][i] = new Piece('w', 6, i);
+                newBoard[6][i] = new Piece('r', 6, i);
             }
+            newBoard[4][1] = new Piece('w', 4, 1);
         }
         return newBoard;
     }

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import main.java.model.Board;
+import main.java.model.Move;
+import main.java.model.MoveGenerator;
 
 /**
  * @author tp275
@@ -72,6 +74,14 @@ public class Controller implements Initializable {
         Board board = new Board();
         board.getInitialBoard();
         board.printBoard();
+
+        MoveGenerator moves = new MoveGenerator();
+        for (Move m : moves.findValidMoves(board)) {
+            System.out.println(m.getOrigin() + " - " + m.getDestination());
+            if (m.hasPieceToRemove()) {
+                System.out.println("Piece to remove: " + m.getPieceToRemove());
+            }
+        }
     }
 
     @FXML
