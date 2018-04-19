@@ -11,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -19,6 +22,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 import java.net.URL;
@@ -137,6 +141,16 @@ public class Controller implements Initializable {
             return;  // don't relocate() b/c will resize Pane
         }
 
+        // Make square green if dropping the piece here would be a valid move
+        Point2D mousePt = new Point2D(mouseEvent.getX(), mouseEvent.getY());
+        Point2D mousePointScene = selectedPiece.localToScene(mousePt);
+        Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() );
+        Point2D rectScene = r.localToScene(r.getX(), r.getY());
+        Point destination = idToPoint(r.getId());
+        if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
+            highlightSquareGreen(mouseEvent);
+        }
+
         Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
         selectedPiece.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
     }
@@ -170,8 +184,10 @@ public class Controller implements Initializable {
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
             Point destination = idToPoint(r.getId());
 
-            if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, idToPoint(r.getId())))) {
+            // Check move is valid by finding valid moves for red and checking whether the list contains that move
+            if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
                 // If move was valid, place it in the middle of the parent rectangle and update the internal board
+
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(100),
                                 new KeyValue(selectedPiece.layoutXProperty(), parent.getX() + 30),
@@ -179,16 +195,17 @@ public class Controller implements Initializable {
                                 new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                         )
                 );
-                board.updateLocation(humanMoveOrigin, idToPoint(r.getId()));
+                board.updateLocation(humanMoveOrigin, destination); // update piece's location in internal board
                 board.printBoard();
-            } else { // TODO: Snap back to original location if not valid
+            } else { // if move is not valid, move the circle back to its original position
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(100),
-                                new KeyValue(selectedPiece.layoutXProperty(), selectedPiece.getLayoutX() - (selectedPiece.getLayoutX() - originRectangle.getLayoutX())),
-                                new KeyValue(selectedPiece.layoutYProperty(), selectedPiece.getLayoutY() - (selectedPiece.getLayoutY() - originRectangle.getLayoutY())),
+                                new KeyValue(selectedPiece.layoutXProperty(), selectedPiece.getLayoutX() - (selectedPiece.getLayoutX() - originRectangle.getLayoutX()-30)),
+                                new KeyValue(selectedPiece.layoutYProperty(), selectedPiece.getLayoutY() - (selectedPiece.getLayoutY() - idToPoint(originRectangle.getId()).x*60-30)),
                                 new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                         )
                 );
+
                 board.printBoard();
             }
 
@@ -239,9 +256,7 @@ public class Controller implements Initializable {
     }
 
     public void highlightSquare(MouseEvent evt) {
-
         Rectangle r = pickRectangle(evt);
-
         if( r == null ) {
             if( selectedRectangle != null ) {
                 // deselect previous
@@ -259,6 +274,24 @@ public class Controller implements Initializable {
             selectedRectangle = r;
             if( selectedRectangle != null ) {  // new selection
                 selectedRectangle.setEffect(new InnerShadow());
+            }
+        }
+    }
+
+    public void highlightSquareGreen(MouseEvent evt) {
+        Rectangle r = pickRectangle(evt);
+        if( r != selectedRectangle ) {
+            if( selectedRectangle != null ) {
+                // deselect previous
+                selectedRectangle.setEffect( null );
+            }
+            selectedRectangle = r;
+            if( selectedRectangle != null ) {  // new selection
+                ColorInput color = new ColorInput();
+                color.setHeight(60);
+                color.setWidth(60);
+                color.setPaint(Color.GREEN);
+                selectedRectangle.setEffect(color);
             }
         }
     }
