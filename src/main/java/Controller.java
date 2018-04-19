@@ -11,9 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -24,19 +22,16 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
+import java.awt.Point;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import main.java.model.Board;
-import main.java.model.Move;
-import main.java.model.MoveGenerator;
-import main.java.model.MoveValidator;
+import main.java.model.*;
 
 /**
- * Methods related to 'drag and drop' functionality adapted from
+ * Methods related to 'drag and drop' functionality heavily adapted from
  * www.bekwam.blogspot.co.uk/2016/02/moving-game-piece-on-javafx-checkerboard.html, with permission under the Apache
  * License, Version 2.0: www.apache.org/licenses/LICENSE-2.0
  *
@@ -68,11 +63,11 @@ public class Controller implements Initializable {
     private double startLayoutX;
     private double startLayoutY;
 
+    private AI ai = new AI();
     private boolean aiTurn;
 
     private Point humanMoveOrigin;
 
-    private MoveValidator validator = new MoveValidator();
     private MoveGenerator moveGenerator = new MoveGenerator();
     private Board board = new Board();
 
@@ -89,32 +84,14 @@ public class Controller implements Initializable {
         panes.add(row_f);
         panes.add(row_g);
         panes.add(row_h);
-
         aiTurn = false;
-
-        board.printBoard();
-
-        MoveGenerator moves = new MoveGenerator();
-        for (Move m : moves.findValidMoves(board, 'r')) {
-            System.out.println("Red: " + m.getOrigin() + " - " + m.getDestination());
-            if (m.hasPieceToRemove()) {
-                System.out.println("Piece to remove: " + m.getPieceToRemove());
-            }
-        }
-
-        for (Move m : moves.findValidMoves(board, 'w')) {
-            System.out.println("White: " + m.getOrigin() + " - " + m.getDestination());
-            if (m.hasPieceToRemove()) {
-                System.out.println("Piece to remove: " + m.getPieceToRemove());
-            }
-        }
     }
 
     @FXML
     public void startMovingPiece(MouseEvent mouseEvent) {
         selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
 
-        // set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
+        // Set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
         Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
         originRectangle = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
@@ -122,7 +99,6 @@ public class Controller implements Initializable {
         id = id.replace("s", "");
         String[] xy = id.split("_");
         humanMoveOrigin =  new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
-        System.out.println(humanMoveOrigin);
 
         startLayoutX = selectedPiece.getLayoutX();
         startLayoutY = selectedPiece.getLayoutY();
@@ -144,8 +120,7 @@ public class Controller implements Initializable {
         // Make square green if dropping the piece here would be a valid move
         Point2D mousePt = new Point2D(mouseEvent.getX(), mouseEvent.getY());
         Point2D mousePointScene = selectedPiece.localToScene(mousePt);
-        Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() );
-        Point2D rectScene = r.localToScene(r.getX(), r.getY());
+        Rectangle r = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
         Point destination = idToPoint(r.getId());
         if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
             highlightSquareGreen(mouseEvent);
@@ -184,10 +159,14 @@ public class Controller implements Initializable {
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
             Point destination = idToPoint(r.getId());
 
-            // Check move is valid by finding valid moves for red and checking whether the list contains that move
-            if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
+            /*
+              Check move is valid by finding valid moves for red and checking whether the moves.indexOf(move) returns
+              an actual index, rather than -1
+             */
+            ArrayList<Move> moves = moveGenerator.findValidMoves(board, 'r');
+            int moveIndex = moves.indexOf(new Move(humanMoveOrigin, destination));
+            if (moveIndex >= 0) {
                 // If move was valid, place it in the middle of the parent rectangle and update the internal board
-
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(100),
                                 new KeyValue(selectedPiece.layoutXProperty(), parent.getX() + 30),
@@ -195,8 +174,18 @@ public class Controller implements Initializable {
                                 new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                         )
                 );
-                board.updateLocation(humanMoveOrigin, destination); // update piece's location in internal board
+                board.updateLocation(moves.get(moveIndex)); // update piece's location in internal board
+                System.out.println("Board after human move:");
                 board.printBoard();
+
+                // TODO: ##########  Update GUI board after the AI has moved  ##########
+                // AI turn
+                aiTurn = true;
+                board = ai.play(board);
+                aiTurn = false;
+                System.out.println("\nBoard after AI's move:");
+                board.printBoard();
+
             } else { // if move is not valid, move the circle back to its original position
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(100),
@@ -205,8 +194,6 @@ public class Controller implements Initializable {
                                 new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                         )
                 );
-
-                board.printBoard();
             }
 
         // return circle's opacity to 0 if move unsuccessful because it was the ai's turn
@@ -271,32 +258,30 @@ public class Controller implements Initializable {
                 // deselect previous
                 selectedRectangle.setEffect( null );
             }
+            // new selection
             selectedRectangle = r;
-            if( selectedRectangle != null ) {  // new selection
-                selectedRectangle.setEffect(new InnerShadow());
-            }
+            selectedRectangle.setEffect(new InnerShadow());
         }
     }
 
-    public void highlightSquareGreen(MouseEvent evt) {
-        Rectangle r = pickRectangle(evt);
+    private void highlightSquareGreen(MouseEvent mouseEvent) {
+        Rectangle r = pickRectangle(mouseEvent);
         if( r != selectedRectangle ) {
             if( selectedRectangle != null ) {
                 // deselect previous
                 selectedRectangle.setEffect( null );
             }
+            // new selection
             selectedRectangle = r;
-            if( selectedRectangle != null ) {  // new selection
-                ColorInput color = new ColorInput();
-                color.setHeight(60);
-                color.setWidth(60);
-                color.setPaint(Color.GREEN);
-                selectedRectangle.setEffect(color);
-            }
+            ColorInput color = new ColorInput();
+            color.setHeight(60);
+            color.setWidth(60);
+            color.setPaint(Color.GREEN);
+            selectedRectangle.setEffect(color);
         }
     }
 
-    public void leaveBoard(MouseEvent evt) {
+    public void leaveBoard(MouseEvent mouseEvent) {
         if( movingPiece ) {
             final Timeline timeline = new Timeline();
             offset = new Point2D(0.0d, 0.0d);

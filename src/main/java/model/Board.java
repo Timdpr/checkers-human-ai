@@ -57,13 +57,19 @@ public class Board {
 
     /**
      *
-     * @param origin
-     * @param destination
+     * @param move
      */
-    public void updateLocation(Point origin, Point destination) {
-        Piece piece = board[origin.x][origin.y];
-        board[origin.x][origin.y] = null;
-        board[destination.x][destination.y] = piece;
+    public void updateLocation(Move move) {
+        // Store piece at origin and delete it from board
+        Piece originPiece = board[move.origin.x][move.origin.y];
+        board[move.origin.x][move.origin.y] = null;
+
+        // If there is an intermediate piece (in a jump), remove it
+        if (move.hasPieceToRemove()) {
+            board[move.pieceToRemove.x][move.pieceToRemove.y] = null;
+        }
+        // Now insert the original piece at the destination
+        board[move.destination.x][move.destination.y] = originPiece;
     }
 
     /**
