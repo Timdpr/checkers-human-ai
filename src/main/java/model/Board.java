@@ -1,5 +1,7 @@
 package main.java.model;
 
+import java.awt.*;
+
 /**
  * The state representation: a 2d array holding Piece objects.
  *
@@ -32,7 +34,6 @@ public class Board {
                 newBoard[2][i] = new Piece('w', 2, i);
                 newBoard[6][i] = new Piece('r', 6, i);
             }
-            newBoard[4][1] = new Piece('w', 4, 1);
         }
         return newBoard;
     }
@@ -52,6 +53,17 @@ public class Board {
      */
     public Piece getPiece(int row, int col) {
         return board[row][col];
+    }
+
+    /**
+     *
+     * @param origin
+     * @param destination
+     */
+    public void updateLocation(Point origin, Point destination) {
+        Piece piece = board[origin.x][origin.y];
+        board[origin.x][origin.y] = null;
+        board[destination.x][destination.y] = piece;
     }
 
     /**

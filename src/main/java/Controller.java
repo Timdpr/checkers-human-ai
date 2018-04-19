@@ -58,6 +58,7 @@ public class Controller implements Initializable {
 
     private Circle selectedPiece;
     private Rectangle selectedRectangle;
+    private Rectangle originRectangle;
     
     private boolean movingPiece;
     private double startLayoutX;
@@ -112,9 +113,9 @@ public class Controller implements Initializable {
         // set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
         Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
-        Rectangle rec = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
-        String id = rec.getId();
-        id = id.replace("$", "");
+        originRectangle = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
+        String id = originRectangle.getId();
+        id = id.replace("s", "");
         String[] xy = id.split("_");
         humanMoveOrigin =  new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
         System.out.println(humanMoveOrigin);
@@ -157,9 +158,8 @@ public class Controller implements Initializable {
         offset = new Point2D(0.0d, 0.0d);
 
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
-        Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
-
-        Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() );
+        Point2D mousePointScene = selectedPiece.localToScene(mousePoint); // get point in scene that the cursor is over
+        Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
 
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
@@ -168,28 +168,33 @@ public class Controller implements Initializable {
         if( r != null && !aiTurn) {
             Point2D rectScene = r.localToScene(r.getX(), r.getY());
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
+            Point destination = idToPoint(r.getId());
 
-            System.out.println(idToPoint(r.getId()));
+            System.out.println(destination);
 
-            if (!(moveGenerator.findValidMoves(board, 'w')
-                    .contains(new Move(humanMoveOrigin, idToPoint(r.getId()))))) {
+            if (validator.isSlideValid(board, destination)) {
+                // If move was valid, place it in the middle of the parent rectangle and update the internal board
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(100),
-                                new KeyValue(selectedPiece.layoutXProperty(), humanMoveOrigin.x+30),
-                                new KeyValue(selectedPiece.layoutYProperty(), humanMoveOrigin.y+30),
+                                new KeyValue(selectedPiece.layoutXProperty(), parent.getX() + 30),
+                                new KeyValue(selectedPiece.layoutYProperty(), parent.getY() + 30),
                                 new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                         )
                 );
+                board.updateLocation(humanMoveOrigin, idToPoint(r.getId()));
+                board.printBoard();
+            } else { // TODO: Snap back to original location if not valid
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(100),
+                                new KeyValue(selectedPiece.layoutXProperty(), selectedPiece.getLayoutX() - (selectedPiece.getLayoutX() - originRectangle.getLayoutX())),
+                                new KeyValue(selectedPiece.layoutYProperty(), selectedPiece.getLayoutY() - (selectedPiece.getLayoutY() - originRectangle.getLayoutY())),
+                                new KeyValue(selectedPiece.opacityProperty(), 1.0d)
+                        )
+                );
+                board.printBoard();
             }
 
-
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(100),
-                            new KeyValue(selectedPiece.layoutXProperty(), parent.getX()+30),
-                            new KeyValue(selectedPiece.layoutYProperty(), parent.getY()+30),
-                            new KeyValue(selectedPiece.opacityProperty(), 1.0d)
-                    )
-            );
+        // return circle's opacity to 0 if move unsuccessful because it was the ai's turn
         } else {
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
@@ -197,6 +202,7 @@ public class Controller implements Initializable {
                     )
             );
         }
+
 
         timeline.play();
         movingPiece = false;
@@ -294,7 +300,7 @@ public class Controller implements Initializable {
 
     private Point idToPoint(String id) {
         String idCopy = id;
-        idCopy = idCopy.replace("$", "");
+        idCopy = idCopy.replace("s", "");
         String[] xy = idCopy.split("_");
         return new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
     }
