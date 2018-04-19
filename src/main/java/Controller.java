@@ -173,7 +173,13 @@ public class Controller implements Initializable {
 
             if (!(moveGenerator.findValidMoves(board, 'w')
                     .contains(new Move(humanMoveOrigin, idToPoint(r.getId()))))) {
-                return;
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(100),
+                                new KeyValue(selectedPiece.layoutXProperty(), humanMoveOrigin.x+30),
+                                new KeyValue(selectedPiece.layoutYProperty(), humanMoveOrigin.y+30),
+                                new KeyValue(selectedPiece.opacityProperty(), 1.0d)
+                        )
+                );
             }
 
 
