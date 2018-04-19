@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 import main.java.model.Board;
 import main.java.model.Move;
 import main.java.model.MoveGenerator;
+import main.java.model.MoveValidator;
 
 /**
  * Methods related to 'drag and drop' functionality adapted from
@@ -66,6 +67,10 @@ public class Controller implements Initializable {
 
     private Point humanMoveOrigin;
 
+    private MoveValidator validator = new MoveValidator();
+    private MoveGenerator moveGenerator = new MoveGenerator();
+    private Board board = new Board();
+
     /**
      * Called after window has finished loading.
      */
@@ -82,7 +87,6 @@ public class Controller implements Initializable {
 
         aiTurn = false;
 
-        Board board = new Board();
         board.printBoard();
 
         MoveGenerator moves = new MoveGenerator();
@@ -105,12 +109,15 @@ public class Controller implements Initializable {
     public void startMovingPiece(MouseEvent mouseEvent) {
         selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
 
-        // TODO: Trying to set the piece origin location but getting null pointer from this: (localtoscene does a transformation?)
-        // set humanMoveOrigin to the location of the piece
-        //Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
-        //Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
-        //Rectangle rec = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
-        //humanMoveOrigin = idToPoint(rec.getId());
+        // set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
+        Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
+        Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
+        Rectangle rec = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
+        String id = rec.getId();
+        id = id.replace("$", "");
+        String[] xy = id.split("_");
+        humanMoveOrigin =  new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
+        System.out.println(humanMoveOrigin);
 
         startLayoutX = selectedPiece.getLayoutX();
         startLayoutY = selectedPiece.getLayoutY();
@@ -162,7 +169,13 @@ public class Controller implements Initializable {
             Point2D rectScene = r.localToScene(r.getX(), r.getY());
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
 
-            System.out.println(r.getId());
+            System.out.println(idToPoint(r.getId()));
+
+            if (!(moveGenerator.findValidMoves(board, 'w')
+                    .contains(new Move(humanMoveOrigin, idToPoint(r.getId()))))) {
+                return;
+            }
+
 
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
@@ -274,8 +287,9 @@ public class Controller implements Initializable {
     }
 
     private Point idToPoint(String id) {
-        id = id.replace("$", "");
-        String[] xy = id.split("_");
+        String idCopy = id;
+        idCopy = idCopy.replace("$", "");
+        String[] xy = idCopy.split("_");
         return new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
     }
 }
