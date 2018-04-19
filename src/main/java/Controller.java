@@ -170,9 +170,7 @@ public class Controller implements Initializable {
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
             Point destination = idToPoint(r.getId());
 
-            System.out.println(destination);
-
-            if (validator.isSlideValid(board, destination)) {
+            if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, idToPoint(r.getId())))) {
                 // If move was valid, place it in the middle of the parent rectangle and update the internal board
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(100),

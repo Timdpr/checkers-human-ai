@@ -1,6 +1,7 @@
 package main.java.model;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Move {
 
@@ -46,5 +47,21 @@ public class Move {
 
     public boolean hasPieceToRemove() {
         return this.pieceToRemove != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return Objects.equals(origin.x, move.origin.x) &&
+                Objects.equals(destination.x, move.destination.x) &&
+                Objects.equals(origin.y, move.origin.y) &&
+                Objects.equals(destination.y, move.destination.y);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(origin.x, origin.y, destination.x, destination.y);
     }
 }

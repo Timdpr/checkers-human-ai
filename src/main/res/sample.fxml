@@ -110,7 +110,7 @@
                   </Pane>
                   <Pane id="row_h" fx:id="row_g" layoutY="60.0" prefHeight="60.0" prefWidth="480.0">
                      <children>
-                        <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -119,7 +119,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -128,7 +128,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -137,7 +137,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -146,7 +146,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -155,7 +155,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -164,7 +164,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -173,7 +173,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s1_7" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -416,7 +416,7 @@
                   </Pane>
                   <Pane id="row_h" fx:id="row_c" layoutY="300.0" prefHeight="60.0" prefWidth="480.0">
                      <children>
-                        <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -425,7 +425,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -434,7 +434,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -443,7 +443,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -452,7 +452,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -461,7 +461,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -470,7 +470,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -479,7 +479,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="s5_7" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
