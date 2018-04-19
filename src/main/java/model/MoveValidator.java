@@ -7,10 +7,10 @@ import java.awt.*;
  *
  * @author tp275
  */
-public class MoveCheck {
+public class MoveValidator {
 
     /**
-     * Checks whether the end location of the move is outside the board or blocked by a piece, and thus if it is valid
+     * Checks whether the end location of the move is outside the board or blocked by a piece, and thus if it is valid.
      * Only use with 'sliding' moves!
      *
      * @param board the game board

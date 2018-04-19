@@ -3,30 +3,37 @@ package main.java.model;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class MoveGenerator {
 
-    private MoveCheck check = new MoveCheck();
+    private MoveValidator check = new MoveValidator();
     private ArrayList<Move> validMoves;
 
     /**
-     * Populates and returns an ArrayList<Move> with valid moves for all pieces (note that if there is one or more jump
-     * moves they will be the only ones returned as they have have to be made, as per the rules)
-     * @return
+     * Populates and returns an ArrayList<Move> with valid moves for all pieces of the given colour (note that if there
+     * is one or more jump move they will be the only ones returned, as they have have to be made as per the rules)
+     *
+     * @return ArrayList of all valid Moves for all pieces of the given colour which are on the given Board
      */
-    public ArrayList<Move> findValidMoves(Board board) {
+    public ArrayList<Move> findValidMoves(Board board, char colour) {
         validMoves = new ArrayList<>();
-        addValidJumps(board); // first find valid jumps
+        addValidJumps(board, colour); // first find valid jumps
         if (validMoves.size() > 0) { // if there is a jump, it has to be made!
             return validMoves;
         }
-        addValidSlides(board); // otherwise, now find valid slide moves
+        addValidSlides(board, colour); // otherwise, now find valid slide moves
         return validMoves;
     }
 
     /**
-     * Populates validMoves with all valid slide moves for all pieces
+     * Populates validMoves with all valid slide moves for pieces of the given colour
+     *
+     * @param board the internal board state
+     * @param colour the colour of pieces to generate moves for ('r' or 'w')
      */
-    private void addValidSlides(Board board) {
+    private void addValidSlides(Board board, char colour) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) { // for all board positions
                 if (board.getPiece(i, j) != null) { // if there is a piece
@@ -34,7 +41,7 @@ public class MoveGenerator {
                     Point origin = new Point(i, j);
 
                     // go through downwards diagonal moves for white or kings
-                    if (piece.getColour() == 'w' || piece.isKing()) {
+                    if ((piece.getColour() == 'w' && piece.getColour() == colour) || piece.isKing()) {
                         Point downLeft = new Point(i+1, j-1);
                         if (check.isSlideValid(board, downLeft)) {
                             validMoves.add(new Move(origin, downLeft));
@@ -45,7 +52,7 @@ public class MoveGenerator {
                         }
                     }
                     // go through upwards diagonal moves for red or kings
-                    if (piece.getColour() == 'r' || piece.isKing()) {
+                    if ((piece.getColour() == 'r' && piece.getColour() == colour) || piece.isKing()) {
                         Point upLeft = new Point(i-1, j-1);
                         if (check.isSlideValid(board, upLeft)) {
                             validMoves.add(new Move(origin, upLeft));
@@ -61,9 +68,12 @@ public class MoveGenerator {
     }
 
     /**
-     * Populates validMoves with all valid jumps for all pieces
+     * Populates validMoves with all valid jump moves for pieces of the given colour
+     *
+     * @param board the internal board state
+     * @param colour the colour of pieces to generate moves for ('r' or 'w')
      */
-    private void addValidJumps(Board board) {
+    private void addValidJumps(Board board, char colour) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) { // for all board positions
                 if (board.getPiece(i, j) != null) { // if there is a piece
@@ -72,7 +82,7 @@ public class MoveGenerator {
                     char pieceColour = piece.getColour();
 
                     // go through downwards diagonal jumps for white or kings
-                    if (pieceColour == 'w' || piece.isKing()) {
+                    if ((piece.getColour() == 'w' && piece.getColour() == colour) || piece.isKing()) {
                         Point downLeft = new Point(i+1, j-1);
                         Point down2Left2 = new Point(i+2, j-2);
                         if (check.isJumpValid(board, downLeft, down2Left2, pieceColour)) {
@@ -85,7 +95,7 @@ public class MoveGenerator {
                         }
                     }
                     // go through upwards diagonal jumps for red or kings
-                    if (pieceColour == 'r' || piece.isKing()) {
+                    if ((piece.getColour() == 'r' && piece.getColour() == colour) || piece.isKing()) {
                         Point upLeft = new Point(i-1, j-1);
                         Point up2Left2 = new Point(i-2, j-2);
                         if (check.isJumpValid(board, upLeft, up2Left2, pieceColour)) {

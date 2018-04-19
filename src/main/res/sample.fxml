@@ -34,7 +34,7 @@
                <children>
                   <Pane id="row_g" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
                      <children>
-                        <Rectangle fx:id="h_1" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="$0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="1.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -43,7 +43,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="h_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="$0_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -52,7 +52,7 @@
                                  </stops>
                               </LinearGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="h_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="$0_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
                            <fill>
                               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                                  <stops>
@@ -282,7 +282,7 @@
                                  </stops>
                               </RadialGradient>
                            </fill></Rectangle>
-                        <Rectangle fx:id="e_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
+                        <Rectangle fx:id="$3_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>

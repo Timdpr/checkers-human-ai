@@ -20,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,10 @@ import main.java.model.Move;
 import main.java.model.MoveGenerator;
 
 /**
+ * Methods related to 'drag and drop' functionality adapted from
+ * www.bekwam.blogspot.co.uk/2016/02/moving-game-piece-on-javafx-checkerboard.html, with permission under the Apache
+ * License, Version 2.0: www.apache.org/licenses/LICENSE-2.0
+ *
  * @author tp275
  */
 public class Controller implements Initializable {
@@ -57,6 +62,10 @@ public class Controller implements Initializable {
     private double startLayoutX;
     private double startLayoutY;
 
+    private boolean aiTurn;
+
+    private Point humanMoveOrigin;
+
     /**
      * Called after window has finished loading.
      */
@@ -71,13 +80,21 @@ public class Controller implements Initializable {
         panes.add(row_g);
         panes.add(row_h);
 
+        aiTurn = false;
+
         Board board = new Board();
-        board.getInitialBoard();
         board.printBoard();
 
         MoveGenerator moves = new MoveGenerator();
-        for (Move m : moves.findValidMoves(board)) {
-            System.out.println(m.getOrigin() + " - " + m.getDestination());
+        for (Move m : moves.findValidMoves(board, 'r')) {
+            System.out.println("Red: " + m.getOrigin() + " - " + m.getDestination());
+            if (m.hasPieceToRemove()) {
+                System.out.println("Piece to remove: " + m.getPieceToRemove());
+            }
+        }
+
+        for (Move m : moves.findValidMoves(board, 'w')) {
+            System.out.println("White: " + m.getOrigin() + " - " + m.getDestination());
             if (m.hasPieceToRemove()) {
                 System.out.println("Piece to remove: " + m.getPieceToRemove());
             }
@@ -86,7 +103,15 @@ public class Controller implements Initializable {
 
     @FXML
     public void startMovingPiece(MouseEvent mouseEvent) {
-        selectedPiece = (Circle)mouseEvent.getSource();
+        selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
+
+        // TODO: Trying to set the piece origin location but getting null pointer from this: (localtoscene does a transformation?)
+        // set humanMoveOrigin to the location of the piece
+        //Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
+        //Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
+        //Rectangle rec = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
+        //humanMoveOrigin = idToPoint(rec.getId());
+
         startLayoutX = selectedPiece.getLayoutX();
         startLayoutY = selectedPiece.getLayoutY();
         selectedPiece.setOpacity(0.4d);
@@ -100,7 +125,7 @@ public class Controller implements Initializable {
         Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
         Point2D mousePoint_s = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
 
-        if( !inBoard(mousePoint_s) ) {
+        if( !inBoard(mousePoint_s) || aiTurn) { // check for piece being in board or it not being human's turn
             return;  // don't relocate() b/c will resize Pane
         }
 
@@ -133,10 +158,11 @@ public class Controller implements Initializable {
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
 
-        if( r != null ) {
-
+        if( r != null && !aiTurn) {
             Point2D rectScene = r.localToScene(r.getX(), r.getY());
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
+
+            System.out.println(r.getId());
 
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
@@ -146,7 +172,6 @@ public class Controller implements Initializable {
                     )
             );
         } else {
-
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(100),
                             new KeyValue(selectedPiece.opacityProperty(), 1.0d)
@@ -195,23 +220,19 @@ public class Controller implements Initializable {
         Rectangle r = pickRectangle(evt);
 
         if( r == null ) {
-
             if( selectedRectangle != null ) {
                 // deselect previous
                 selectedRectangle.setEffect( null );
             }
-
             selectedRectangle = null;
             return;  // might be out of area but w/i scene
         }
 
         if( r != selectedRectangle ) {
-
             if( selectedRectangle != null ) {
                 // deselect previous
                 selectedRectangle.setEffect( null );
             }
-
             selectedRectangle = r;
             if( selectedRectangle != null ) {  // new selection
                 selectedRectangle.setEffect(new InnerShadow());
@@ -221,9 +242,7 @@ public class Controller implements Initializable {
 
     public void leaveBoard(MouseEvent evt) {
         if( movingPiece ) {
-
             final Timeline timeline = new Timeline();
-
             offset = new Point2D(0.0d, 0.0d);
             movingPiece = false;
 
@@ -252,5 +271,11 @@ public class Controller implements Initializable {
 
         dialogLayout.setActions(buttonExit);
         dialog.show();
+    }
+
+    private Point idToPoint(String id) {
+        id = id.replace("$", "");
+        String[] xy = id.split("_");
+        return new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
     }
 }
