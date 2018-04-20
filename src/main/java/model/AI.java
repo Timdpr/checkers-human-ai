@@ -1,11 +1,16 @@
 package main.java.model;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class AI {
 
+    private MoveGenerator moveGenerator = new MoveGenerator();
+
     public Board play(Board board) {
-        board.updateLocation(new Move(new Point(2,3), new Point(4,3)));
+        ArrayList<Move> moves = moveGenerator.findValidMoves(board, 'w');
+        board.updateLocation(moves.get(new Random().nextInt(moves.size())));
         return board;
     }
 }

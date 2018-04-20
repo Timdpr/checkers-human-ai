@@ -37,7 +37,7 @@ public class Piece {
         return isKing;
     }
 
-    public void setKing(boolean king) {
-        isKing = king;
+    public void setKing() {
+        isKing = true;
     }
 }

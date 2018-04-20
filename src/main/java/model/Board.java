@@ -1,6 +1,7 @@
 package main.java.model;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * The state representation: a 2d array holding Piece objects.
@@ -86,5 +87,22 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    public ArrayList<Piece> updateKings() {
+        ArrayList<Piece> toKing = new ArrayList<>();
+        for (Piece p : board[0]) {
+            if (!p.isKing()) {
+                p.setKing();
+                toKing.add(p);
+            }
+        }
+        for (Piece p : board[7]) {
+            if (!p.isKing()) {
+                p.setKing();
+                toKing.add(p);
+            }
+        }
+        return toKing;
     }
 }

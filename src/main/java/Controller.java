@@ -3,6 +3,7 @@ package main.java;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.sun.glass.ui.Robot;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -22,9 +23,11 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
+import java.awt.Robot.*;
 import java.awt.Point;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,7 +44,6 @@ public class Controller implements Initializable {
 
     @FXML private StackPane rootStackPane;
     @FXML private Pane boardPane;
-
     @FXML private Pane row_a;
     @FXML private Pane row_b;
     @FXML private Pane row_c;
@@ -50,8 +52,34 @@ public class Controller implements Initializable {
     @FXML private Pane row_f;
     @FXML private Pane row_g;
     @FXML private Pane row_h;
-
     private final List<Pane> panes = new ArrayList<>();
+
+    @FXML private Circle c1;
+    @FXML private Circle c2;
+    @FXML private Circle c3;
+    @FXML private Circle c4;
+    @FXML private Circle c5;
+    @FXML private Circle c6;
+    @FXML private Circle c7;
+    @FXML private Circle c8;
+    @FXML private Circle c9;
+    @FXML private Circle c10;
+    @FXML private Circle c11;
+    @FXML private Circle c12;
+    @FXML private Circle c13;
+    @FXML private Circle c14;
+    @FXML private Circle c15;
+    @FXML private Circle c16;
+    @FXML private Circle c17;
+    @FXML private Circle c18;
+    @FXML private Circle c19;
+    @FXML private Circle c20;
+    @FXML private Circle c21;
+    @FXML private Circle c22;
+    @FXML private Circle c23;
+    @FXML private Circle c24;
+    private List<Circle> circles = new ArrayList<>();
+
 
     private Point2D offset;
 
@@ -76,14 +104,9 @@ public class Controller implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        panes.add(row_a);
-        panes.add(row_b);
-        panes.add(row_c);
-        panes.add(row_d);
-        panes.add(row_e);
-        panes.add(row_f);
-        panes.add(row_g);
-        panes.add(row_h);
+        panes.addAll(Arrays.asList(row_a, row_b, row_c, row_d, row_e, row_f, row_g, row_h));
+        circles.addAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18,
+                c19, c20, c21, c22, c23, c24));
         aiTurn = false;
     }
 
@@ -106,6 +129,7 @@ public class Controller implements Initializable {
         offset = new Point2D(mouseEvent.getX(), mouseEvent.getY());
 
         movingPiece = true;
+
     }
 
     @FXML
@@ -174,7 +198,14 @@ public class Controller implements Initializable {
                                 new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                         )
                 );
-                board.updateLocation(moves.get(moveIndex)); // update piece's location in internal board
+                Move playerMove = moves.get(moveIndex);
+                board.updateLocation(playerMove); // update piece's location in internal board
+                if (playerMove.hasPieceToRemove()) { // remove piece if there was a jump
+                    removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
+                }
+//                for (Piece p : board.updateKings()) { // update look of pieces needing to become kings
+//                    convertToKing(p);
+//                }
                 System.out.println("Board after human move:");
                 board.printBoard();
 
@@ -319,5 +350,38 @@ public class Controller implements Initializable {
         idCopy = idCopy.replace("s", "");
         String[] xy = idCopy.split("_");
         return new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
+    }
+
+    private Circle selectCircle(int row, int col) {
+        for (Circle c : circles) {
+            if (c.getCenterX() == indexToPixel(row) && c.getCenterY() == indexToPixel(col)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    private void updatePiece(Move move) {
+        // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
+        Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
+        circle.setCenterX(move.getDestination().x);
+        circle.setCenterY(move.getDestination().y);
+
+        if (move.hasPieceToRemove()) {
+            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
+
+        }
+    }
+
+    private void removePiece(Circle circle) {
+        boardPane.getChildren().remove(circle);
+    }
+
+    private void convertToKing(Piece p) {
+        // TODO: selectCircle, then circle.setFill(new ImagePattern(Image)) (of a crown)
+    }
+
+    private int indexToPixel(int i) {
+        return (i*60)+30;
     }
 }
