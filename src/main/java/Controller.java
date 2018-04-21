@@ -3,7 +3,6 @@ package main.java;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.sun.glass.ui.Robot;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -54,10 +53,14 @@ public class Controller implements Initializable {
     @FXML private Pane row_h;
     private final List<Pane> panes = new ArrayList<>();
 
-    @FXML private Circle c1;
-    @FXML private Circle c2;
-    @FXML private Circle c3;
-    @FXML private Circle c4;
+    @FXML
+    private Circle c1;
+    @FXML
+    private Circle c2;
+    @FXML
+    private Circle c3;
+    @FXML
+    private Circle c4;
     @FXML private Circle c5;
     @FXML private Circle c6;
     @FXML private Circle c7;
@@ -200,9 +203,10 @@ public class Controller implements Initializable {
                 );
                 Move playerMove = moves.get(moveIndex);
                 board.updateLocation(playerMove); // update piece's location in internal board
-                if (playerMove.hasPieceToRemove()) { // remove piece if there was a jump
+                if (playerMove.hasPieceToRemove()) {
                     removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
                 }
+
 //                for (Piece p : board.updateKings()) { // update look of pieces needing to become kings
 //                    convertToKing(p);
 //                }
@@ -213,9 +217,10 @@ public class Controller implements Initializable {
                 // AI turn
                 aiTurn = true;
                 board = ai.play(board);
-                aiTurn = false;
                 System.out.println("\nBoard after AI's move:");
                 board.printBoard();
+                updatePiece(ai.getLastMove());
+                aiTurn = false;
 
             } else { // if move is not valid, move the circle back to its original position
                 timeline.getKeyFrames().add(
@@ -353,8 +358,12 @@ public class Controller implements Initializable {
     }
 
     private Circle selectCircle(int row, int col) {
+        System.out.println("Row: " + indexToPixel(row));
+        System.out.println("Col: " + indexToPixel(col));
+
         for (Circle c : circles) {
-            if (c.getCenterX() == indexToPixel(row) && c.getCenterY() == indexToPixel(col)) {
+            System.out.println(c.getLayoutX() + " - " + c.getLayoutY());
+            if (c.getLayoutY() == indexToPixel(row+1) && c.getLayoutX() == indexToPixel(col+1)) {
                 return c;
             }
         }
@@ -363,12 +372,14 @@ public class Controller implements Initializable {
 
     private void updatePiece(Move move) {
         // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
+        System.out.println("Move row&col: " + move.getOrigin().x + " - " + move.getOrigin().y);
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
-        circle.setCenterX(move.getDestination().x);
-        circle.setCenterY(move.getDestination().y);
+        circle.setLayoutY(indexToPixel(move.getDestination().x+1));
+        circle.setLayoutX(indexToPixel(move.getDestination().y+1));
+        System.out.println("New location: " + circle.getLayoutX() + " - " + circle.getLayoutY());
 
         if (move.hasPieceToRemove()) {
-            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
+            removePiece(selectCircle(move.getPieceToRemove().x+1, move.getPieceToRemove().y+1));
 
         }
     }
@@ -382,6 +393,6 @@ public class Controller implements Initializable {
     }
 
     private int indexToPixel(int i) {
-        return (i*60)+30;
+        return (i*60)-30;
     }
 }
