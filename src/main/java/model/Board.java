@@ -1,6 +1,5 @@
 package main.java.model;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -71,6 +70,7 @@ public class Board {
         }
         // Now insert the original piece at the destination
         board[move.destination.x][move.destination.y] = originPiece;
+        updateKings();
     }
 
     /**
@@ -89,20 +89,20 @@ public class Board {
         }
     }
 
-    public ArrayList<Piece> updateKings() {
-        ArrayList<Piece> toKing = new ArrayList<>();
+    public void updateKings() {
         for (Piece p : board[0]) {
-            if (!p.isKing()) {
-                p.setKing();
-                toKing.add(p);
+            if (p!=null) {
+                if (p.getColour()=='r' && !p.isKing()) {
+                    p.setKing();
+                }
             }
         }
         for (Piece p : board[7]) {
-            if (!p.isKing()) {
-                p.setKing();
-                toKing.add(p);
+            if (p!=null) {
+                if (p.getColour() == 'w' && !p.isKing()) {
+                    p.setKing();
+                }
             }
         }
-        return toKing;
     }
 }

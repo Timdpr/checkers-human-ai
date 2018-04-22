@@ -22,7 +22,6 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
-import java.awt.Robot.*;
 import java.awt.Point;
 import java.net.URL;
 import java.util.ArrayList;
@@ -113,9 +112,14 @@ public class Controller implements Initializable {
         aiTurn = false;
     }
 
+    /**
+     *
+     * @param mouseEvent
+     */
     @FXML
     public void startMovingPiece(MouseEvent mouseEvent) {
         selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
+        System.out.println("Initial location of moved piece: " + selectedPiece.getLayoutY() + " - " + selectedPiece.getLayoutX());
 
         // Set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
@@ -135,6 +139,10 @@ public class Controller implements Initializable {
 
     }
 
+    /**
+     *
+     * @param mouseEvent
+     */
     @FXML
     public void movePiece(MouseEvent mouseEvent) {
         Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
@@ -148,6 +156,10 @@ public class Controller implements Initializable {
         Point2D mousePt = new Point2D(mouseEvent.getX(), mouseEvent.getY());
         Point2D mousePointScene = selectedPiece.localToScene(mousePt);
         Rectangle r = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
+        if (r == null) {
+            System.out.println("Here's a big problem! Rectangle selection was null in movePiece. " +
+                    "This may be the cause of all future circle deletion problems, as it seems there are none before this.");
+        }
         Point destination = idToPoint(r.getId());
         if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
             highlightSquareGreen(mouseEvent);
@@ -170,6 +182,10 @@ public class Controller implements Initializable {
                 && panePt.getY() <= boardPane.getHeight();
     }
 
+    /**
+     *
+     * @param mouseEvent
+     */
     public void finishMovingPiece(MouseEvent mouseEvent) {
         offset = new Point2D(0.0d, 0.0d);
 
@@ -177,7 +193,7 @@ public class Controller implements Initializable {
         Point2D mousePointScene = selectedPiece.localToScene(mousePoint); // get point in scene that the cursor is over
         Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
 
-        final Timeline timeline = new Timeline();
+        Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
 
@@ -186,50 +202,35 @@ public class Controller implements Initializable {
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
             Point destination = idToPoint(r.getId());
 
-            /*
-              Check move is valid by finding valid moves for red and checking whether the moves.indexOf(move) returns
-              an actual index, rather than -1
-             */
+            // Check move is valid by finding valid moves for red and checking that moves.indexOf(move) returns > -1
             ArrayList<Move> moves = moveGenerator.findValidMoves(board, 'r');
             int moveIndex = moves.indexOf(new Move(humanMoveOrigin, destination));
-            if (moveIndex >= 0) {
-                // If move was valid, place it in the middle of the parent rectangle and update the internal board
-                timeline.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(100),
-                                new KeyValue(selectedPiece.layoutXProperty(), parent.getX() + 30),
-                                new KeyValue(selectedPiece.layoutYProperty(), parent.getY() + 30),
-                                new KeyValue(selectedPiece.opacityProperty(), 1.0d)
-                        )
-                );
+
+            ///// HUMAN MOVE: /////
+            if (moveIndex >= 0) { // if human move was valid:
+                timeline = getValidMoveTimeline(timeline, parent); // create move animation
                 Move playerMove = moves.get(moveIndex);
                 board.updateLocation(playerMove); // update piece's location in internal board
                 if (playerMove.hasPieceToRemove()) {
                     removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
                 }
-
-//                for (Piece p : board.updateKings()) { // update look of pieces needing to become kings
-//                    convertToKing(p);
-//                }
                 System.out.println("Board after human move:");
                 board.printBoard();
+                timeline.play(); // play animation
+                selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())));
+                selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())));
+                System.out.println(selectedPiece.getLayoutY());
+                if (selectedPiece.getLayoutY() == 30.0) {
+                    makeKing(selectedPiece);
+                }
+                System.out.println("Updated location of moved piece: " + selectedPiece.getLayoutY() + " - " + selectedPiece.getLayoutX());
 
-                // TODO: ##########  Update GUI board after the AI has moved  ##########
-                // AI turn
-                aiTurn = true;
-                board = ai.play(board);
-                System.out.println("\nBoard after AI's move:");
-                board.printBoard();
-                updatePiece(ai.getLastMove());
-                aiTurn = false;
+                ///// AI MOVE: /////
+                AIMove();
 
             } else { // if move is not valid, move the circle back to its original position
-                timeline.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(100),
-                                new KeyValue(selectedPiece.layoutXProperty(), selectedPiece.getLayoutX() - (selectedPiece.getLayoutX() - originRectangle.getLayoutX()-30)),
-                                new KeyValue(selectedPiece.layoutYProperty(), selectedPiece.getLayoutY() - (selectedPiece.getLayoutY() - idToPoint(originRectangle.getId()).x*60-30)),
-                                new KeyValue(selectedPiece.opacityProperty(), 1.0d)
-                        )
-                );
+                timeline = getInvalidMoveTimeline(timeline);
+                timeline.play();
             }
 
         // return circle's opacity to 0 if move unsuccessful because it was the ai's turn
@@ -239,17 +240,38 @@ public class Controller implements Initializable {
                             new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                     )
             );
+            timeline.play();
         }
-
-
-        timeline.play();
         movingPiece = false;
     }
 
+    /**
+     *
+     */
+    private void AIMove() {
+        aiTurn = true;
+        board = ai.play(board);
+        System.out.println("\nBoard after AI's move:");
+        board.printBoard();
+        updatePiece(ai.getLastMove());
+        aiTurn = false;
+    }
+
+    /**
+     *
+     * @param evt
+     * @return
+     */
     private Rectangle pickRectangle(MouseEvent evt) {
         return pickRectangle(evt.getSceneX(), evt.getSceneY());
     }
 
+    /**
+     *
+     * @param sceneX
+     * @param sceneY
+     * @return
+     */
     private Rectangle pickRectangle(double sceneX, double sceneY) {
         Rectangle pickedRectangle = null;
         for( Pane row : panes ) {
@@ -270,6 +292,10 @@ public class Controller implements Initializable {
         return pickedRectangle;
     }
 
+    /**
+     *
+     * @param evt
+     */
     public void checkReleaseOutOfBoard(MouseEvent evt) {
         Point2D mousePoint_s = new Point2D(evt.getSceneX(), evt.getSceneY());
         if( !inBoard(mousePoint_s) ) {
@@ -278,6 +304,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param evt
+     */
     public void highlightSquare(MouseEvent evt) {
         Rectangle r = pickRectangle(evt);
         if( r == null ) {
@@ -300,6 +330,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param mouseEvent
+     */
     private void highlightSquareGreen(MouseEvent mouseEvent) {
         Rectangle r = pickRectangle(mouseEvent);
         if( r != selectedRectangle ) {
@@ -317,12 +351,15 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param mouseEvent
+     */
     public void leaveBoard(MouseEvent mouseEvent) {
         if( movingPiece ) {
             final Timeline timeline = new Timeline();
             offset = new Point2D(0.0d, 0.0d);
             movingPiece = false;
-
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(200),
                             new KeyValue(selectedPiece.layoutXProperty(), startLayoutX),
@@ -334,22 +371,28 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param actionEvent
+     */
     public void displayHelp(ActionEvent actionEvent) {
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
         dialogLayout.setHeading(new Text("Help"));
         dialogLayout.setBody(new Text("Some help text, you dummy!"));
-
         JFXDialog dialog = new JFXDialog(rootStackPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
-
         JFXButton buttonExit = new JFXButton("Okay");
         buttonExit.setButtonType(JFXButton.ButtonType.FLAT);
         buttonExit.setStyle("-fx-background-color:#DCDCDC");
         buttonExit.setOnAction(event -> dialog.close());
-
         dialogLayout.setActions(buttonExit);
         dialog.show();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     private Point idToPoint(String id) {
         String idCopy = id;
         idCopy = idCopy.replace("s", "");
@@ -357,12 +400,14 @@ public class Controller implements Initializable {
         return new Point(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
     }
 
+    /**
+     *
+     * @param row
+     * @param col
+     * @return
+     */
     private Circle selectCircle(int row, int col) {
-        System.out.println("Row: " + indexToPixel(row));
-        System.out.println("Col: " + indexToPixel(col));
-
         for (Circle c : circles) {
-            System.out.println(c.getLayoutX() + " - " + c.getLayoutY());
             if (c.getLayoutY() == indexToPixel(row+1) && c.getLayoutX() == indexToPixel(col+1)) {
                 return c;
             }
@@ -370,29 +415,93 @@ public class Controller implements Initializable {
         return null;
     }
 
+    /**
+     *
+     * @param move
+     */
     private void updatePiece(Move move) {
         // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
-        System.out.println("Move row&col: " + move.getOrigin().x + " - " + move.getOrigin().y);
+        // TODO: Many issues arising from matrix indexing starting from zero and all that....
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
         circle.setLayoutY(indexToPixel(move.getDestination().x+1));
         circle.setLayoutX(indexToPixel(move.getDestination().y+1));
-        System.out.println("New location: " + circle.getLayoutX() + " - " + circle.getLayoutY());
-
+        if (circle.getLayoutY() == 450.0) {
+            makeKing(circle);
+        }
         if (move.hasPieceToRemove()) {
-            removePiece(selectCircle(move.getPieceToRemove().x+1, move.getPieceToRemove().y+1));
-
+            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
         }
     }
 
+    /**
+     *
+     * @param circle
+     */
     private void removePiece(Circle circle) {
-        boardPane.getChildren().remove(circle);
+        try {
+            circle.setOpacity(0.0);
+            boardPane.getChildren().remove(circle);
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException, can't find circle to remove");
+        }
+
+
     }
 
-    private void convertToKing(Piece p) {
-        // TODO: selectCircle, then circle.setFill(new ImagePattern(Image)) (of a crown)
+    /**
+     *
+     * @param circle
+     */
+    private void makeKing(Circle circle) {
+        circle.setStyle("-fx-effect: innershadow( one-pass-box , gold , 15 , 0.0 , 2 , 2 )");
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     private int indexToPixel(int i) {
         return (i*60)-30;
+    }
+
+    /**
+     *
+     * @param i
+     * @return
+     */
+    private int pixelToIndex(double i) {
+        return (int)Math.round((i-30)/60)+1;
+    }
+
+    /**
+     *
+     * @param timeline
+     * @param parent
+     * @return
+     */
+    private Timeline getValidMoveTimeline(Timeline timeline, Point2D parent) {
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.millis(100),
+                        new KeyValue(selectedPiece.layoutXProperty(), parent.getX() + 30),
+                        new KeyValue(selectedPiece.layoutYProperty(), parent.getY() + 30),
+                        new KeyValue(selectedPiece.opacityProperty(), 1.0d)
+                ));
+        return timeline;
+    }
+
+    /**
+     *
+     * @param timeline
+     * @return
+     */
+    private Timeline getInvalidMoveTimeline(Timeline timeline) {
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.millis(100),
+                        new KeyValue(selectedPiece.layoutXProperty(), selectedPiece.getLayoutX() - (selectedPiece.getLayoutX() - originRectangle.getLayoutX()-30)),
+                        new KeyValue(selectedPiece.layoutYProperty(), selectedPiece.getLayoutY() - (selectedPiece.getLayoutY() - idToPoint(originRectangle.getId()).x*60-30)),
+                        new KeyValue(selectedPiece.opacityProperty(), 1.0d)
+                ));
+        return timeline;
     }
 }

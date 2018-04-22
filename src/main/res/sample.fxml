@@ -19,1019 +19,1178 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
-   <children>
-      <GridPane gridLinesVisible="true" prefHeight="480.0" prefWidth="800.0">
+<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="main.java.Controller">
+    <GridPane gridLinesVisible="true" prefHeight="480.0" prefWidth="800.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="480" minWidth="10.0" prefWidth="480.0" />
-          <ColumnConstraints hgrow="SOMETIMES" prefWidth="220.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="480" minWidth="10.0" prefWidth="480.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="220.0"/>
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-         <children>
-            <Pane fx:id="boardPane" onMouseDragged="#highlightSquare" onMouseExited="#leaveBoard" onMouseMoved="#highlightSquare" onMouseReleased="#checkReleaseOutOfBoard" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000;">
-               <children>
-                  <Pane id="row_g" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="1.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s0_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                     </children>
-                  </Pane>
-                  <Pane id="row_h" fx:id="row_g" layoutY="60.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s1_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-
-                     </children>
-                  </Pane>
-                  <Pane id="row_g" fx:id="row_f" layoutY="120.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s2_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s2_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-
-                     </children>
-                  </Pane>
-                  <Pane id="row_g" fx:id="row_e" layoutY="180.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s3_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s3_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                     </children>
-                  </Pane>
-                  <Pane id="row_g" fx:id="row_d" layoutY="240.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s4_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s4_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                     </children>
-                  </Pane>
-                  <Pane id="row_h" fx:id="row_c" layoutY="300.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s5_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-
-                     </children>
-                  </Pane>
-                  <Pane id="row_g" fx:id="row_b" layoutY="360.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s6_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s6_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-
-                     </children>
-                  </Pane>
-                  <Pane id="row_g" fx:id="row_a" layoutY="420.0" prefHeight="60.0" prefWidth="480.0">
-                     <children>
-                        <Rectangle fx:id="s7_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#686868" offset="1.0" />
-                                 </stops>
-                              </LinearGradient>
-                           </fill></Rectangle>
-                        <Rectangle fx:id="s7_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0" stroke="BLACK" width="60.0">
-                           <fill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="RED" />
-                                    <Stop color="#b20000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </fill></Rectangle>
-
-                     </children>
-                  </Pane>
-                  <Circle fx:id="c1" layoutX="90.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
+        <Pane fx:id="boardPane" onMouseDragged="#highlightSquare" onMouseExited="#leaveBoard"
+              onMouseMoved="#highlightSquare" onMouseReleased="#checkReleaseOutOfBoard" prefHeight="200.0"
+              prefWidth="200.0" style="-fx-background-color: #000000;">
+            <Pane id="row_g" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="1.0" stroke="BLACK"
+                           width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
                         </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c2" layoutX="210.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
                         </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c3" layoutX="330.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
                         </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c4" layoutX="450.0" layoutY="30.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
                         </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c5" layoutX="30.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c6" layoutX="150.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c7" layoutX="270.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                  <Circle fx:id="c8" layoutX="390.0" layoutY="90.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                     <fill>
-                        <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="#bfabab" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </Circle>
-                   <Circle fx:id="c9" layoutX="90.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                               <stops>
-                                   <Stop color="WHITE" />
-                                   <Stop color="#bfabab" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c10" layoutX="210.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                               <stops>
-                                   <Stop color="WHITE" />
-                                   <Stop color="#bfabab" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c11" layoutX="330.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                               <stops>
-                                   <Stop color="WHITE" />
-                                   <Stop color="#bfabab" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c12" layoutX="450.0" layoutY="150.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
-                               <stops>
-                                   <Stop color="WHITE" />
-                                   <Stop color="#bfabab" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c13" layoutX="30.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c14" layoutX="150.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c15" layoutX="270.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c16" layoutX="390.0" layoutY="330.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c17" layoutX="90.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c18" layoutX="210.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c19" layoutX="330.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c20" layoutX="450.0" layoutY="390.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c21" layoutX="30.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c22" layoutX="150.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c23" layoutX="270.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-                   <Circle fx:id="c24" layoutX="390.0" layoutY="450.0" onMouseDragged="#movePiece" onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0" stroke="BLACK">
-                       <fill>
-                           <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
-                               <stops>
-                                   <Stop color="#ff2f2f" />
-                                   <Stop color="RED" offset="1.0" />
-                               </stops>
-                           </RadialGradient>
-                       </fill>
-                       <effect>
-                           <DropShadow />
-                       </effect>
-                   </Circle>
-               </children>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s0_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
             </Pane>
-            <GridPane alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="190.0" minHeight="10.0" prefHeight="108.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="161.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="241.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="3">
-                     <children>
-                        <JFXButton fx:id="buttonHelp" buttonType="RAISED" layoutX="174.0" layoutY="140.0" onAction="#displayHelp" prefHeight="34.0" prefWidth="75.0" style="-fx-background-color: #DCDCDC;" text="Help">
-                           <padding>
-                              <Insets bottom="5.0" />
-                           </padding>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <ripplerFill>
-                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                 <stops>
-                                    <Stop color="#ff5454" />
-                                    <Stop color="#360000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </ripplerFill></JFXButton>
-                     </children>
-                  </HBox>
-                  <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="320.0">
-                     <children>
-                        <Label text="Checkers">
-                           <font>
-                              <Font name="System Bold" size="21.0" />
-                           </font>
-                           <textFill>
-                              <RadialGradient centerX="0.5" centerY="0.5380952380952382" radius="0.5">
-                                 <stops>
-                                    <Stop color="BLACK" />
-                                    <Stop color="#5b0000" offset="1.0" />
-                                 </stops>
-                              </RadialGradient>
-                           </textFill>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="1">
-                     <children>
-                        <Label text="Difficulty">
-                           <tooltip>
-                              <Tooltip text="Controls the AI's skill level by limiting tree depth" />
-                           </tooltip>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="-5.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="50.0" right="50.0" />
-                     </GridPane.margin>
-                  </JFXSlider>
-               </children>
-            </GridPane>
-         </children>
-      </GridPane>
-   </children>
+            <Pane id="row_h" fx:id="row_g" layoutY="60.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s1_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+
+            </Pane>
+            <Pane id="row_g" fx:id="row_f" layoutY="120.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s2_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s2_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+
+            </Pane>
+            <Pane id="row_g" fx:id="row_e" layoutY="180.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s3_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s3_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+            </Pane>
+            <Pane id="row_g" fx:id="row_d" layoutY="240.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s4_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s4_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+            </Pane>
+            <Pane id="row_h" fx:id="row_c" layoutY="300.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s5_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+
+            </Pane>
+            <Pane id="row_g" fx:id="row_b" layoutY="360.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s6_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s6_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+
+            </Pane>
+            <Pane id="row_g" fx:id="row_a" layoutY="420.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s7_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_2" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="120.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_3" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="180.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_4" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="240.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_5" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="300.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_6" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="360.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
+                <Rectangle fx:id="s7_7" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="420.0"
+                           stroke="BLACK" width="60.0">
+                    <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="RED"/>
+                                <Stop color="#b20000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </fill>
+                </Rectangle>
+
+            </Pane>
+            <Circle fx:id="c1" layoutX="90.0" layoutY="30.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c2" layoutX="210.0" layoutY="30.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c3" layoutX="330.0" layoutY="30.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c4" layoutX="450.0" layoutY="30.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c5" layoutX="30.0" layoutY="90.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c6" layoutX="150.0" layoutY="90.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c7" layoutX="270.0" layoutY="90.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c8" layoutX="390.0" layoutY="90.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c9" layoutX="90.0" layoutY="150.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c10" layoutX="210.0" layoutY="150.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c11" layoutX="330.0" layoutY="150.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c12" layoutX="450.0" layoutY="150.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5" centerY="0.4333333333333334" radius="0.5">
+                        <stops>
+                            <Stop color="WHITE"/>
+                            <Stop color="#bfabab" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c13" layoutX="30.0" layoutY="330.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c14" layoutX="150.0" layoutY="330.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c15" layoutX="270.0" layoutY="330.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c16" layoutX="390.0" layoutY="330.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c17" layoutX="90.0" layoutY="390.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c18" layoutX="210.0" layoutY="390.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c19" layoutX="330.0" layoutY="390.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c20" layoutX="450.0" layoutY="390.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c21" layoutX="30.0" layoutY="450.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c22" layoutX="150.0" layoutY="450.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c23" layoutX="270.0" layoutY="450.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+            <Circle fx:id="c24" layoutX="390.0" layoutY="450.0" onMouseDragged="#movePiece"
+                    onMousePressed="#startMovingPiece" onMouseReleased="#finishMovingPiece" radius="26.0"
+                    stroke="BLACK">
+                <fill>
+                    <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27"
+                                    radius="0.5">
+                        <stops>
+                            <Stop color="#ff2f2f"/>
+                            <Stop color="RED" offset="1.0"/>
+                        </stops>
+                    </RadialGradient>
+                </fill>
+                <effect>
+                    <DropShadow/>
+                </effect>
+            </Circle>
+        </Pane>
+        <GridPane alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                  GridPane.valignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="190.0" minHeight="10.0" prefHeight="108.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="161.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="241.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="3">
+                <JFXButton fx:id="buttonHelp" buttonType="RAISED" layoutX="174.0" layoutY="140.0"
+                           onAction="#displayHelp" prefHeight="34.0" prefWidth="75.0"
+                           style="-fx-background-color: #DCDCDC;" text="Help">
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <ripplerFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                            <stops>
+                                <Stop color="#ff5454"/>
+                                <Stop color="#360000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </ripplerFill>
+                </JFXButton>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="320.0">
+                <Label text="Checkers">
+                    <font>
+                        <Font name="System Bold" size="21.0"/>
+                    </font>
+                    <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.5380952380952382" radius="0.5">
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#5b0000" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </textFill>
+                    <padding>
+                        <Insets top="5.0"/>
+                    </padding>
+                </Label>
+            </HBox>
+            <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="1">
+                <Label text="Difficulty">
+                    <tooltip>
+                        <Tooltip text="Controls the AI's skill level by limiting tree depth"/>
+                    </tooltip>
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="-5.0"/>
+                    </padding>
+                </Label>
+            </HBox>
+            <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1.0" max="10.0"
+                       minorTickCount="0" showTickMarks="true" snapToTicks="true" GridPane.rowIndex="2">
+                <GridPane.margin>
+                    <Insets left="50.0" right="50.0"/>
+                </GridPane.margin>
+            </JFXSlider>
+        </GridPane>
+    </GridPane>
 </StackPane>
