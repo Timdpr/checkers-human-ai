@@ -35,12 +35,9 @@ import java.util.ResourceBundle;
 import main.java.model.*;
 
 /**
- * TODO: Add 'AI/Player's turn' text
  * TODO: Fix bug where the wrong Circle seems to be selected for deletion sometimes.
- * TODO: Add multiple-jump functionality
  * TODO: Implement minimax w/a-b pruning AI
  * TODO: Give explanation on rejecting invalid user moves
- * TODO: Pause GUI to show intermediate states
  * TODO: Give rules in help window
  * TODO: Toggle valid move highlighting
  *
@@ -168,14 +165,12 @@ public class Controller implements Initializable {
         Point2D mousePointScene = selectedPiece.localToScene(mousePt);
         Rectangle r = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
         if (r == null) {
-            System.out.println("Here's a big problem! Rectangle selection was null in movePiece. " +
-                    "This may be the cause of all future circle deletion problems, as it seems there are none before this.");
+            System.out.println("Rectangle selection was null in movePiece.");
         }
         Point destination = idToPoint(r.getId());
         if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
             highlightSquareGreen(mouseEvent);
         }
-
         Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
         selectedPiece.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
     }
@@ -223,19 +218,23 @@ public class Controller implements Initializable {
                 if (playerMove.hasPieceToRemove()) {
                     removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
                 }
-                System.out.println("Board after human move:");
                 timeline.play(); // play animation
+                System.out.println("Board after human move:");
                 board.printBoard();
+                checkForWin();
 
                 selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
                 selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
                 if (selectedPiece.getLayoutY() == 30.0) {
                     makeKing(selectedPiece);
                 }
-                System.out.println("Updated location of moved piece: " + selectedPiece.getLayoutY() + " - " + selectedPiece.getLayoutX());
 
-                aiTurn = true;
-
+                if (playerMove.hasPieceToRemove() && moveGenerator.detectMultiMove(board, 'r', playerMove.getDestination())) {
+                    aiTurn = false;
+                    turnText.setText(" Human multi-jump!");
+                } else {
+                    aiTurn = true;
+                }
 
             } else { // if move is not valid, move the circle back to its original position
                 timeline = getInvalidMoveTimeline(timeline);
@@ -251,11 +250,7 @@ public class Controller implements Initializable {
             timeline.play();
         }
         movingPiece = false;
-        checkForWin();
-        if (moveGenerator.hasJumpMove(board, 'r')) {
-            aiTurn = false;
-            turnText.setText(" Human multi-jump!");
-        }
+
         ///// AI MOVE: /////
         if (aiTurn) {
             AIMove();
@@ -274,15 +269,13 @@ public class Controller implements Initializable {
      *
      */
     private void AIMove() {
-        // TODO: CURRENTLY HUMAN CAN DO A MULTIJUMP AFTER A SLIDE MOVE!!!
         turnText.setText(" AI");
-        sleep(200);
         board = ai.play(board);
         System.out.println("\nBoard after AI's move:");
         board.printBoard();
         updatePiece(ai.getLastMove());
         checkForWin();
-        if (moveGenerator.hasJumpMove(board, 'w') && !ai.getLastMove().hasPieceToRemove()) {
+        if (moveGenerator.detectMultiMove(board, 'w', ai.getLastMove().getDestination()) && ai.getLastMove().hasPieceToRemove()) {
             aiTurn = true;
             turnText.setText(" AI multi-jump!");
             AIMove();
@@ -440,8 +433,6 @@ public class Controller implements Initializable {
     private Circle selectCircle(int row, int col) {
         for (Circle c : circles) {
             if (c.getLayoutY() == indexToPixel(row) && c.getLayoutX() == indexToPixel(col)) {
-                System.out.println("c.getLayoutY() = " + c.getLayoutY());
-                System.out.println("c.getLayoutX() = " + c.getLayoutX());
                 int i = Arrays.asList(boardPane.getChildren().toArray()).indexOf(c);
                 try {
                     return (Circle) Arrays.asList(boardPane.getChildren().toArray()).get(i);
@@ -461,16 +452,17 @@ public class Controller implements Initializable {
     private void updatePiece(Move move) {
         // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
         // TODO: Many issues arising from matrix indexing starting from zero and all that....
-        if (move.hasPieceToRemove()) {
-            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
-        }
+        sleep(250);
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
         circle.setLayoutY(indexToPixel(move.getDestination().x));
         circle.setLayoutX(indexToPixel(move.getDestination().y));
+        if (move.hasPieceToRemove()) {
+            sleep(250);
+            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
+        }
         if (circle.getLayoutY() == 450.0) {
             makeKing(circle);
         }
-        System.out.println("Circle's location: " + circle.getLayoutY() + "(" + pixelToIndex(circle.getLayoutY()) + ")" + " - " + circle.getLayoutX() + "(" + pixelToIndex(circle.getLayoutX()) + ")");
     }
 
     /**
@@ -479,14 +471,7 @@ public class Controller implements Initializable {
      */
     private void removePiece(Circle circle) {
         try {
-            System.out.println("Removing: " + circle.toString());
             boardPane.getChildren().remove(circle);
-            for (Object o : boardPane.getChildren().toArray()) {
-                System.out.println(o.toString());
-            }
-
-            removed.add(circle);
-
             circle.setOpacity(0.0);
             circle.setRadius(0.0);
             circle.setLayoutX(-99.0);

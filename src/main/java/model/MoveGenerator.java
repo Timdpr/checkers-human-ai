@@ -3,6 +3,7 @@ package main.java.model;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  *
@@ -117,12 +118,19 @@ public class MoveGenerator {
         }
     }
 
-    public boolean hasJumpMove(Board board, char color) {
+    public boolean detectMultiMove(Board board, char color, Point destination) {
         validMoves.clear();
         addValidJumps(board, color);
+
         if (validMoves.size() > 0) {
-            validMoves.clear();
-            return true;
+            System.out.println("Destination of last move: " + destination);
+            System.out.println(validMoves.toString());
+            validMoves.removeIf(e -> (e.getOrigin().x != destination.x || e.getOrigin().y != destination.y));
+            System.out.println(validMoves.toString());
+            if (validMoves.size() > 0) {
+                validMoves.clear();
+                return true;
+            }
         }
         validMoves.clear();
         return false;

@@ -64,4 +64,13 @@ public class Move {
     public int hashCode() {
         return Objects.hash(origin.x, origin.y, destination.x, destination.y);
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "origin=" + origin +
+                ", destination=" + destination +
+                ", pieceToRemove=" + pieceToRemove +
+                '}';
+    }
 }
