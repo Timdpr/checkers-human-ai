@@ -32,7 +32,7 @@
         <Pane fx:id="boardPane" onMouseDragged="#highlightSquare" onMouseExited="#leaveBoard"
               onMouseMoved="#highlightSquare" onMouseReleased="#checkReleaseOutOfBoard" prefHeight="200.0"
               prefWidth="200.0" style="-fx-background-color: #000000;">
-            <Pane id="row_g" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_h" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -121,7 +121,7 @@
                     </fill>
                 </Rectangle>
             </Pane>
-            <Pane id="row_h" fx:id="row_g" layoutY="60.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_g" fx:id="row_g" layoutY="60.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <LinearGradient>
@@ -211,7 +211,7 @@
                 </Rectangle>
 
             </Pane>
-            <Pane id="row_g" fx:id="row_f" layoutY="120.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_f" fx:id="row_f" layoutY="120.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s2_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -301,7 +301,7 @@
                 </Rectangle>
 
             </Pane>
-            <Pane id="row_g" fx:id="row_e" layoutY="180.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_e" fx:id="row_e" layoutY="180.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s3_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <LinearGradient>
@@ -390,7 +390,7 @@
                     </fill>
                 </Rectangle>
             </Pane>
-            <Pane id="row_g" fx:id="row_d" layoutY="240.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_d" fx:id="row_d" layoutY="240.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s4_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -479,7 +479,7 @@
                     </fill>
                 </Rectangle>
             </Pane>
-            <Pane id="row_h" fx:id="row_c" layoutY="300.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_c" fx:id="row_c" layoutY="300.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <LinearGradient>
@@ -569,7 +569,7 @@
                 </Rectangle>
 
             </Pane>
-            <Pane id="row_g" fx:id="row_b" layoutY="360.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_b" fx:id="row_b" layoutY="360.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s6_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -659,7 +659,7 @@
                 </Rectangle>
 
             </Pane>
-            <Pane id="row_g" fx:id="row_a" layoutY="420.0" prefHeight="60.0" prefWidth="480.0">
+            <Pane id="row_a" fx:id="row_a" layoutY="420.0" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s7_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <LinearGradient>
