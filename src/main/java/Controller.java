@@ -104,6 +104,8 @@ public class Controller implements Initializable {
     private MoveGenerator moveGenerator = new MoveGenerator();
     private Board board = new Board();
 
+    private ArrayList<Circle> removed = new ArrayList<>();
+
     /**
      * Called after window has finished loading.
      */
@@ -122,7 +124,7 @@ public class Controller implements Initializable {
     @FXML
     public void startMovingPiece(MouseEvent mouseEvent) {
         selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
-        System.out.println("Initial location of moved piece: " + selectedPiece.getLayoutY() + " - " + selectedPiece.getLayoutX());
+        System.out.println("Selected piece's ID: " + selectedPiece.getId());
 
         // Set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
@@ -227,6 +229,7 @@ public class Controller implements Initializable {
                     makeKing(selectedPiece);
                 }
                 System.out.println("Updated location of moved piece: " + selectedPiece.getLayoutY() + " - " + selectedPiece.getLayoutX());
+
                 aiTurn = true;
 
 
@@ -415,7 +418,8 @@ public class Controller implements Initializable {
     private Circle selectCircle(int row, int col) {
         for (Circle c : circles) {
             if (c.getLayoutY() == indexToPixel(row) && c.getLayoutX() == indexToPixel(col)) {
-                return c;
+                int i = Arrays.asList(boardPane.getChildren().toArray()).indexOf(c);
+                return (Circle) Arrays.asList(boardPane.getChildren().toArray()).get(i);
             }
         }
         return null;
@@ -428,15 +432,17 @@ public class Controller implements Initializable {
     private void updatePiece(Move move) {
         // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
         // TODO: Many issues arising from matrix indexing starting from zero and all that....
+        if (move.hasPieceToRemove()) {
+            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
+        }
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
         circle.setLayoutY(indexToPixel(move.getDestination().x));
         circle.setLayoutX(indexToPixel(move.getDestination().y));
         if (circle.getLayoutY() == 450.0) {
             makeKing(circle);
         }
-        if (move.hasPieceToRemove()) {
-            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
-        }
+        System.out.println("Circle's location: " + circle.getLayoutY() + "(" + pixelToIndex(circle.getLayoutY()) + ")" + " - " + circle.getLayoutX() + "(" + pixelToIndex(circle.getLayoutX()) + ")");
+
     }
 
     /**
@@ -445,14 +451,19 @@ public class Controller implements Initializable {
      */
     private void removePiece(Circle circle) {
         try {
-            System.out.println(circle.toString());
+            System.out.println("Removing: " + circle.toString());
+            boardPane.getChildren().remove(circle);
+            for (Object o : boardPane.getChildren().toArray()) {
+                System.out.println(o.toString());
+            }
+
+            removed.add(circle);
+
             circle.setOpacity(0.0);
             circle.setRadius(0.0);
             circle.setLayoutX(-99.0);
             circle.setLayoutY(-99.0);
-            boardPane.getChildren().remove(circle);
             circle.setDisable(true);
-            System.out.println(circle.toString());
         } catch (NullPointerException e) {
             System.out.println("NullPointerException, can't find circle to remove");
         }
@@ -515,6 +526,9 @@ public class Controller implements Initializable {
         return timeline;
     }
 
+    /**
+     *
+     */
     private void checkForWin() {
         if (board.winCheck() != 0) {
             aiTurn = true; // pause the game
@@ -526,6 +540,11 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param title
+     * @param body
+     */
     private void createFinishedPopup(String title, String body) {
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
         dialogLayout.setHeading(new Text(title));
@@ -543,6 +562,9 @@ public class Controller implements Initializable {
         dialog.show();
     }
 
+    /**
+     *
+     */
     private void restart(){
         try {
             FXMLLoader.load(getClass().getResource("main/res/sample.fxml"));
