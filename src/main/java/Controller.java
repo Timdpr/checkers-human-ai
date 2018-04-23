@@ -35,6 +35,15 @@ import java.util.ResourceBundle;
 import main.java.model.*;
 
 /**
+ * TODO: Add 'AI/Player's turn' text
+ * TODO: Fix bug where the wrong Circle seems to be selected for deletion sometimes.
+ * TODO: Add multiple-jump functionality
+ * TODO: Implement minimax w/a-b pruning AI
+ * TODO: Give explanation on rejecting invalid user moves
+ * TODO: Pause GUI to show intermediate states
+ * TODO: Give rules in help window
+ * TODO: Toggle valid move highlighting
+ *
  * Methods related to 'drag and drop' functionality heavily adapted from
  * www.bekwam.blogspot.co.uk/2016/02/moving-game-piece-on-javafx-checkerboard.html, with permission under the Apache
  * License, Version 2.0: www.apache.org/licenses/LICENSE-2.0
@@ -55,14 +64,10 @@ public class Controller implements Initializable {
     @FXML private Pane row_h;
     private final List<Pane> panes = new ArrayList<>();
 
-    @FXML
-    private Circle c1;
-    @FXML
-    private Circle c2;
-    @FXML
-    private Circle c3;
-    @FXML
-    private Circle c4;
+    @FXML private Circle c1;
+    @FXML private Circle c2;
+    @FXML private Circle c3;
+    @FXML private Circle c4;
     @FXML private Circle c5;
     @FXML private Circle c6;
     @FXML private Circle c7;
@@ -85,6 +90,7 @@ public class Controller implements Initializable {
     @FXML private Circle c24;
     private List<Circle> circles = new ArrayList<>();
 
+    @FXML private Text turnText;
 
     private Point2D offset;
 
@@ -193,7 +199,6 @@ public class Controller implements Initializable {
      */
     public void finishMovingPiece(MouseEvent mouseEvent) {
         offset = new Point2D(0.0d, 0.0d);
-
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
         Point2D mousePointScene = selectedPiece.localToScene(mousePoint); // get point in scene that the cursor is over
         Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
@@ -201,7 +206,6 @@ public class Controller implements Initializable {
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
-
         if( r != null && !aiTurn) {
             Point2D rectScene = r.localToScene(r.getX(), r.getY());
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
@@ -248,10 +252,21 @@ public class Controller implements Initializable {
         }
         movingPiece = false;
         checkForWin();
+        if (moveGenerator.hasJumpMove(board, 'r')) {
+            aiTurn = false;
+            turnText.setText(" Human multi-jump!");
+        }
         ///// AI MOVE: /////
         if (aiTurn) {
             AIMove();
-            checkForWin();
+        }
+    }
+
+    private void sleep(int millisecs) {
+        try {
+            Thread.sleep(millisecs);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -259,11 +274,22 @@ public class Controller implements Initializable {
      *
      */
     private void AIMove() {
+        // TODO: CURRENTLY HUMAN CAN DO A MULTIJUMP AFTER A SLIDE MOVE!!!
+        turnText.setText(" AI");
+        sleep(200);
         board = ai.play(board);
         System.out.println("\nBoard after AI's move:");
         board.printBoard();
         updatePiece(ai.getLastMove());
-        aiTurn = false;
+        checkForWin();
+        if (moveGenerator.hasJumpMove(board, 'w') && !ai.getLastMove().hasPieceToRemove()) {
+            aiTurn = true;
+            turnText.setText(" AI multi-jump!");
+            AIMove();
+        } else {
+            aiTurn = false;
+            turnText.setText(" Human");
+        }
     }
 
     /**
@@ -289,15 +315,12 @@ public class Controller implements Initializable {
             if( row.contains(mpLocal) ) {
                 for( Node cell : row.getChildrenUnmodifiable() ) {
                     Point2D mpLocalCell = cell.sceneToLocal(mousePoint);
-
                     if( cell.contains(mpLocalCell) ) {
                         pickedRectangle = (Rectangle)cell;
                         break;
-                    }
-                }
+                    }}
                 break;
-            }
-        }
+            }}
         return pickedRectangle;
     }
 
@@ -327,7 +350,6 @@ public class Controller implements Initializable {
             selectedRectangle = null;
             return;  // might be out of area but w/i scene
         }
-
         if( r != selectedRectangle ) {
             if( selectedRectangle != null ) {
                 // deselect previous
@@ -353,9 +375,9 @@ public class Controller implements Initializable {
             // new selection
             selectedRectangle = r;
             ColorInput color = new ColorInput();
+            color.setPaint(Color.color(0,1,0, 0.6));
             color.setHeight(60);
             color.setWidth(60);
-            color.setPaint(Color.GREEN);
             selectedRectangle.setEffect(color);
         }
     }
@@ -410,7 +432,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     *
+     * TODO: get rid of need for circles list altogether, just look at circles in boardPane. Though this probably won't fix my issues!
      * @param row
      * @param col
      * @return
@@ -418,8 +440,15 @@ public class Controller implements Initializable {
     private Circle selectCircle(int row, int col) {
         for (Circle c : circles) {
             if (c.getLayoutY() == indexToPixel(row) && c.getLayoutX() == indexToPixel(col)) {
+                System.out.println("c.getLayoutY() = " + c.getLayoutY());
+                System.out.println("c.getLayoutX() = " + c.getLayoutX());
                 int i = Arrays.asList(boardPane.getChildren().toArray()).indexOf(c);
-                return (Circle) Arrays.asList(boardPane.getChildren().toArray()).get(i);
+                try {
+                    return (Circle) Arrays.asList(boardPane.getChildren().toArray()).get(i);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                    System.out.println("Circle was not found in array");
+                }
             }
         }
         return null;
@@ -442,7 +471,6 @@ public class Controller implements Initializable {
             makeKing(circle);
         }
         System.out.println("Circle's location: " + circle.getLayoutY() + "(" + pixelToIndex(circle.getLayoutY()) + ")" + " - " + circle.getLayoutX() + "(" + pixelToIndex(circle.getLayoutX()) + ")");
-
     }
 
     /**

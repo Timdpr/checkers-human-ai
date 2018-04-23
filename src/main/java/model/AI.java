@@ -11,6 +11,9 @@ public class AI {
     public Board play(Board board) {
         ArrayList<Move> moves = moveGenerator.findValidMoves(board, 'w');
         lastMove = moves.get(new Random().nextInt(moves.size()));
+        if (lastMove.hasPieceToRemove()) {
+            System.out.println("Piece to remove: " + lastMove.pieceToRemove);
+        }
         board.updateLocation(lastMove);
         return board;
     }

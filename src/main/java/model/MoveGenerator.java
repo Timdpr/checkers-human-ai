@@ -2,6 +2,7 @@ package main.java.model;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -114,5 +115,16 @@ public class MoveGenerator {
                 }
             }
         }
+    }
+
+    public boolean hasJumpMove(Board board, char color) {
+        validMoves.clear();
+        addValidJumps(board, color);
+        if (validMoves.size() > 0) {
+            validMoves.clear();
+            return true;
+        }
+        validMoves.clear();
+        return false;
     }
 }
