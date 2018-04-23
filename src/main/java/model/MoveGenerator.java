@@ -41,7 +41,8 @@ public class MoveGenerator {
                     Point origin = new Point(i, j);
 
                     // go through downwards diagonal moves for white or kings
-                    if ((piece.getColour() == 'w' && piece.getColour() == colour) || piece.isKing()) {
+                    if ((piece.getColour() == 'w' && piece.getColour() == colour)
+                            || (piece.isKing() && piece.getColour() == colour)) {
                         Point downLeft = new Point(i+1, j-1);
                         if (check.isSlideValid(board, downLeft)) {
                             validMoves.add(new Move(origin, downLeft));
@@ -52,7 +53,8 @@ public class MoveGenerator {
                         }
                     }
                     // go through upwards diagonal moves for red or kings
-                    if ((piece.getColour() == 'r' && piece.getColour() == colour) || piece.isKing()) {
+                    if ((piece.getColour() == 'r' && piece.getColour() == colour)
+                            || (piece.isKing() && piece.getColour() == colour)) {
                         Point upLeft = new Point(i-1, j-1);
                         if (check.isSlideValid(board, upLeft)) {
                             validMoves.add(new Move(origin, upLeft));
@@ -82,7 +84,8 @@ public class MoveGenerator {
                     char pieceColour = piece.getColour();
 
                     // go through downwards diagonal jumps for white or kings
-                    if ((piece.getColour() == 'w' && piece.getColour() == colour) || piece.isKing()) {
+                    if ((piece.getColour() == 'w' && piece.getColour() == colour)
+                            || (piece.isKing() && piece.getColour() == colour)) {
                         Point downLeft = new Point(i+1, j-1);
                         Point down2Left2 = new Point(i+2, j-2);
                         if (check.isJumpValid(board, downLeft, down2Left2, pieceColour)) {
@@ -95,7 +98,8 @@ public class MoveGenerator {
                         }
                     }
                     // go through upwards diagonal jumps for red or kings
-                    if ((piece.getColour() == 'r' && piece.getColour() == colour) || piece.isKing()) {
+                    if ((piece.getColour() == 'r' && piece.getColour() == colour)
+                            || (piece.isKing() && piece.getColour() == colour)) {
                         Point upLeft = new Point(i-1, j-1);
                         Point up2Left2 = new Point(i-2, j-2);
                         if (check.isJumpValid(board, upLeft, up2Left2, pieceColour)) {

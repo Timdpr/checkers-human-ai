@@ -6,8 +6,10 @@ import com.jfoenix.controls.JFXDialogLayout;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -23,6 +25,7 @@ import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -215,24 +218,22 @@ public class Controller implements Initializable {
                     removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
                 }
                 System.out.println("Board after human move:");
-                board.printBoard();
                 timeline.play(); // play animation
-                selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())));
-                selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())));
-                System.out.println(selectedPiece.getLayoutY());
+                board.printBoard();
+
+                selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
+                selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
                 if (selectedPiece.getLayoutY() == 30.0) {
                     makeKing(selectedPiece);
                 }
                 System.out.println("Updated location of moved piece: " + selectedPiece.getLayoutY() + " - " + selectedPiece.getLayoutX());
+                aiTurn = true;
 
-                ///// AI MOVE: /////
-                AIMove();
 
             } else { // if move is not valid, move the circle back to its original position
                 timeline = getInvalidMoveTimeline(timeline);
                 timeline.play();
             }
-
         // return circle's opacity to 0 if move unsuccessful because it was the ai's turn
         } else {
             timeline.getKeyFrames().add(
@@ -243,13 +244,18 @@ public class Controller implements Initializable {
             timeline.play();
         }
         movingPiece = false;
+        checkForWin();
+        ///// AI MOVE: /////
+        if (aiTurn) {
+            AIMove();
+            checkForWin();
+        }
     }
 
     /**
      *
      */
     private void AIMove() {
-        aiTurn = true;
         board = ai.play(board);
         System.out.println("\nBoard after AI's move:");
         board.printBoard();
@@ -408,7 +414,7 @@ public class Controller implements Initializable {
      */
     private Circle selectCircle(int row, int col) {
         for (Circle c : circles) {
-            if (c.getLayoutY() == indexToPixel(row+1) && c.getLayoutX() == indexToPixel(col+1)) {
+            if (c.getLayoutY() == indexToPixel(row) && c.getLayoutX() == indexToPixel(col)) {
                 return c;
             }
         }
@@ -423,8 +429,8 @@ public class Controller implements Initializable {
         // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
         // TODO: Many issues arising from matrix indexing starting from zero and all that....
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
-        circle.setLayoutY(indexToPixel(move.getDestination().x+1));
-        circle.setLayoutX(indexToPixel(move.getDestination().y+1));
+        circle.setLayoutY(indexToPixel(move.getDestination().x));
+        circle.setLayoutX(indexToPixel(move.getDestination().y));
         if (circle.getLayoutY() == 450.0) {
             makeKing(circle);
         }
@@ -439,13 +445,17 @@ public class Controller implements Initializable {
      */
     private void removePiece(Circle circle) {
         try {
+            System.out.println(circle.toString());
             circle.setOpacity(0.0);
+            circle.setRadius(0.0);
+            circle.setLayoutX(-99.0);
+            circle.setLayoutY(-99.0);
             boardPane.getChildren().remove(circle);
+            circle.setDisable(true);
+            System.out.println(circle.toString());
         } catch (NullPointerException e) {
             System.out.println("NullPointerException, can't find circle to remove");
         }
-
-
     }
 
     /**
@@ -462,7 +472,7 @@ public class Controller implements Initializable {
      * @return
      */
     private int indexToPixel(int i) {
-        return (i*60)-30;
+        return ((i+1)*60)-30;
     }
 
     /**
@@ -503,5 +513,41 @@ public class Controller implements Initializable {
                         new KeyValue(selectedPiece.opacityProperty(), 1.0d)
                 ));
         return timeline;
+    }
+
+    private void checkForWin() {
+        if (board.winCheck() != 0) {
+            aiTurn = true; // pause the game
+            if (board.winCheck() > 0) {
+                createFinishedPopup("Congratulations!", "*** You win! ***");
+            } else {
+                createFinishedPopup("Commiserations!", "--- You lose... ---");
+            }
+        }
+    }
+
+    private void createFinishedPopup(String title, String body) {
+        JFXDialogLayout dialogLayout = new JFXDialogLayout();
+        dialogLayout.setHeading(new Text(title));
+        dialogLayout.setBody(new Text(body));
+        JFXDialog dialog = new JFXDialog(rootStackPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
+        JFXButton buttonRestart = new JFXButton("Play again");
+        JFXButton buttonExit = new JFXButton("Exit");
+        buttonExit.setButtonType(JFXButton.ButtonType.FLAT);
+        buttonExit.setStyle("-fx-background-color:#DCDCDC");
+        buttonExit.setOnAction(event -> Platform.exit());
+        buttonRestart.setButtonType(JFXButton.ButtonType.FLAT);
+        buttonRestart.setStyle("-fx-background-color:#DCDCDC");
+        buttonRestart.setOnAction(event -> restart());
+        dialogLayout.setActions(buttonExit, buttonRestart);
+        dialog.show();
+    }
+
+    private void restart(){
+        try {
+            FXMLLoader.load(getClass().getResource("main/res/sample.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

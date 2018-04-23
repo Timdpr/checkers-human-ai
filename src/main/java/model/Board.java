@@ -89,6 +89,26 @@ public class Board {
         }
     }
 
+    public int winCheck() {
+        int whites = 0;
+        int reds = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j] != null) {
+                    if (board[i][j].getColour() == 'w') {
+                        whites += 1;
+                    } else {
+                        reds += 1;
+                    }
+        }}}
+        if (whites == 0) {
+            return 1;
+        } else if (reds == 0) {
+            return -1;
+        }
+        return 0;
+    }
+
     public void updateKings() {
         for (Piece p : board[0]) {
             if (p!=null) {

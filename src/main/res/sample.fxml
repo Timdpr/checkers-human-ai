@@ -33,8 +33,7 @@
               onMouseMoved="#highlightSquare" onMouseReleased="#checkReleaseOutOfBoard" prefHeight="200.0"
               prefWidth="200.0" style="-fx-background-color: #000000;">
             <Pane id="row_g" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
-                <Rectangle fx:id="s0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="1.0" stroke="BLACK"
-                           width="60.0">
+                <Rectangle fx:id="s0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                             <stops>
@@ -123,6 +122,16 @@
                 </Rectangle>
             </Pane>
             <Pane id="row_h" fx:id="row_g" layoutY="60.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
                 <Rectangle fx:id="s1_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
                            stroke="BLACK" width="60.0">
                     <fill>
@@ -198,16 +207,6 @@
                                 <Stop color="#b20000" offset="1.0"/>
                             </stops>
                         </RadialGradient>
-                    </fill>
-                </Rectangle>
-                <Rectangle fx:id="s1_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                    <fill>
-                        <LinearGradient>
-                            <stops>
-                                <Stop color="BLACK"/>
-                                <Stop color="#686868" offset="1.0"/>
-                            </stops>
-                        </LinearGradient>
                     </fill>
                 </Rectangle>
 
@@ -481,6 +480,16 @@
                 </Rectangle>
             </Pane>
             <Pane id="row_h" fx:id="row_c" layoutY="300.0" prefHeight="60.0" prefWidth="480.0">
+                <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
+                    <fill>
+                        <LinearGradient>
+                            <stops>
+                                <Stop color="BLACK"/>
+                                <Stop color="#686868" offset="1.0"/>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
                 <Rectangle fx:id="s5_1" arcHeight="5.0" arcWidth="2.0" height="60.0" layoutX="60.0"
                            stroke="BLACK" width="60.0">
                     <fill>
@@ -556,16 +565,6 @@
                                 <Stop color="#b20000" offset="1.0"/>
                             </stops>
                         </RadialGradient>
-                    </fill>
-                </Rectangle>
-                <Rectangle fx:id="s5_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
-                    <fill>
-                        <LinearGradient>
-                            <stops>
-                                <Stop color="BLACK"/>
-                                <Stop color="#686868" offset="1.0"/>
-                            </stops>
-                        </LinearGradient>
                     </fill>
                 </Rectangle>
 
