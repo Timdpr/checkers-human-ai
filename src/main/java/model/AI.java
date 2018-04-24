@@ -1,32 +1,25 @@
 package main.java.model;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class AI {
 
     private MoveGenerator moveGenerator = new MoveGenerator();
-    private Move minimaxMove;
-    private Move bestMove;
-    private int bestScore;
 
-    public Board play(Board board, int depth) {
-        bestMove = null;
-        bestScore = 0;
-        ArrayList<Move> moves = moveGenerator.findValidMoves(board, 'w');
-        minimaxMove = moves.get(new Random().nextInt(moves.size()));
-        System.out.println("Best minimax heuristic: " + minimax(board, depth, 'w'));
-        System.out.println("Heuristic for random move: " + heuristic(board, 'w'));
-        return board.updateLocation(minimaxMove);
-    }
+    public Move play(Board board, int depth) {
+        Board boardCopy = new Board(board.getBoard());
+        ArrayList<Move> moves = moveGenerator.findValidMoves(boardCopy, 'w');
+        HashMap<Double, Move> scores = new HashMap<>();
 
-    public Move getMinimaxMove() {
-        return minimaxMove;
+        for (Move move : moves) {
+            scores.put(minimax(boardCopy.updateLocation(move), depth, 'w'), move);
+        }
+        return scores.get(Collections.max(scores.keySet()));
     }
 
     public double minimax(Board board, int depth, char color) {
-        board.printBoard();
-        System.out.println();
         if (depth == 0 || board.winCheck() != 0) {
             return heuristic(board, color);
         }

@@ -105,7 +105,6 @@ public class Board {
     }
 
     public int winCheck() {
-        System.out.println("!");
         int whites = 0;
         int reds = 0;
         for (int i = 0; i < 8; i++) {

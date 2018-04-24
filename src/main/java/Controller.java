@@ -265,12 +265,13 @@ public class Controller implements Initializable {
      */
     private void AIMove() {
         turnText.setText(" AI");
-        internalBoard = ai.play(internalBoard, (int)sliderDifficulty.getValue());
+        Move aiMove = ai.play(internalBoard, (int)sliderDifficulty.getValue());
+        internalBoard.updateLocation(aiMove);
         System.out.println("\nBoard after AI's move:");
         internalBoard.printBoard();
-        updatePiece(ai.getMinimaxMove());
+        updatePiece(aiMove);
         checkForWin();
-        if (moveGenerator.detectMultiMove(internalBoard, 'w', ai.getMinimaxMove().getDestination()) && ai.getMinimaxMove().hasPieceToRemove()) {
+        if (moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()) && aiMove.hasPieceToRemove()) {
             aiTurn = true;
             turnText.setText(" AI multi-jump!");
             AIMove();
