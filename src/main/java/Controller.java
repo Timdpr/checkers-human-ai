@@ -3,6 +3,7 @@ package main.java;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXSlider;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -88,6 +89,7 @@ public class Controller implements Initializable {
     private List<Circle> circles = new ArrayList<>();
 
     @FXML private Text turnText;
+    @FXML private JFXSlider sliderDifficulty;
 
     private Point2D offset;
 
@@ -105,7 +107,7 @@ public class Controller implements Initializable {
     private Point humanMoveOrigin;
 
     private MoveGenerator moveGenerator = new MoveGenerator();
-    private Board board = new Board();
+    private Board internalBoard;
 
     private ArrayList<Circle> removed = new ArrayList<>();
 
@@ -118,6 +120,7 @@ public class Controller implements Initializable {
         circles.addAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18,
                 c19, c20, c21, c22, c23, c24));
         aiTurn = false;
+        internalBoard = new Board();
     }
 
     /**
@@ -168,7 +171,7 @@ public class Controller implements Initializable {
             System.out.println("Rectangle selection was null in movePiece.");
         }
         Point destination = idToPoint(r.getId());
-        if (moveGenerator.findValidMoves(board, 'r').contains(new Move(humanMoveOrigin, destination))) {
+        if (moveGenerator.findValidMoves(internalBoard, 'r').contains(new Move(humanMoveOrigin, destination))) {
             highlightSquareGreen(mouseEvent);
         }
         Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
@@ -207,20 +210,20 @@ public class Controller implements Initializable {
             Point destination = idToPoint(r.getId());
 
             // Check move is valid by finding valid moves for red and checking that moves.indexOf(move) returns > -1
-            ArrayList<Move> moves = moveGenerator.findValidMoves(board, 'r');
+            ArrayList<Move> moves = moveGenerator.findValidMoves(internalBoard, 'r');
             int moveIndex = moves.indexOf(new Move(humanMoveOrigin, destination));
 
             ///// HUMAN MOVE: /////
             if (moveIndex >= 0) { // if human move was valid:
                 timeline = getValidMoveTimeline(timeline, parent); // create move animation
                 Move playerMove = moves.get(moveIndex);
-                board.updateLocation(playerMove); // update piece's location in internal board
+                internalBoard = internalBoard.updateLocation(playerMove); // update piece's location in internal board
                 if (playerMove.hasPieceToRemove()) {
                     removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
                 }
                 timeline.play(); // play animation
                 System.out.println("Board after human move:");
-                board.printBoard();
+                internalBoard.printBoard();
                 checkForWin();
 
                 selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
@@ -229,7 +232,7 @@ public class Controller implements Initializable {
                     makeKing(selectedPiece);
                 }
 
-                if (playerMove.hasPieceToRemove() && moveGenerator.detectMultiMove(board, 'r', playerMove.getDestination())) {
+                if (playerMove.hasPieceToRemove() && moveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination())) {
                     aiTurn = false;
                     turnText.setText(" Human multi-jump!");
                 } else {
@@ -257,25 +260,17 @@ public class Controller implements Initializable {
         }
     }
 
-    private void sleep(int millisecs) {
-        try {
-            Thread.sleep(millisecs);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      *
      */
     private void AIMove() {
         turnText.setText(" AI");
-        board = ai.play(board);
+        internalBoard = ai.play(internalBoard, (int)sliderDifficulty.getValue());
         System.out.println("\nBoard after AI's move:");
-        board.printBoard();
-        updatePiece(ai.getLastMove());
+        internalBoard.printBoard();
+        updatePiece(ai.getMinimaxMove());
         checkForWin();
-        if (moveGenerator.detectMultiMove(board, 'w', ai.getLastMove().getDestination()) && ai.getLastMove().hasPieceToRemove()) {
+        if (moveGenerator.detectMultiMove(internalBoard, 'w', ai.getMinimaxMove().getDestination()) && ai.getMinimaxMove().hasPieceToRemove()) {
             aiTurn = true;
             turnText.setText(" AI multi-jump!");
             AIMove();
@@ -452,12 +447,10 @@ public class Controller implements Initializable {
     private void updatePiece(Move move) {
         // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
         // TODO: Many issues arising from matrix indexing starting from zero and all that....
-        sleep(250);
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
         circle.setLayoutY(indexToPixel(move.getDestination().x));
         circle.setLayoutX(indexToPixel(move.getDestination().y));
         if (move.hasPieceToRemove()) {
-            sleep(250);
             removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
         }
         if (circle.getLayoutY() == 450.0) {
@@ -543,9 +536,9 @@ public class Controller implements Initializable {
      *
      */
     private void checkForWin() {
-        if (board.winCheck() != 0) {
+        if (internalBoard.winCheck() != 0) {
             aiTurn = true; // pause the game
-            if (board.winCheck() > 0) {
+            if (internalBoard.winCheck() > 0) {
                 createFinishedPopup("Congratulations!", "*** You win! ***");
             } else {
                 createFinishedPopup("Commiserations!", "--- You lose... ---");
