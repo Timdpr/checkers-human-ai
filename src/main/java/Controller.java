@@ -16,9 +16,12 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -36,15 +39,11 @@ import java.util.ResourceBundle;
 import main.java.model.*;
 
 /**
- * TODO: Fix bug where the wrong Circle seems to be selected for deletion sometimes.
- * TODO: Implement minimax w/a-b pruning AI
  * TODO: Give explanation on rejecting invalid user moves
  * TODO: Give rules in help window
  * TODO: Toggle valid move highlighting
+ * TODO: Fix multi-jump detection - backwards jumps are seemingly allowed
  *
- * Methods related to 'drag and drop' functionality heavily adapted from
- * www.bekwam.blogspot.co.uk/2016/02/moving-game-piece-on-javafx-checkerboard.html, with permission under the Apache
- * License, Version 2.0: www.apache.org/licenses/LICENSE-2.0
  *
  * @author tp275
  */
@@ -481,7 +480,10 @@ public class Controller implements Initializable {
      * @param circle
      */
     private void makeKing(Circle circle) {
-        circle.setStyle("-fx-effect: innershadow( one-pass-box , gold , 15 , 0.0 , 2 , 2 )");
+//        circle.setStyle("-fx-effect: innershadow( one-pass-box , gold , 15 , 0.0 , 2 , 2 )");
+        System.out.println(circle.getFill().toString());
+        Image crown = new Image("main/res/crown_r.png");
+        circle.setFill(new ImagePattern(crown));
     }
 
     /**

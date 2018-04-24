@@ -124,7 +124,6 @@ public class MoveGenerator {
         addValidJumps(board, color);
 
         if (validMoves.size() > 0) {
-            System.out.println("Destination of last move: " + destination);
             System.out.println(validMoves.toString());
             validMoves.removeIf(e -> (e.getOrigin().x != destination.x || e.getOrigin().y != destination.y));
             System.out.println(validMoves.toString());

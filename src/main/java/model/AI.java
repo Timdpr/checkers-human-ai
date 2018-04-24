@@ -14,12 +14,12 @@ public class AI {
         HashMap<Double, Move> scores = new HashMap<>();
 
         for (Move move : moves) {
-            scores.put(minimax(boardCopy.updateLocation(move), depth, 'w'), move);
+            scores.put(minimax(boardCopy.updateLocation(move), depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 'w'), move);
         }
         return scores.get(Collections.max(scores.keySet()));
     }
 
-    public double minimax(Board board, int depth, char color) {
+    private double minimax(Board board, int depth, double alpha, double beta, char color) {
         if (depth == 0 || board.winCheck() != 0) {
             return heuristic(board, color);
         }
@@ -27,8 +27,12 @@ public class AI {
         if (color == 'w') {
             double bestValue = Double.NEGATIVE_INFINITY;
             for (Move m : moveGenerator.findValidMoves(board, color)) {
-                double eval = minimax(getChildBoard(board, m), depth-1, 'r');
+                double eval = minimax(getChildBoard(board, m), depth-1, alpha, beta, 'r');
                 bestValue = Math.max(bestValue, eval);
+                alpha = Math.max(alpha, bestValue);
+                if (alpha > beta) {
+                    break;
+                }
             }
             return bestValue;
         }
@@ -36,12 +40,16 @@ public class AI {
         if (color == 'r') {
             double bestValue = Double.POSITIVE_INFINITY;
             for (Move m : moveGenerator.findValidMoves(board, color)) {
-                double eval = minimax(getChildBoard(board, m), depth-1, 'w');
+                double eval = minimax(getChildBoard(board, m), depth-1, alpha, beta, 'w');
                 bestValue = Math.min(bestValue, eval);
+                beta = Math.min(beta, bestValue);
+                if (alpha > beta) {
+                    break;
+                }
             }
             return bestValue;
         }
-        System.err.println("Minimax did not return correctly");
+        System.out.println("Minimax did not return correctly");
         return 0;
     }
 
