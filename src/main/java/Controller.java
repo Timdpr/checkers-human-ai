@@ -228,9 +228,9 @@ public class Controller implements Initializable {
                 selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
                 selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
                 if (selectedPiece.getLayoutY() == 30.0) {
-                    makeKing(selectedPiece);
+                    makeKing(selectedPiece, 'r');
                 }
-
+                // if player's move was a jump move, and there is an available jump move with it's origin at the original move's destination
                 if (playerMove.hasPieceToRemove() && moveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination())) {
                     aiTurn = false;
                     turnText.setText(" Human multi-jump!");
@@ -454,7 +454,7 @@ public class Controller implements Initializable {
             removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
         }
         if (circle.getLayoutY() == 450.0) {
-            makeKing(circle);
+            makeKing(circle, 'w');
         }
     }
 
@@ -479,10 +479,10 @@ public class Controller implements Initializable {
      *
      * @param circle
      */
-    private void makeKing(Circle circle) {
+    private void makeKing(Circle circle, char player) {
 //        circle.setStyle("-fx-effect: innershadow( one-pass-box , gold , 15 , 0.0 , 2 , 2 )");
         System.out.println(circle.getFill().toString());
-        Image crown = new Image("main/res/crown_r.png");
+        Image crown = new Image((player == 'r') ? "main/res/crown_r.png" : "main/res/crown_w.png");
         circle.setFill(new ImagePattern(crown));
     }
 
