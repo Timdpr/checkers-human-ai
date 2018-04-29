@@ -25,9 +25,7 @@ public class Board {
     public Board(Piece[][] board) {
         this.board = new Piece[8][8];
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                this.board[i][j] = board[i][j];
-            }
+            System.arraycopy(board[i], 0, this.board[i], 0, 8);
         }
     }
 
@@ -78,7 +76,7 @@ public class Board {
         Piece originPiece = boardCopy[move.origin.x][move.origin.y];
         boardCopy[move.origin.x][move.origin.y] = null;
 
-        // If there is an intermediate piece (in a jump), remove it
+        // If there is an intermediate piece (in a jump), update piece counts then remove it
         if (move.hasPieceToRemove()) {
             boardCopy[move.pieceToRemove.x][move.pieceToRemove.y] = null;
         }
@@ -105,20 +103,22 @@ public class Board {
     }
 
     public int winCheck() {
-        int whites = 0;
-        int reds = 0;
+        int whitePieces = 0;
+        int redPieces = 0;
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (board[i][j] != null) {
-                    if (board[i][j].getColour() == 'w') {
-                        whites += 1;
+            for (int j = (i + 1) % 2; j < 8; j += 2) {
+                if (this.board[i][j] != null) {
+                    if (this.board[i][j].getColour() == 'r') {
+                        redPieces++;
                     } else {
-                        reds += 1;
+                        whitePieces++;
                     }
-        }}}
-        if (whites == 0) {
+                }
+            }
+        }
+        if (whitePieces == 0) {
             return 1;
-        } else if (reds == 0) {
+        } else if (redPieces == 0) {
             return -1;
         }
         return 0;

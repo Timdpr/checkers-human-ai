@@ -35,7 +35,7 @@ public class MoveGenerator {
     private ArrayList<Move> getValidSlides(Board board, char colour) {
         ArrayList<Move> validSlides = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) { // for all board positions
+            for (int j = (i+1)%2; j < 8; j+=2) { // for all board positions
                 if (board.getPiece(i, j) != null) { // if there is a piece
                     Piece piece = board.getPiece(i, j);
                     Point origin = new Point(i, j);
@@ -78,7 +78,7 @@ public class MoveGenerator {
     private ArrayList<Move> getValidJumps(Board board, char colour) {
         ArrayList<Move> validJumps = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) { // for all board positions
+            for (int j = (i+1)%2; j < 8; j+=2) { // for all board positions
                 if (board.getPiece(i, j) != null) { // if there is a piece
                     Piece piece = board.getPiece(i, j);
                     Point origin = new Point(i, j);

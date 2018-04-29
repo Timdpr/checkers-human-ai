@@ -8,27 +8,26 @@ public class AI {
 
     private MoveGenerator moveGenerator = new MoveGenerator();
 
-    public Move play(Board board, int depth) {
+    public Move play(Board board, int depth, ArrayList<Move> moves) {
         Board boardCopy = new Board(board.getBoard());
-        ArrayList<Move> moves = moveGenerator.findValidMoves(boardCopy, 'w');
-        HashMap<Double, Move> scores = new HashMap<>();
+        HashMap<Integer, Move> scores = new HashMap<>();
 
         for (Move move : moves) {
-            scores.put(minimax(boardCopy.updateLocation(move), depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 'w'), move);
+            scores.put(minimax(boardCopy.updateLocation(move), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, 'w'), move);
         }
         return scores.get(Collections.max(scores.keySet()));
     }
 
-    private double minimax(Board board, int depth, double alpha, double beta, char color) {
+    private int minimax(Board board, int depth, int alpha, int beta, char color) {
         if (depth == 0 || board.winCheck() != 0) {
             return heuristic(board, color);
         }
 
         if (color == 'w') {
-            double bestValue = Double.NEGATIVE_INFINITY;
+            int bestValue = Integer.MIN_VALUE;
             for (Move m : moveGenerator.findValidMoves(board, color)) {
                 Board childBoard = getChildBoard(board, m);
-                double eval;
+                int eval;
                 if (moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination())) {
                     eval = minimax(childBoard, depth-1, alpha, beta, 'w');
                 } else {
@@ -44,10 +43,10 @@ public class AI {
         }
 
         if (color == 'r') {
-            double bestValue = Double.POSITIVE_INFINITY;
+            int bestValue = Integer.MAX_VALUE;
             for (Move m : moveGenerator.findValidMoves(board, color)) {
                 Board childBoard = getChildBoard(board, m);
-                double eval;
+                int eval;
                 if (moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination())) {
                     eval = minimax(childBoard, depth-1, alpha, beta, 'r');
                 } else {
@@ -65,33 +64,29 @@ public class AI {
         return 0;
     }
 
-    private double heuristic(Board board, char color) {
-        int pieceAdvantage = 24;
-        Piece[][] pBoard = board.getBoard();
-
+    // TODO: Better heuristic! Weight kings, weight pieces being at the sides, etc...
+    private int heuristic(Board board, char color) {
+        int whiteState = 0;
+        int redState = 0;
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (pBoard[i][j] != null) {
-                    if (pBoard[i][j].getColour() == color) {
-                        pieceAdvantage += 1;
-                        if (pBoard[i][j].isKing()) {
-                            pieceAdvantage += 1;
-                        }
+            for (int j = (i + 1) % 2; j < 8; j += 2) {
+                Piece piece = board.getPiece(i, j);
+                if (piece != null) {
+                    if (piece.getColour() == 'r') {
+                        redState++;
                     } else {
-                        pieceAdvantage -= 1;
-                        if (pBoard[i][j].isKing()) {
-                            pieceAdvantage -= 1;
-                        }
+                        whiteState++;
                     }
                 }
             }
         }
-        return pieceAdvantage;
+        int heur = (color=='r') ? redState-whiteState : whiteState-redState;
+        return heur;
     }
 
     private Board getChildBoard(Board board, Move move) {
         Board childBoard = new Board(board.getBoard());
-        childBoard.updateLocation(move);
+        childBoard = childBoard.updateLocation(move);
         return childBoard;
     }
 }

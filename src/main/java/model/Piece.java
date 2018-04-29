@@ -38,6 +38,6 @@ public class Piece {
     }
 
     public void setKing() {
-        isKing = true;
+        this.isKing = true;
     }
 }

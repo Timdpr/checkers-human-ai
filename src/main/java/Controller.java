@@ -108,8 +108,6 @@ public class Controller implements Initializable {
     private MoveGenerator moveGenerator = new MoveGenerator();
     private Board internalBoard;
 
-    private ArrayList<Circle> removed = new ArrayList<>();
-
     /**
      * Called after window has finished loading.
      */
@@ -129,7 +127,6 @@ public class Controller implements Initializable {
     @FXML
     public void startMovingPiece(MouseEvent mouseEvent) {
         selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
-        System.out.println("Selected piece's ID: " + selectedPiece.getId());
 
         // Set humanMoveOrigin to the location of the piece (can't use helper method here, must stay in local method)
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
@@ -146,7 +143,6 @@ public class Controller implements Initializable {
         offset = new Point2D(mouseEvent.getX(), mouseEvent.getY());
 
         movingPiece = true;
-
     }
 
     /**
@@ -170,7 +166,8 @@ public class Controller implements Initializable {
             System.out.println("Rectangle selection was null in movePiece.");
         }
         Point destination = idToPoint(r.getId());
-        if (moveGenerator.findValidMoves(internalBoard, 'r').contains(new Move(humanMoveOrigin, destination))) {
+        // TODO: TOGGLE MOVE HIGHLIGHTING
+        if (findValidMoves('r').contains(new Move(humanMoveOrigin, destination))) {
             highlightSquareGreen(mouseEvent);
         }
         Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
@@ -209,7 +206,7 @@ public class Controller implements Initializable {
             Point destination = idToPoint(r.getId());
 
             // Check move is valid by finding valid moves for red and checking that moves.indexOf(move) returns > -1
-            ArrayList<Move> moves = moveGenerator.findValidMoves(internalBoard, 'r');
+            ArrayList<Move> moves = findValidMoves('r');
             int moveIndex = moves.indexOf(new Move(humanMoveOrigin, destination));
 
             ///// HUMAN MOVE: /////
@@ -223,7 +220,7 @@ public class Controller implements Initializable {
                 timeline.play(); // play animation
                 System.out.println("Board after human move:");
                 internalBoard.printBoard();
-                checkForWin();
+                checkForWin('r');
 
                 selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
                 selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
@@ -266,12 +263,12 @@ public class Controller implements Initializable {
      */
     private void AIMove() {
         turnText.setText(" AI");
-        Move aiMove = ai.play(internalBoard, (int)sliderDifficulty.getValue());
+        Move aiMove = ai.play(internalBoard, (int)sliderDifficulty.getValue(), findValidMoves('w'));
         internalBoard.updateLocation(aiMove);
         System.out.println("\nBoard after AI's move:");
         internalBoard.printBoard();
         updatePiece(aiMove);
-        checkForWin();
+        checkForWin('w');
         if (moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()) && aiMove.hasPieceToRemove()) {
             aiTurn = true;
             turnText.setText(" AI multi-jump!");
@@ -422,7 +419,6 @@ public class Controller implements Initializable {
     }
 
     /**
-     * TODO: get rid of need for circles list altogether, just look at circles in boardPane. Though this probably won't fix my issues!
      * @param row
      * @param col
      * @return
@@ -447,8 +443,6 @@ public class Controller implements Initializable {
      * @param move
      */
     private void updatePiece(Move move) {
-        // TODO: selectCircle, then move x and y of circle according to the Move (convert x coord into pixel x by (x*60)+30)
-        // TODO: Many issues arising from matrix indexing starting from zero and all that....
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
         circle.setLayoutY(indexToPixel(move.getDestination().x));
         circle.setLayoutX(indexToPixel(move.getDestination().y));
@@ -482,8 +476,6 @@ public class Controller implements Initializable {
      * @param circle
      */
     private void makeKing(Circle circle, char player) {
-//        circle.setStyle("-fx-effect: innershadow( one-pass-box , gold , 15 , 0.0 , 2 , 2 )");
-        System.out.println(circle.getFill().toString());
         Image crown = new Image((player == 'r') ? "main/res/crown_r.png" : "main/res/crown_w.png");
         circle.setFill(new ImagePattern(crown));
     }
@@ -540,7 +532,10 @@ public class Controller implements Initializable {
     /**
      *
      */
-    private void checkForWin() {
+    public void checkForWin(char colour) {
+        if (moveGenerator.findValidMoves(internalBoard, colour).size() == 0) {
+            gameIsDrawn();
+        }
         if (internalBoard.winCheck() != 0) {
             aiTurn = true; // pause the game
             if (internalBoard.winCheck() > 0) {
@@ -549,6 +544,11 @@ public class Controller implements Initializable {
                 createFinishedPopup("Commiserations!", "--- You lose... ---");
             }
         }
+    }
+
+    public void gameIsDrawn() {
+        aiTurn = true;
+        createFinishedPopup("Congratuliserations!", "*-*- It's a draw -*-*");
     }
 
     /**
@@ -582,5 +582,9 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private ArrayList<Move> findValidMoves(char colour) {
+        return moveGenerator.findValidMoves(internalBoard, colour);
     }
 }
