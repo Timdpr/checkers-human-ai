@@ -27,7 +27,13 @@ public class AI {
         if (color == 'w') {
             double bestValue = Double.NEGATIVE_INFINITY;
             for (Move m : moveGenerator.findValidMoves(board, color)) {
-                double eval = minimax(getChildBoard(board, m), depth-1, alpha, beta, 'r');
+                Board childBoard = getChildBoard(board, m);
+                double eval;
+                if (moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination())) {
+                    eval = minimax(childBoard, depth-1, alpha, beta, 'w');
+                } else {
+                    eval = minimax(childBoard, depth-1, alpha, beta, 'r');
+                }
                 bestValue = Math.max(bestValue, eval);
                 alpha = Math.max(alpha, bestValue);
                 if (alpha > beta) {
@@ -40,7 +46,13 @@ public class AI {
         if (color == 'r') {
             double bestValue = Double.POSITIVE_INFINITY;
             for (Move m : moveGenerator.findValidMoves(board, color)) {
-                double eval = minimax(getChildBoard(board, m), depth-1, alpha, beta, 'w');
+                Board childBoard = getChildBoard(board, m);
+                double eval;
+                if (moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination())) {
+                    eval = minimax(childBoard, depth-1, alpha, beta, 'r');
+                } else {
+                    eval = minimax(childBoard, depth-1, alpha, beta, 'w');
+                }
                 bestValue = Math.min(bestValue, eval);
                 beta = Math.min(beta, bestValue);
                 if (alpha > beta) {
