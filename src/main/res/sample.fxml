@@ -1101,6 +1101,9 @@
                   <HBox.margin>
                      <Insets top="10.0" />
                   </HBox.margin>
+                   <tooltip>
+                       <Tooltip text="Highlights valid human move on hover with a beautiful shade of green" style="-fx-font-size: 12px"/>
+                   </tooltip>
                </JFXCheckBox>
             </children>
          </HBox>
