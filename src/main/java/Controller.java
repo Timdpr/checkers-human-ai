@@ -585,6 +585,7 @@ public class Controller implements Initializable {
     }
 
     private ArrayList<Move> findValidMoves(char colour) {
+        System.out.println(moveGenerator.findValidMoves(internalBoard, colour).toString());
         return moveGenerator.findValidMoves(internalBoard, colour);
     }
 }
