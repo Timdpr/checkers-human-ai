@@ -27,10 +27,6 @@ public class Move {
         return origin;
     }
 
-    public void setOrigin(Point origin) {
-        this.origin = origin;
-    }
-
     public Point getDestination() {
         return destination;
     }

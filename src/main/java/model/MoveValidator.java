@@ -1,10 +1,9 @@
 package main.java.model;
 
-import java.awt.*;
+import java.awt.Point;
 
 /**
  * Contains helper methods for checking the validity of 'sliding' and 'jumping' moves.
- *
  * @author tp275
  */
 public class MoveValidator {
@@ -39,8 +38,8 @@ public class MoveValidator {
      * @return boolean of whether the jump move is valid
      */
     public boolean isJumpValid(Board board, Point inter, Point end, char colour) {
-        if (!isSlideValid(board, end)) { // if end location is outside board or empty
-            return false;
+        if (!isSlideValid(board, end)) {
+            return false; // not valid if end location is outside board or empty
         }
         Piece interPiece = board.getPiece(inter.x, inter.y);
         if (interPiece == null) {

@@ -1,7 +1,5 @@
 package main.java.model;
 
-import java.awt.Point;
-
 /**
  * @author tp275
  */

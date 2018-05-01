@@ -10,6 +10,8 @@ public class Board {
     private Piece[][] board;
     private int whitePieces;
     private int redPieces;
+    private int whiteKings;
+    private int redKings;
 
     /**
      * Creates and sets up pieces on the board in their initial state
@@ -18,6 +20,8 @@ public class Board {
         this.board = getInitialBoard();
         this.whitePieces = 12;
         this.redPieces = 12;
+        this.whiteKings = 0;
+        this.redKings = 0;
     }
 
     /**
@@ -33,14 +37,27 @@ public class Board {
             for (int j = (i+1)%2; j < 8; j+=2) {
                 Piece oldPiece = board[i][j];
                 if (oldPiece != null) {
-                    if (oldPiece.getColour() == 'r') {
-                        this.redPieces++;
-                    } else {
-                        this.whitePieces++;
-                    }
+                    increaseCounts(oldPiece);
                     this.board[i][j] = new Piece(oldPiece.getColour(), oldPiece.isKing());
                 }
             }
+        }
+    }
+
+    /**
+     * @param oldPiece
+     */
+    private void increaseCounts(Piece oldPiece) {
+        if (oldPiece.getColour() == 'r') {
+            if (oldPiece.isKing()) {
+                this.redKings++;
+            }
+            this.redPieces++;
+        } else {
+            if (oldPiece.isKing()) {
+                this.whiteKings++;
+            }
+            this.whitePieces++;
         }
     }
 
@@ -91,23 +108,33 @@ public class Board {
         Piece[][] boardCopy = new Board(board).getBoard();
         // Store piece at origin and delete it from board
         Piece originPiece = boardCopy[move.origin.x][move.origin.y];
+        if (move.kingPiece) {
+            if (originPiece != null) {
+                originPiece.setKing(true);
+            }
+        }
         boardCopy[move.origin.x][move.origin.y] = null;
         // If there is an intermediate piece (in a jump), update piece counts then remove it
         if (move.hasPieceToRemove()) {
-            updateCountsWithPiece(boardCopy[move.pieceToRemove.x][move.pieceToRemove.y]);
+            decreaseCounts(boardCopy[move.pieceToRemove.x][move.pieceToRemove.y]);
             boardCopy[move.pieceToRemove.x][move.pieceToRemove.y] = null;
         }
         // Now insert the original piece at the destination
         boardCopy[move.destination.x][move.destination.y] = originPiece;
-        boardCopy = updateKings(boardCopy);
         return new Board(boardCopy);
     }
 
-    public void updateCountsWithPiece(Piece toRemove) {
-        if (toRemove != null) {
-            if (toRemove.getColour() == 'r') {
+    private void decreaseCounts(Piece oldPiece) {
+        if (oldPiece != null) {
+            if (oldPiece.getColour() == 'r') {
+                if (oldPiece.isKing()) {
+                    this.redKings--;
+                }
                 this.redPieces--;
             } else {
+                if (oldPiece.isKing()) {
+                    this.whiteKings--;
+                }
                 this.whitePieces--;
             }
         }
@@ -159,25 +186,19 @@ public class Board {
         return 0;
     }
 
-    private Piece[][] updateKings(Piece[][] boardCopy) {
-        for (int i = 1; i < 8; i+=2) {
-            Piece tp = boardCopy[0][i];
-            Piece bp = boardCopy[7][i-1];
-            if (tp != null && tp.getColour() == 'r') {
-                tp.setKing(true);
-            }
-            if (bp != null && bp.getColour() == 'w') {
-                bp.setKing(true);
-            }
-        }
-        return boardCopy;
-    }
-
     public int getWhitePieces() {
         return whitePieces;
     }
 
     public int getRedPieces() {
         return redPieces;
+    }
+
+    public int getWhiteKings() {
+        return whiteKings;
+    }
+
+    public int getRedKings() {
+        return redKings;
     }
 }

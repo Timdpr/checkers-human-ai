@@ -45,14 +45,9 @@ public class Controller implements Initializable {
 
     @FXML private StackPane rootStackPane;
     @FXML private Pane boardPane;
-    @FXML private Pane row_a;
-    @FXML private Pane row_b;
-    @FXML private Pane row_c;
-    @FXML private Pane row_d;
-    @FXML private Pane row_e;
-    @FXML private Pane row_f;
-    @FXML private Pane row_g;
-    @FXML private Pane row_h;
+
+    @FXML private Pane row_a; @FXML private Pane row_b; @FXML private Pane row_c; @FXML private Pane row_d;
+    @FXML private Pane row_e; @FXML private Pane row_f; @FXML private Pane row_g; @FXML private Pane row_h;
     private final List<Pane> panes = new ArrayList<>();
 
     @FXML private Circle c1; @FXML private Circle c2; @FXML private Circle c3; @FXML private Circle c4;
@@ -65,28 +60,23 @@ public class Controller implements Initializable {
 
     @FXML private Text turnText;
     @FXML private JFXSlider sliderDifficulty;
-
-    private Point2D offset;
+    @FXML private JFXCheckBox highlightCheckBox;
 
     private Circle selectedPiece;
     private Rectangle selectedRectangle;
     private Rectangle originRectangle;
     
     private boolean movingPiece;
+    private Point humanMoveOrigin;
+
+    private Point2D offset;
     private double startLayoutX;
     private double startLayoutY;
 
     private AI ai = new AI();
     private boolean aiTurn;
-
-    private Point humanMoveOrigin;
-
-    private MoveGenerator moveGenerator = new MoveGenerator();
-    private MoveGenerator humanMoveGenerator = new MoveGenerator();
-    private MoveGenerator aiMoveGenerator = new MoveGenerator();
     private Board internalBoard;
-
-    @FXML private JFXCheckBox highlightCheckBox;
+    private MoveGenerator moveGenerator = new MoveGenerator();
 
     /**
      * Called after window has finished loading.
@@ -133,7 +123,7 @@ public class Controller implements Initializable {
     public void movePiece(MouseEvent mouseEvent) {
         Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
         Point2D mousePointScene = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
-        if( !inBoard(mousePointScene) || aiTurn) { // check for piece being in board or it not being human's turn
+        if( notInBoard(mousePointScene) || aiTurn) { // check for piece being in board or it not being human's turn
             return;  // don't relocate() b/c will resize Pane
         }
         if (highlightCheckBox.isSelected()) {
@@ -163,12 +153,12 @@ public class Controller implements Initializable {
      * @param pt The point to check
      * @return True if within bounds, else false
      */
-    private boolean inBoard(Point2D pt) {
+    private boolean notInBoard(Point2D pt) {
         Point2D panePt = boardPane.sceneToLocal(pt);
-        return panePt.getX()-offset.getX() >= 0.0d
-                && panePt.getY()-offset.getY() >= 0.0d
-                && panePt.getX() <= boardPane.getWidth()
-                && panePt.getY() <= boardPane.getHeight();
+        return !(panePt.getX() - offset.getX() >= 0.0d)
+                || !(panePt.getY() - offset.getY() >= 0.0d)
+                || !(panePt.getX() <= boardPane.getWidth())
+                || !(panePt.getY() <= boardPane.getHeight());
     }
 
     /**
@@ -208,12 +198,11 @@ public class Controller implements Initializable {
 
                 selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
                 selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
-                System.out.println("######## LayoutY: " + selectedPiece.getLayoutY());
                 if (selectedPiece.getLayoutY() == 30.0) {
                     makeKing(selectedPiece, 'r');
                 }
                 // if player's move was a jump move, and there is an available jump move with it's origin at the original move's destination
-                if (playerMove.hasPieceToRemove() && (humanMoveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination()).size() > 0)) {
+                if (playerMove.hasPieceToRemove() && (moveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination()).size() > 0)) {
                     aiTurn = false;
                     turnText.setText(" Human multi-jump!");
                 } else {
@@ -257,9 +246,9 @@ public class Controller implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        updatePiece(aiMove);
+        updateAIPiece(aiMove);
         checkForWin('w');
-        if ((aiMoveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
+        if ((moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
             aiTurn = true;
             turnText.setText(" AI multi-jump!");
             AIMove();
@@ -307,7 +296,7 @@ public class Controller implements Initializable {
      */
     public void checkReleaseOutOfBoard(MouseEvent evt) {
         Point2D mousePoint_s = new Point2D(evt.getSceneX(), evt.getSceneY());
-        if( !inBoard(mousePoint_s) ) {
+        if(notInBoard(mousePoint_s)) {
             leaveBoard(evt);
             evt.consume();
         }
@@ -442,7 +431,7 @@ public class Controller implements Initializable {
      *
      * @param move
      */
-    private void updatePiece(Move move) {
+    private void updateAIPiece(Move move) {
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y);
         circle.setLayoutY(indexToPixel(move.getDestination().x));
         circle.setLayoutX(indexToPixel(move.getDestination().y));
@@ -541,7 +530,6 @@ public class Controller implements Initializable {
             }
         }
         if (internalBoard.winCheck() != 0) {
-            aiTurn = true; // pause the game
             if (internalBoard.winCheck() > 0) {
                 createFinishedPopup("Congratulations!", "You win! The robot uprising has been crushed!");
             } else {
@@ -584,11 +572,6 @@ public class Controller implements Initializable {
     }
 
     private ArrayList<Move> findValidMoves(char colour) {
-        if (colour == 'r') {
-            return humanMoveGenerator.findValidMoves(internalBoard, colour);
-        } else {
-            return aiMoveGenerator.findValidMoves(internalBoard, colour);
-        }
-
+        return moveGenerator.findValidMoves(internalBoard, colour);
     }
 }

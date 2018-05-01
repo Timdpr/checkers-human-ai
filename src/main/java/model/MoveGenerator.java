@@ -24,7 +24,7 @@ public class MoveGenerator {
             return validMoves;
         }
         validMoves.addAll(getValidSlides(boardCopy, colour)); // otherwise, now find valid slide moves
-        updateKings(validMoves, colour);
+        validMoves = updateKings(validMoves, colour);
         return validMoves;
     }
 
