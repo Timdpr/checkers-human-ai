@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -851,7 +852,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -864,7 +865,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -877,7 +878,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -890,7 +891,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -903,7 +904,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -916,7 +917,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -929,7 +930,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -942,7 +943,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -955,7 +956,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -968,7 +969,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -981,7 +982,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -994,7 +995,7 @@
                 <fill>
                     <RadialGradient centerX="0.5277777777777777" centerY="0.4714285714285713" focusAngle="-42.27" radius="0.5">
                         <stops>
-                            <Stop color="#ff2f2f" />
+                            <Stop color="#ff4747" />
                             <Stop color="RED" offset="1.0" />
                         </stops>
                     </RadialGradient>
@@ -1011,11 +1012,12 @@
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="190.0" minHeight="10.0" prefHeight="108.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="190.0" minHeight="10.0" prefHeight="108.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="161.0" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="212.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="246.0" minHeight="10.0" prefHeight="238.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="170.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="241.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
             </rowConstraints>
-            <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="4">
+            <HBox alignment="BOTTOM_CENTER" prefHeight="113.0" prefWidth="320.0" GridPane.rowIndex="5">
                 <JFXButton fx:id="buttonHelp" buttonType="RAISED" layoutX="174.0" layoutY="140.0" onAction="#displayHelp" prefHeight="34.0" prefWidth="75.0" style="-fx-background-color: #DCDCDC;" text="Help">
                     <padding>
                         <Insets bottom="5.0" />
@@ -1034,27 +1036,28 @@
                 </JFXButton>
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="27.0" prefWidth="320.0">
-                <Label text="Checkers">
+                <Label text="Checkers: Human vs AI">
                     <font>
-                        <Font name="System Bold" size="21.0" />
+                        <Font name="System Bold" size="24.0" />
                     </font>
-                    <textFill>
-                        <RadialGradient centerX="0.5" centerY="0.5380952380952382" radius="0.5">
-                            <stops>
-                                <Stop color="BLACK" />
-                                <Stop color="#5b0000" offset="1.0" />
-                            </stops>
-                        </RadialGradient>
-                    </textFill>
                     <padding>
-                        <Insets top="5.0" />
+                        <Insets top="15.0" />
                     </padding>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0" startX="1.0" startY="0.4095238095238096">
+                     <stops>
+                        <Stop color="BLACK" />
+                        <Stop color="#cd1919" offset="0.49484536082474223" />
+                        <Stop color="#5b0000" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </textFill>
                 </Label>
             </HBox>
             <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="2">
                 <Label text="Difficulty">
                     <tooltip>
-                        <Tooltip text="Controls the AI's skill level by limiting tree depth" />
+                        <Tooltip text="Controls the skill level of the AI by limiting tree depth.&#13;8,9 and 10 can take a long time, especially mid-game." style="-fx-font-size: 12px"/>
                     </tooltip>
                     <font>
                         <Font size="14.0" />
@@ -1063,11 +1066,20 @@
                         <Insets bottom="-5.0" />
                     </padding>
                 </Label>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+                <GridPane.margin>
+                    <Insets bottom="5.0" />
+                </GridPane.margin>
             </HBox>
-            <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" GridPane.rowIndex="3">
+            <JFXSlider fx:id="sliderDifficulty" accessibleText="Difficulty slider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" value="6.0" GridPane.rowIndex="3">
                 <GridPane.margin>
                     <Insets left="50.0" right="50.0" />
                 </GridPane.margin>
+                <tooltip>
+                    <Tooltip text="Controls the skill level of the AI by limiting tree depth.&#13;8,9 and 10 can take a long time, especially mid-game." style="-fx-font-size: 12px"/>
+                </tooltip>
             </JFXSlider>
          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
             <children>
@@ -1081,6 +1093,15 @@
                      <Font name="System Bold" size="14.0" />
                   </font>
                </Text>
+            </children>
+         </HBox>
+         <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="320.0" GridPane.rowIndex="4">
+            <children>
+               <JFXCheckBox fx:id="highlightCheckBox" text="Highlight valid moves">
+                  <HBox.margin>
+                     <Insets top="10.0" />
+                  </HBox.margin>
+               </JFXCheckBox>
             </children>
          </HBox>
         </GridPane>

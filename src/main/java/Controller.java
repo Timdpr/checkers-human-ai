@@ -1,9 +1,6 @@
 package main.java;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -17,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -41,9 +37,7 @@ import main.java.model.*;
 /**
  * TODO: Give explanation on rejecting invalid user moves
  * TODO: Give rules in help window
- * TODO: Toggle valid move highlighting
  * TODO: Fix multi-jump detection - backwards jumps are seemingly allowed
- *
  *
  * @author tp275
  */
@@ -61,30 +55,12 @@ public class Controller implements Initializable {
     @FXML private Pane row_h;
     private final List<Pane> panes = new ArrayList<>();
 
-    @FXML private Circle c1;
-    @FXML private Circle c2;
-    @FXML private Circle c3;
-    @FXML private Circle c4;
-    @FXML private Circle c5;
-    @FXML private Circle c6;
-    @FXML private Circle c7;
-    @FXML private Circle c8;
-    @FXML private Circle c9;
-    @FXML private Circle c10;
-    @FXML private Circle c11;
-    @FXML private Circle c12;
-    @FXML private Circle c13;
-    @FXML private Circle c14;
-    @FXML private Circle c15;
-    @FXML private Circle c16;
-    @FXML private Circle c17;
-    @FXML private Circle c18;
-    @FXML private Circle c19;
-    @FXML private Circle c20;
-    @FXML private Circle c21;
-    @FXML private Circle c22;
-    @FXML private Circle c23;
-    @FXML private Circle c24;
+    @FXML private Circle c1; @FXML private Circle c2; @FXML private Circle c3; @FXML private Circle c4;
+    @FXML private Circle c5; @FXML private Circle c6; @FXML private Circle c7; @FXML private Circle c8;
+    @FXML private Circle c9; @FXML private Circle c10; @FXML private Circle c11; @FXML private Circle c12;
+    @FXML private Circle c13; @FXML private Circle c14; @FXML private Circle c15; @FXML private Circle c16;
+    @FXML private Circle c17; @FXML private Circle c18; @FXML private Circle c19; @FXML private Circle c20;
+    @FXML private Circle c21; @FXML private Circle c22; @FXML private Circle c23; @FXML private Circle c24;
     private List<Circle> circles = new ArrayList<>();
 
     @FXML private Text turnText;
@@ -106,7 +82,11 @@ public class Controller implements Initializable {
     private Point humanMoveOrigin;
 
     private MoveGenerator moveGenerator = new MoveGenerator();
+    private MoveGenerator humanMoveGenerator = new MoveGenerator();
+    private MoveGenerator aiMoveGenerator = new MoveGenerator();
     private Board internalBoard;
+
+    @FXML private JFXCheckBox highlightCheckBox;
 
     /**
      * Called after window has finished loading.
@@ -152,26 +132,30 @@ public class Controller implements Initializable {
     @FXML
     public void movePiece(MouseEvent mouseEvent) {
         Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
-        Point2D mousePoint_s = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
-
-        if( !inBoard(mousePoint_s) || aiTurn) { // check for piece being in board or it not being human's turn
+        Point2D mousePointScene = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+        if( !inBoard(mousePointScene) || aiTurn) { // check for piece being in board or it not being human's turn
             return;  // don't relocate() b/c will resize Pane
         }
-
-        // Make square green if dropping the piece here would be a valid move
-        Point2D mousePt = new Point2D(mouseEvent.getX(), mouseEvent.getY());
-        Point2D mousePointScene = selectedPiece.localToScene(mousePt);
-        Rectangle r = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
-        if (r == null) {
-            System.out.println("Rectangle selection was null in movePiece.");
-        }
-        Point destination = idToPoint(r.getId());
-        // TODO: TOGGLE MOVE HIGHLIGHTING
-        if (findValidMoves('r').contains(new Move(humanMoveOrigin, destination))) {
-            highlightSquareGreen(mouseEvent);
+        if (highlightCheckBox.isSelected()) {
+            highlightValidMove(mouseEvent);
         }
         Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
         selectedPiece.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
+    }
+
+    private void highlightValidMove(MouseEvent mouseEvent) {
+        // Make square green if dropping the piece here would be a valid move
+        Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
+        Point2D mousePointScene = selectedPiece.localToScene(mousePoint);
+        Rectangle r = pickRectangle(mousePointScene.getX(), mousePointScene.getY());
+        if (r == null) {
+            System.out.println("Rectangle selection was null in movePiece.");
+        } else {
+            Point destination = idToPoint(r.getId());
+            if (findValidMoves('r').contains(new Move(humanMoveOrigin, destination))) {
+                highlightSquareGreen(mouseEvent);
+            }
+        }
     }
 
     /**
@@ -193,17 +177,17 @@ public class Controller implements Initializable {
      */
     public void finishMovingPiece(MouseEvent mouseEvent) {
         offset = new Point2D(0.0d, 0.0d);
-        Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
-        Point2D mousePointScene = selectedPiece.localToScene(mousePoint); // get point in scene that the cursor is over
+        // Get cursor's location in the scene
+        Point2D mousePointScene = selectedPiece.localToScene(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
         Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
 
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
         if( r != null && !aiTurn) {
-            Point2D rectScene = r.localToScene(r.getX(), r.getY());
+            Point2D rectScene = r.localToScene(r.getX(), r.getY()); // get pt in scene that the rectangle is at
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
-            Point destination = idToPoint(r.getId());
+            Point destination = idToPoint(r.getId()); // get board location of the piece's location
 
             // Check move is valid by finding valid moves for red and checking that moves.indexOf(move) returns > -1
             ArrayList<Move> moves = findValidMoves('r');
@@ -224,11 +208,12 @@ public class Controller implements Initializable {
 
                 selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
                 selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
+                System.out.println("######## LayoutY: " + selectedPiece.getLayoutY());
                 if (selectedPiece.getLayoutY() == 30.0) {
                     makeKing(selectedPiece, 'r');
                 }
                 // if player's move was a jump move, and there is an available jump move with it's origin at the original move's destination
-                if (playerMove.hasPieceToRemove() && moveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination())) {
+                if (playerMove.hasPieceToRemove() && (humanMoveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination()).size() > 0)) {
                     aiTurn = false;
                     turnText.setText(" Human multi-jump!");
                 } else {
@@ -263,13 +248,18 @@ public class Controller implements Initializable {
      */
     private void AIMove() {
         turnText.setText(" AI");
-        Move aiMove = ai.play(internalBoard, (int)sliderDifficulty.getValue(), findValidMoves('w'));
-        internalBoard.updateLocation(aiMove);
+        Move aiMove = ai.play(new Board(internalBoard.getBoard()), (int)sliderDifficulty.getValue(), findValidMoves('w'));
+        internalBoard = internalBoard.updateLocation(aiMove);
         System.out.println("\nBoard after AI's move:");
         internalBoard.printBoard();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         updatePiece(aiMove);
         checkForWin('w');
-        if (moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()) && aiMove.hasPieceToRemove()) {
+        if ((aiMoveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
             aiTurn = true;
             turnText.setText(" AI multi-jump!");
             AIMove();
@@ -395,8 +385,18 @@ public class Controller implements Initializable {
      */
     public void displayHelp(ActionEvent actionEvent) {
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
-        dialogLayout.setHeading(new Text("Help"));
-        dialogLayout.setBody(new Text("Some help text, you dummy!"));
+        dialogLayout.setHeading(new Text("Checkers Help"));
+        Text text = new Text("You, the human, are in control of the red pieces, and are tasked with eliminating " +
+                "all of the dastardly AI's white pieces.\n\nYou go first, and can only move your pieces diagonally forward, " +
+                "in two ways: to an empty adjacent square, and in a 'jump' over an enemy piece, onto an empty square 'behind' it. " +
+                "This move HAS to be made if available (although you can choose which if multiple are available), and " +
+                "'captures' the jumped piece, removing it from the board. If another jump move is immediately available " +
+                "for the same piece, this must be made too in a multi-jump move.\n\nIf a player makes it to their opponent's " +
+                "back row, the piece is crowned and becomes a king! A king can move both forwards and backwards. Very regal." +
+                "\n\nA player can also be blocked and unable to move any piece, in which case they lose. Don't lose. Version " +
+                "2.0 of this game will introduce artificial general intelligence, and you don't want it to see you as weak!");
+        text.setWrappingWidth(480);
+        dialogLayout.setBody(text);
         JFXDialog dialog = new JFXDialog(rootStackPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
         JFXButton buttonExit = new JFXButton("Okay");
         buttonExit.setButtonType(JFXButton.ButtonType.FLAT);
@@ -533,22 +533,21 @@ public class Controller implements Initializable {
      *
      */
     public void checkForWin(char colour) {
-        if (moveGenerator.findValidMoves(internalBoard, colour).size() == 0) {
-            gameIsDrawn();
+        if (findValidMoves(colour).size() == 0) {
+            if (colour=='w') {
+                createFinishedPopup("Congratulations!", "AI is out of moves.\nYou win! The robot uprising has been crushed!");
+            } else {
+                createFinishedPopup("Commiserations!", "You are out of moves!\nYou lose. Please welcome your new masters.");
+            }
         }
         if (internalBoard.winCheck() != 0) {
             aiTurn = true; // pause the game
             if (internalBoard.winCheck() > 0) {
-                createFinishedPopup("Congratulations!", "*** You win! ***");
+                createFinishedPopup("Congratulations!", "You win! The robot uprising has been crushed!");
             } else {
-                createFinishedPopup("Commiserations!", "--- You lose... ---");
+                createFinishedPopup("Commiserations!", "You lose. Please welcome your new masters.");
             }
         }
-    }
-
-    public void gameIsDrawn() {
-        aiTurn = true;
-        createFinishedPopup("Congratuliserations!", "*-*- It's a draw -*-*");
     }
 
     /**
@@ -585,7 +584,11 @@ public class Controller implements Initializable {
     }
 
     private ArrayList<Move> findValidMoves(char colour) {
-        System.out.println(moveGenerator.findValidMoves(internalBoard, colour).toString());
-        return moveGenerator.findValidMoves(internalBoard, colour);
+        if (colour == 'r') {
+            return humanMoveGenerator.findValidMoves(internalBoard, colour);
+        } else {
+            return aiMoveGenerator.findValidMoves(internalBoard, colour);
+        }
+
     }
 }

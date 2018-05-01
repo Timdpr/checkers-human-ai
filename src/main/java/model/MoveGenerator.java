@@ -20,9 +20,22 @@ public class MoveGenerator {
         Board boardCopy = new Board(board.getBoard());
         ArrayList<Move> validMoves = new ArrayList<>(getValidJumps(boardCopy, colour)); // first find valid jumps
         if (validMoves.size() > 0) { // if there is a jump, it has to be made!
+            updateKings(validMoves, colour);
             return validMoves;
         }
         validMoves.addAll(getValidSlides(boardCopy, colour)); // otherwise, now find valid slide moves
+        updateKings(validMoves, colour);
+        return validMoves;
+    }
+
+    private ArrayList<Move> updateKings(ArrayList<Move> validMoves, char colour) {
+        for (Move m : validMoves) {
+            if (m.destination.x == 0 && colour=='r') {
+                m.setKingPiece();
+            } else if (m.destination.x == 7 && colour=='w') {
+                m.setKingPiece();
+            }
+        }
         return validMoves;
     }
 
@@ -41,7 +54,7 @@ public class MoveGenerator {
                     Point origin = new Point(i, j);
 
                     // go through downwards diagonal moves for white or kings
-                    if ((piece.getColour() == 'w' && piece.getColour() == colour)
+                    if ((colour == 'w' && piece.getColour() == colour)
                             || (piece.isKing() && piece.getColour() == colour)) {
                         Point downLeft = new Point(i+1, j-1);
                         if (check.isSlideValid(board, downLeft)) {
@@ -53,7 +66,7 @@ public class MoveGenerator {
                         }
                     }
                     // go through upwards diagonal moves for red or kings
-                    if ((piece.getColour() == 'r' && piece.getColour() == colour)
+                    if ((colour == 'r' && piece.getColour() == colour)
                             || (piece.isKing() && piece.getColour() == colour)) {
                         Point upLeft = new Point(i-1, j-1);
                         if (check.isSlideValid(board, upLeft)) {
@@ -84,7 +97,7 @@ public class MoveGenerator {
                     Point origin = new Point(i, j);
 
                     // go through downwards diagonal jumps for white or kings
-                    if ((piece.getColour() == 'w' && piece.getColour() == colour)
+                    if ((colour == 'w' && piece.getColour() == colour)
                             || (piece.isKing() && piece.getColour() == colour)) {
                         Point downLeft = new Point(i + 1, j - 1);
                         Point down2Left2 = new Point(i + 2, j - 2);
@@ -98,7 +111,7 @@ public class MoveGenerator {
                         }
                     }
                     // go through upwards diagonal jumps for red or kings
-                    if ((piece.getColour() == 'r' && piece.getColour() == colour)
+                    if ((colour == 'r' && piece.getColour() == colour)
                             || (piece.isKing() && piece.getColour() == colour)) {
                         Point upLeft = new Point(i - 1, j - 1);
                         Point up2Left2 = new Point(i - 2, j - 2);
@@ -116,12 +129,22 @@ public class MoveGenerator {
         } return validJumps;
     }
 
-    public boolean detectMultiMove(Board board, char color, Point destination) {
+    /**
+     * Determines if the given player can make another jump in their turn (as per the multi-step rules)
+     * @param board the board state after the last move
+     * @param color the colour of the pieces to check
+     * @param destination the current location of the piece to check (ie. the destination of the previous move)
+     * @return true if there is another jump available for the piece in the player's previous move, else false
+     */
+    public ArrayList<Move> detectMultiMove(Board board, char color, Point destination) {
         ArrayList<Move> vJumps = getValidJumps(board, color);
-        if (vJumps.size() > 0) {
+        if (vJumps.size() > 0) { // if there are valid jumps on the board for the player
+            // Remove all jumps that don't start at the destination of the last move
             vJumps.removeIf(e -> (e.getOrigin().x != destination.x || e.getOrigin().y != destination.y));
-            return vJumps.size() > 0;
+            if (vJumps.size() > 0) {
+                return vJumps;
+            } // and return true if there is still an available jump
         }
-        return false;
+        return vJumps;
     }
 }

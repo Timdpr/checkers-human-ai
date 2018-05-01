@@ -9,35 +9,26 @@ public class Piece {
 
     private char colour;
     private boolean isKing;
-    private Point position;
 
-    public Piece(char colour, int row, int col) {
+    public Piece(char colour) {
         this.colour = colour;
-        this.position = new Point(row, col);
         this.isKing = false;
+    }
+
+    public Piece(char colour, boolean isKing) {
+        this.colour = colour;
+        this.isKing = isKing;
     }
 
     public char getColour() {
         return colour;
     }
 
-    public void setColour(char colour) {
-        this.colour = colour;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
     public boolean isKing() {
         return isKing;
     }
 
-    public void setKing() {
-        this.isKing = true;
+    public void setKing(boolean isKing) {
+        this.isKing = isKing;
     }
 }

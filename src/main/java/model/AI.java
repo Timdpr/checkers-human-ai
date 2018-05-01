@@ -9,29 +9,33 @@ public class AI {
     private MoveGenerator moveGenerator = new MoveGenerator();
 
     public Move play(Board board, int depth, ArrayList<Move> moves) {
-        Board boardCopy = new Board(board.getBoard());
         HashMap<Integer, Move> scores = new HashMap<>();
-
         for (Move move : moves) {
-            scores.put(minimax(boardCopy.updateLocation(move), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, 'w'), move);
+            scores.put(minimax(board.updateLocation(move), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, 'w', move), move);
         }
         return scores.get(Collections.max(scores.keySet()));
     }
 
-    private int minimax(Board board, int depth, int alpha, int beta, char color) {
+    private int minimax(Board board, int depth, int alpha, int beta, char color, Move move) {
         if (depth == 0 || board.winCheck() != 0) {
             return heuristic(board, color);
         }
 
         if (color == 'w') {
             int bestValue = Integer.MIN_VALUE;
-            for (Move m : moveGenerator.findValidMoves(board, color)) {
-                Board childBoard = getChildBoard(board, m);
-                int eval;
-                if (moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination())) {
-                    eval = minimax(childBoard, depth-1, alpha, beta, 'w');
+            ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
+            for (Move m : children) {
+                int eval = 0;
+                Board childBoard = board.updateLocation(m);
+                ArrayList<Move> multiMoves = moveGenerator.detectMultiMove(childBoard, 'w', m.getDestination());
+                if (multiMoves.size() > 0) {
+                    for (Move mm : multiMoves) {
+                        eval = minimax(childBoard.updateLocation(mm), depth-1, alpha, beta, 'w', mm);
+                        board.reverseMove(move, 'w');
+                    }
                 } else {
-                    eval = minimax(childBoard, depth-1, alpha, beta, 'r');
+                    eval = minimax(childBoard, depth-1, alpha, beta, 'r', m);
+                    board.reverseMove(move, 'r');
                 }
                 bestValue = Math.max(bestValue, eval);
                 alpha = Math.max(alpha, bestValue);
@@ -44,16 +48,23 @@ public class AI {
 
         if (color == 'r') {
             int bestValue = Integer.MAX_VALUE;
-            for (Move m : moveGenerator.findValidMoves(board, color)) {
-                Board childBoard = getChildBoard(board, m);
-                int eval;
-                if (moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination())) {
-                    eval = minimax(childBoard, depth-1, alpha, beta, 'r');
+            ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
+            for (Move m : children) {
+                int eval = 0;
+                Board childBoard = board.updateLocation(m);
+                ArrayList<Move> multiMoves = moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination());
+                if (multiMoves.size() > 0) {
+                    for (Move mm : multiMoves) {
+                        eval = minimax(childBoard.updateLocation(mm), depth-1, alpha, beta, 'r', mm);
+                        board.reverseMove(move, 'r');
+                    }
                 } else {
-                    eval = minimax(childBoard, depth-1, alpha, beta, 'w');
+                    eval = minimax(childBoard, depth-1, alpha, beta, 'w', m);
+                    board.reverseMove(move, 'w');
                 }
                 bestValue = Math.min(bestValue, eval);
                 beta = Math.min(beta, bestValue);
+
                 if (alpha > beta) {
                     break;
                 }
@@ -66,27 +77,10 @@ public class AI {
 
     // TODO: Better heuristic! Weight kings, weight pieces being at the sides, etc...
     private int heuristic(Board board, char color) {
-        int whiteState = 0;
-        int redState = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = (i + 1) % 2; j < 8; j += 2) {
-                Piece piece = board.getPiece(i, j);
-                if (piece != null) {
-                    if (piece.getColour() == 'r') {
-                        redState++;
-                    } else {
-                        whiteState++;
-                    }
-                }
-            }
-        }
+        int whiteState = board.getWhitePieces();
+        int redState = board.getRedPieces();
+
         int heur = (color=='r') ? redState-whiteState : whiteState-redState;
         return heur;
-    }
-
-    private Board getChildBoard(Board board, Move move) {
-        Board childBoard = new Board(board.getBoard());
-        childBoard = childBoard.updateLocation(move);
-        return childBoard;
     }
 }

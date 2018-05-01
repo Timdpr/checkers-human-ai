@@ -8,11 +8,13 @@ public class Move {
     protected Point origin;
     protected Point destination;
     protected Point pieceToRemove;
+    protected boolean kingPiece;
 
     public Move(Point origin, Point destination) {
         this.origin = origin;
         this.destination = destination;
         this.pieceToRemove = null;
+        this.kingPiece = false;
     }
 
     public Move(Point origin, Point destination, Point pieceToRemove) {
@@ -33,20 +35,16 @@ public class Move {
         return destination;
     }
 
-    public void setDestination(Point destination) {
-        this.destination = destination;
-    }
-
     public Point getPieceToRemove() {
         return pieceToRemove;
     }
 
-    public void setPieceToRemove(Point pieceToRemove) {
-        this.pieceToRemove = pieceToRemove;
-    }
-
     public boolean hasPieceToRemove() {
         return this.pieceToRemove != null;
+    }
+
+    public void setKingPiece() {
+        this.kingPiece = true;
     }
 
     @Override
