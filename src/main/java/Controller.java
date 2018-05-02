@@ -17,12 +17,16 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
+import main.java.model.AI;
+import main.java.model.Board;
+import main.java.model.Move;
+import main.java.model.MoveGenerator;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -32,12 +36,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import main.java.model.*;
-
 /**
- * TODO: Give explanation on rejecting invalid user moves
- * TODO: Give rules in help window
- * TODO: Fix multi-jump detection - backwards jumps are seemingly allowed
+ * TODO: Pause on AI multijump
  *
  * @author tp275
  */
@@ -133,6 +133,10 @@ public class Controller implements Initializable {
         selectedPiece.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
     }
 
+    /**
+     *
+     * @param mouseEvent
+     */
     private void highlightValidMove(MouseEvent mouseEvent) {
         // Make square green if dropping the piece here would be a valid move
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY());
@@ -170,10 +174,10 @@ public class Controller implements Initializable {
         // Get cursor's location in the scene
         Point2D mousePointScene = selectedPiece.localToScene(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
         Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
-
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
+
         if( r != null && !aiTurn) {
             Point2D rectScene = r.localToScene(r.getX(), r.getY()); // get pt in scene that the rectangle is at
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
@@ -192,22 +196,12 @@ public class Controller implements Initializable {
                     removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
                 }
                 timeline.play(); // play animation
-                System.out.println("Board after human move:");
-                internalBoard.printBoard();
+
                 checkForWin('r');
 
-                selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
-                selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
-                if (selectedPiece.getLayoutY() == 30.0) {
-                    makeKing(selectedPiece, 'r');
-                }
-                // if player's move was a jump move, and there is an available jump move with it's origin at the original move's destination
-                if (playerMove.hasPieceToRemove() && (moveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination()).size() > 0)) {
-                    aiTurn = false;
-                    turnText.setText(" Human multi-jump!");
-                } else {
-                    aiTurn = true;
-                }
+                checkForHumanKing();
+
+                checkForMultiJump(playerMove);
 
             } else { // if move is not valid, move the circle back to its original position
                 timeline = getInvalidMoveTimeline(timeline);
@@ -230,7 +224,30 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     */
+    private void checkForHumanKing() {
+        selectedPiece.setLayoutX(indexToPixel(pixelToIndex(selectedPiece.getLayoutX())-1));
+        selectedPiece.setLayoutY(indexToPixel(pixelToIndex(selectedPiece.getLayoutY())-1));
+        if (selectedPiece.getLayoutY() == 30.0) {
+            makeKing(selectedPiece, 'r');
+        }
+    }
 
+    /**
+     *
+     * @param playerMove
+     */
+    private void checkForMultiJump(Move playerMove) {
+        // if player's move was a jump move, and there is an available jump move with it's origin at the original move's destination
+        if (playerMove.hasPieceToRemove() && (moveGenerator.detectMultiMove(internalBoard, 'r', playerMove.getDestination()).size() > 0)) {
+            aiTurn = false;
+            turnText.setText(" Human multi-jump!");
+        } else {
+            aiTurn = true;
+        }
+    }
 
     /**
      *
@@ -241,11 +258,6 @@ public class Controller implements Initializable {
         internalBoard = internalBoard.updateLocation(aiMove);
         System.out.println("\nBoard after AI's move:");
         internalBoard.printBoard();
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         updateAIPiece(aiMove);
         checkForWin('w');
         if ((moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
@@ -571,6 +583,11 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param colour
+     * @return
+     */
     private ArrayList<Move> findValidMoves(char colour) {
         return moveGenerator.findValidMoves(internalBoard, colour);
     }

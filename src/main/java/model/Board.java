@@ -124,6 +124,10 @@ public class Board {
         return new Board(boardCopy);
     }
 
+    /**
+     *
+     * @param oldPiece
+     */
     private void decreaseCounts(Piece oldPiece) {
         if (oldPiece != null) {
             if (oldPiece.getColour() == 'r') {
@@ -140,6 +144,11 @@ public class Board {
         }
     }
 
+    /**
+     *
+     * @param move
+     * @param color
+     */
     public void reverseMove(Move move, char color) {
         Piece dest = this.board[move.destination.x][move.destination.y];
         this.board[move.origin.x][move.origin.y] = dest;
@@ -177,6 +186,10 @@ public class Board {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int winCheck() {
         if (this.whitePieces == 0) {
             return 1;

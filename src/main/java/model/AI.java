@@ -37,8 +37,6 @@ public class AI {
      * @return
      */
     private int minimax(Board board, int depth, int alpha, int beta, char color, Move move) {
-        board.printBoard();
-        System.out.println();
         if (depth == 0 || board.winCheck() != 0) {
             return heuristic(board, color);
         }

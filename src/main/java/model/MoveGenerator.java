@@ -28,6 +28,12 @@ public class MoveGenerator {
         return validMoves;
     }
 
+    /**
+     *
+     * @param validMoves
+     * @param colour
+     * @return
+     */
     private ArrayList<Move> updateKings(ArrayList<Move> validMoves, char colour) {
         for (Move m : validMoves) {
             if (m.destination.x == 0 && colour=='r') {
