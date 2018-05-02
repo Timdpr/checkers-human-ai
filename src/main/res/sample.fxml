@@ -30,7 +30,7 @@
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Pane fx:id="boardPane" onMouseDragged="#highlightSquare" onMouseExited="#leaveBoard" onMouseMoved="#highlightSquare" onMouseReleased="#checkReleaseOutOfBoard" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000;">
+        <Pane fx:id="boardPane" onMouseDragged="#addShadowSquare" onMouseExited="#leaveBoard" onMouseMoved="#addShadowSquare" onMouseReleased="#checkReleaseOutOfBoard" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000000;">
             <Pane id="row_h" fx:id="row_h" prefHeight="60.0" prefWidth="480.0">
                 <Rectangle fx:id="s0_0" arcHeight="5.0" arcWidth="2.0" height="60.0" stroke="BLACK" width="60.0">
                     <fill>
