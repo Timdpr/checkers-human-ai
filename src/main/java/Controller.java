@@ -587,7 +587,7 @@ public class Controller implements Initializable {
         buttonRestart.setStyle("-fx-background-color:#DCDCDC");
         buttonRestart.setOnAction(event -> { // set restart action: loads the jar again and closes the current instance
             try {
-                Runtime.getRuntime().exec("java -jar checkers.jar");
+                Runtime.getRuntime().exec("java -jar ist-checkers.jar");
             } catch (IOException e) {
                 e.printStackTrace();
             }
