@@ -6,6 +6,8 @@ import java.util.ArrayList;
 /**
  * This class can be used to generate all valid moves for a given player and board state, as well as detecting whether
  * there is a multi-move available
+ *
+ * @author tp275
  */
 public class MoveGenerator {
 

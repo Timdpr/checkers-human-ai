@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * The Controller class, neatly wedged inbetween the .fxml view and the /model game model.
+ * The Controller class, neatly wedged in-between the .fxml view and the /model game model.
  * Takes input from the player interacting with the GUI, updates and plays the internal model including controlling an
  * AI, and updates the GUI with the model's updated state.
  *
@@ -257,7 +257,7 @@ public class Controller implements Initializable {
         Move aiMove = runMinimax(); // Minimax!
         internalBoard = internalBoard.updateLocation(aiMove); // update model board
         updateAIPiece(aiMove); // update GUI board
-        checkForWin('w'); // check (& execure) whether the AI has won
+        checkForWin('w'); // check (& execute) whether the AI has won
 
         if ((moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
             aiTurn = true; // play again if it has a multi-move available!
@@ -387,7 +387,7 @@ public class Controller implements Initializable {
      * snap back to its original position.
      * @param mouseEvent seemingly redundant but needed to fix bug where piece gets stuck
      */
-    public void leaveBoard(MouseEvent mouseEvent) {
+    private void leaveBoard(MouseEvent mouseEvent) {
         if (pieceIsMoving) {
             final Timeline timeline = new Timeline();
             offset = new Point2D(0.0d, 0.0d);
@@ -404,7 +404,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Dispays the help popup when the help button is pressed
+     * Displays the help popup when the help button is pressed
      */
     public void displayHelp() {
         JFXDialogLayout dialogLayout = new JFXDialogLayout();

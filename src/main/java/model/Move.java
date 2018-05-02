@@ -6,6 +6,8 @@ import java.util.Objects;
 /**
  * A Move object, with an origin, destination and optional 'piece to remove' (in a jump) as board-level Points.
  * Also has 'kingPiece' boolean which can be checked to see if the piece moved in the Move should become a king.
+ *
+ * @author tp275
  */
 public class Move {
 

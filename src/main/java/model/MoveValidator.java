@@ -4,6 +4,7 @@ import java.awt.Point;
 
 /**
  * Contains helper methods for checking the validity of 'sliding' and 'jumping' moves.
+ *
  * @author tp275
  */
 public class MoveValidator {
