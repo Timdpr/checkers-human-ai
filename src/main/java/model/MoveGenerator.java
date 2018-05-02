@@ -18,13 +18,12 @@ public class MoveGenerator {
      * @return ArrayList of all valid Moves for all pieces of the given colour which are on the given Board
      */
     public ArrayList<Move> findValidMoves(Board board, char colour) {
-        Board boardCopy = new Board(board.getBoard());
-        ArrayList<Move> validMoves = new ArrayList<>(getValidJumps(boardCopy, colour)); // first find valid jumps
+        ArrayList<Move> validMoves = new ArrayList<>(getValidJumps(board, colour)); // first find valid jumps
         if (validMoves.size() > 0) { // if there is a jump, it has to be made!
             updateKings(validMoves, colour);
             return validMoves;
         }
-        validMoves.addAll(getValidSlides(boardCopy, colour)); // otherwise, now find valid slide moves
+        validMoves.addAll(getValidSlides(board, colour)); // otherwise, now find valid slide moves
         validMoves = updateKings(validMoves, colour);
         return validMoves;
     }
