@@ -14,7 +14,7 @@ public class Board {
     private int redKings;
 
     /**
-     * Creates and sets up pieces on the board in their initial state
+     * Creates and sets up pieces on the board in their initial state, and initialises piece counts
      */
     public Board() {
         this.board = getInitialBoard();
@@ -26,6 +26,7 @@ public class Board {
 
     /**
      * Creates a new Board object with it's board as the given Piece[][] - useful for copying
+     * Also sets piece counts as they should be
      * @param board the state representation for the board to hold
      */
     public Board(Piece[][] board) {
@@ -45,7 +46,8 @@ public class Board {
     }
 
     /**
-     * @param oldPiece
+     * Assume Piece is being added, so increase relevant piececounts
+     * @param oldPiece the Piece to update with
      */
     private void increaseCounts(Piece oldPiece) {
         if (oldPiece.getColour() == 'r') {
@@ -125,8 +127,8 @@ public class Board {
     }
 
     /**
-     *
-     * @param oldPiece
+     * Assume Piece is being removed, so decrease relevant piececounts
+     * @param oldPiece the Piece to update with
      */
     private void decreaseCounts(Piece oldPiece) {
         if (oldPiece != null) {
@@ -145,9 +147,9 @@ public class Board {
     }
 
     /**
-     *
-     * @param move
-     * @param color
+     * Reverses the given move on the current board
+     * @param move the Move to reverse
+     * @param color the colour of the moving piece
      */
     public void reverseMove(Move move, char color) {
         Piece dest = this.board[move.destination.x][move.destination.y];
@@ -163,8 +165,8 @@ public class Board {
     }
 
     /**
-     *
-     * @return
+     * Checks for a win for either team by checking piececounts
+     * @return 1 if red win, -1 if white win, else 0
      */
     public int winCheck() {
         if (this.whitePieces == 0) {
@@ -175,18 +177,30 @@ public class Board {
         return 0;
     }
 
+    /**
+     * @return # white pieces on board
+     */
     public int getWhitePieces() {
         return whitePieces;
     }
 
+    /**
+     * @return # red pieces on board
+     */
     public int getRedPieces() {
         return redPieces;
     }
 
+    /**
+     * @return # white kings on board
+     */
     public int getWhiteKings() {
         return whiteKings;
     }
 
+    /**
+     * @return # red kings on board
+     */
     public int getRedKings() {
         return redKings;
     }
