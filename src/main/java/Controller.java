@@ -250,7 +250,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Plays the AI's turn. Gets the 'best' valid move using minimax, updates model & GUI and checks for a win and multi-move
+     * Plays the AI's turn. Gets the 'best' valid move using minimax, updates model, GUI and checks for a win and multi-move
      */
     private void playAITurn() {
         turnText.setText(" AI");
@@ -491,6 +491,7 @@ public class Controller implements Initializable {
     /**
      * Applies the correct king image to the given Circle, after checking the colour
      * @param circle the Circle to update
+     * @param player the colour of the piece
      */
     private void makeKing(Circle circle, char player) {
         Image crown = new Image((player == 'r') ? "main/res/crown_r.png" : "main/res/crown_w.png");
@@ -548,6 +549,7 @@ public class Controller implements Initializable {
 
     /**
      * Checks whether the given player has won or lost, and shows a relevant popup if so
+     * @param colour colour of the player
      */
     private void checkForWin(char colour) {
         if (findValidMoves(colour).size() == 0) {

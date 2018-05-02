@@ -14,9 +14,10 @@ public class MoveGenerator {
     private MoveValidator check = new MoveValidator();
 
     /**
-     * Populates and returns an ArrayList<Move> with valid moves for all pieces of the given colour (note that if there
+     * Populates and returns an ArrayList with valid moves for all pieces of the given colour (note that if there
      * is one or more jump move they will be the only ones returned, as they have have to be made as per the rules)
-     *
+     * @param board the board state to find valid moves on
+     * @param colour the player to find valid moves for
      * @return ArrayList of all valid Moves for all pieces of the given colour which are on the given Board
      */
     public ArrayList<Move> findValidMoves(Board board, char colour) {
