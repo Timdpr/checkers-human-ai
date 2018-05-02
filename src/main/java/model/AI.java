@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 /**
+ * Uses the minimax algorithm with alpha-beta pruning and a heuristic to determine the best available move for the AI.
  *
+ * @author tp275
  */
 public class AI {
 
@@ -28,64 +30,63 @@ public class AI {
 
     /**
      * The minimax algorithm, including alpha-beta pruning.
-     * @param board
-     * @param depth
-     * @param alpha
-     * @param beta
-     * @param color
-     * @param move
-     * @return
+     * @param board the game state
+     * @param depth the max depth to generate the tree
+     * @param alpha alpha pruning parameter
+     * @param beta beta pruning parameter
+     * @param color essentially MIN/MAX player, here 'w' == MAX
+     * @param move the last move, used in reversing moves
+     * @return the best score possible for the AI (given that the human plays with the same technique!)
      */
     private int minimax(Board board, int depth, int alpha, int beta, char color, Move move) {
-        if (depth == 0 || board.winCheck() != 0) {
-            return heuristic(board, color);
+        if (depth == 0 || board.winCheck() != 0) { // if at depth limit or at leaf node
+            return heuristic(board, color); // return node value
         }
 
-        if (color == 'w') {
+        if (color == 'w') { // if player == MAX
             int bestValue = Integer.MIN_VALUE;
             ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
-            for (Move m : children) {
+            for (Move m : children) { // for each child of node
                 int eval = 0;
-                Board childBoard = board.updateLocation(m);
+                Board childBoard = board.updateLocation(m); // (make child)
                 ArrayList<Move> multiMoves = moveGenerator.detectMultiMove(childBoard, 'w', m.getDestination());
-                if (multiMoves.size() > 0) {
+                if (multiMoves.size() > 0) { // if there is a multimove, recursively call MAX again...
                     for (Move mm : multiMoves) {
                         eval = minimax(childBoard.updateLocation(mm), depth-1, alpha, beta, 'w', mm);
-                        board.reverseMove(move, 'w');
+                        board.reverseMove(move, 'w'); // reverse move
                     }
-                } else {
+                } else { // ...otherwise, recursively call minimax with MIN
                     eval = minimax(childBoard, depth-1, alpha, beta, 'r', m);
-                    board.reverseMove(move, 'r');
+                    board.reverseMove(move, 'r'); // reverse move
                 }
-                bestValue = Math.max(bestValue, eval);
-                alpha = Math.max(alpha, bestValue);
-                if (alpha > beta) {
+                bestValue = Math.max(bestValue, eval); // best value is max
+                alpha = Math.max(alpha, bestValue); // alpha is max
+                if (alpha > beta) { // pruning
                     break;
                 }
             }
             return bestValue;
         }
 
-        if (color == 'r') {
+        if (color == 'r') { // if player == MIN
             int bestValue = Integer.MAX_VALUE;
             ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
-            for (Move m : children) {
+            for (Move m : children) { // for each child of node
                 int eval = 0;
-                Board childBoard = board.updateLocation(m);
+                Board childBoard = board.updateLocation(m); // (make child)
                 ArrayList<Move> multiMoves = moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination());
-                if (multiMoves.size() > 0) {
+                if (multiMoves.size() > 0) { // if there is a multimove, recursively call MIN again...
                     for (Move mm : multiMoves) {
-                        eval = minimax(childBoard.updateLocation(mm), depth-1, alpha, beta, 'r', mm);
-                        board.reverseMove(move, 'r');
+                        eval = minimax(childBoard.updateLocation(mm), depth-1, alpha, beta, 'r', mm); // recursive call
+                        board.reverseMove(move, 'r'); // reverse move
                     }
-                } else {
+                } else {  // ...otherwise, recursively call minimax with MAX
                     eval = minimax(childBoard, depth-1, alpha, beta, 'w', m);
-                    board.reverseMove(move, 'w');
+                    board.reverseMove(move, 'w'); // reverse move
                 }
-                bestValue = Math.min(bestValue, eval);
-                beta = Math.min(beta, bestValue);
-
-                if (alpha > beta) {
+                bestValue = Math.min(bestValue, eval); // best value is min
+                beta = Math.min(beta, bestValue); // beta is min
+                if (alpha > beta) { // pruning
                     break;
                 }
             }
