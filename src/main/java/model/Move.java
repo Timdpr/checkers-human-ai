@@ -4,7 +4,8 @@ import java.awt.Point;
 import java.util.Objects;
 
 /**
- *
+ * A Move object, with an origin, destination and optional 'piece to remove' (in a jump) as board-level Points.
+ * Also has 'kingPiece' boolean which can be checked to see if the piece moved in the Move should become a king.
  */
 public class Move {
 
@@ -14,9 +15,9 @@ public class Move {
     protected boolean kingPiece;
 
     /**
-     *
-     * @param origin
-     * @param destination
+     * Creates a new Move object with just an origin and destination Point
+     * @param origin the origin Point of the move
+     * @param destination the destination Point of the move
      */
     public Move(Point origin, Point destination) {
         this.origin = origin;
@@ -26,10 +27,10 @@ public class Move {
     }
 
     /**
-     *
-     * @param origin
-     * @param destination
-     * @param pieceToRemove
+     * Creates a new Move object with an origin, destination and a 'piece to remove' location. This will be a jump.
+     * @param origin the origin Point of the move
+     * @param destination the destination Point of the move
+     * @param pieceToRemove the Point location of the piece to remove
      */
     public Move(Point origin, Point destination, Point pieceToRemove) {
         this.origin = origin;
@@ -38,48 +39,46 @@ public class Move {
     }
 
     /**
-     *
-     * @return
+     * Returns the origin Point of the move
+     * @return the origin Point of the move
      */
     public Point getOrigin() {
         return origin;
     }
 
     /**
-     *
-     * @return
+     * Returns the destination Point of the move
+     * @return the destination Point of the move
      */
     public Point getDestination() {
         return destination;
     }
 
     /**
-     *
-     * @return
+     * Returns the 'piece to remove' Point of the move
+     * @return the 'piece to remove' Point of the move
      */
     public Point getPieceToRemove() {
         return pieceToRemove;
     }
 
     /**
-     *
-     * @return
+     * Returns true if there is a 'piece to remove' set in the move (and therefore the move is a jump move!)
+     * @return true if there is a 'piece to remove' set in the move (and therefore the move is a jump move!), else false
      */
     public boolean hasPieceToRemove() {
         return this.pieceToRemove != null;
     }
 
     /**
-     *
+     * Sets the kingPiece boolean as true
      */
     public void setKingPiece() {
         this.kingPiece = true;
     }
 
     /**
-     *
-     * @param o
-     * @return
+     * @return whether given object has the same origin and destination as this one
      */
     @Override
     public boolean equals(Object o) {
@@ -93,8 +92,7 @@ public class Move {
     }
 
     /**
-     *
-     * @return
+     * @return the object's hashcode, using origin and destination
      */
     @Override
     public int hashCode() {
