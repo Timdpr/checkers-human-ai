@@ -66,7 +66,7 @@ public class Controller implements Initializable {
     private Rectangle selectedRectangle;
     private Rectangle originRectangle;
     
-    private boolean movingPiece;
+    private boolean pieceIsMoving;
     private Point humanMoveOrigin;
 
     private Point2D offset;
@@ -112,7 +112,7 @@ public class Controller implements Initializable {
         selectedPiece.setOpacity(0.4d);
         offset = new Point2D(mouseEvent.getX(), mouseEvent.getY());
 
-        movingPiece = true;
+        pieceIsMoving = true;
     }
 
     /**
@@ -123,14 +123,14 @@ public class Controller implements Initializable {
     public void movePiece(MouseEvent mouseEvent) {
         Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
         Point2D mousePointScene = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
-        if( notInBoard(mousePointScene) || aiTurn) { // check for piece being in board or it not being human's turn
+        if(notInBoard(mousePointScene) || aiTurn) { // check for piece being in board or it not being human's turn
             return;  // don't relocate() b/c will resize Pane
         }
         if (highlightCheckBox.isSelected()) {
             highlightValidMove(mouseEvent);
         }
-        Point2D mousePoint_p = selectedPiece.localToParent(mousePoint);
-        selectedPiece.relocate(mousePoint_p.getX()-offset.getX(), mousePoint_p.getY()-offset.getY());
+        Point2D mousePointParent = selectedPiece.localToParent(mousePoint);
+        selectedPiece.relocate(mousePointParent.getX()-offset.getX(), mousePointParent.getY()-offset.getY());
     }
 
     /**
@@ -173,15 +173,15 @@ public class Controller implements Initializable {
         offset = new Point2D(0.0d, 0.0d);
         // Get cursor's location in the scene
         Point2D mousePointScene = selectedPiece.localToScene(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
-        Rectangle r = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
+        Rectangle rec = pickRectangle( mousePointScene.getX(), mousePointScene.getY() ); // get rectangle under cursor
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
 
-        if( r != null && !aiTurn) {
-            Point2D rectScene = r.localToScene(r.getX(), r.getY()); // get pt in scene that the rectangle is at
+        if( rec != null && !aiTurn) {
+            Point2D rectScene = rec.localToScene(rec.getX(), rec.getY()); // get pt in scene that the rectangle is at
             Point2D parent = boardPane.sceneToLocal(rectScene.getX(), rectScene.getY());
-            Point destination = idToPoint(r.getId()); // get board location of the piece's location
+            Point destination = idToPoint(rec.getId()); // get board location of the piece's location
 
             // Check move is valid by finding valid moves for red and checking that moves.indexOf(move) returns > -1
             ArrayList<Move> moves = findValidMoves('r');
@@ -216,7 +216,7 @@ public class Controller implements Initializable {
             );
             timeline.play();
         }
-        movingPiece = false;
+        pieceIsMoving = false;
 
         ///// AI MOVE: /////
         if (aiTurn) {
@@ -256,8 +256,6 @@ public class Controller implements Initializable {
         turnText.setText(" AI");
         Move aiMove = ai.play(new Board(internalBoard.getBoard()), (int)sliderDifficulty.getValue(), findValidMoves('w'));
         internalBoard = internalBoard.updateLocation(aiMove);
-        System.out.println("\nBoard after AI's move:");
-        internalBoard.printBoard();
         updateAIPiece(aiMove);
         checkForWin('w');
         if ((moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
@@ -286,52 +284,52 @@ public class Controller implements Initializable {
      * @return
      */
     private Rectangle pickRectangle(double sceneX, double sceneY) {
-        Rectangle pickedRectangle = null;
-        for( Pane row : panes ) {
+        Rectangle pickedRec = null;
+        for (Pane row : panes) {
             Point2D mousePoint = new Point2D(sceneX, sceneY);
-            Point2D mpLocal = row.sceneToLocal(mousePoint);
-            if( row.contains(mpLocal) ) {
-                for( Node cell : row.getChildrenUnmodifiable() ) {
-                    Point2D mpLocalCell = cell.sceneToLocal(mousePoint);
-                    if( cell.contains(mpLocalCell) ) {
-                        pickedRectangle = (Rectangle)cell;
+            Point2D mousePointLocal = row.sceneToLocal(mousePoint);
+            if (row.contains(mousePointLocal)) {
+                for (Node cell : row.getChildrenUnmodifiable()) {
+                    Point2D mousePointLocalCell = cell.sceneToLocal(mousePoint);
+                    if (cell.contains(mousePointLocalCell)) {
+                        pickedRec = (Rectangle)cell;
                         break;
                     }}
                 break;
             }}
-        return pickedRectangle;
+        return pickedRec;
     }
 
     /**
      *
-     * @param evt
+     * @param mouseEvent
      */
-    public void checkReleaseOutOfBoard(MouseEvent evt) {
-        Point2D mousePoint_s = new Point2D(evt.getSceneX(), evt.getSceneY());
-        if(notInBoard(mousePoint_s)) {
-            leaveBoard(evt);
-            evt.consume();
+    public void checkReleaseOutOfBoard(MouseEvent mouseEvent) {
+        Point2D mousePointScene = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+        if(notInBoard(mousePointScene)) {
+            leaveBoard(mouseEvent);
+            mouseEvent.consume();
         }
     }
 
     /**
      *
-     * @param evt
+     * @param mouseEvent
      */
-    public void highlightSquare(MouseEvent evt) {
-        Rectangle r = pickRectangle(evt);
-        if( r == null ) {
-            if( selectedRectangle != null ) {
+    public void highlightSquare(MouseEvent mouseEvent) {
+        Rectangle r = pickRectangle(mouseEvent);
+        if (r == null) {
+            if (selectedRectangle != null) {
                 // deselect previous
-                selectedRectangle.setEffect( null );
+                selectedRectangle.setEffect(null);
             }
             selectedRectangle = null;
             return;  // might be out of area but w/i scene
         }
-        if( r != selectedRectangle ) {
-            if( selectedRectangle != null ) {
+        if (r != selectedRectangle) {
+            if (selectedRectangle != null) {
                 // deselect previous
-                selectedRectangle.setEffect( null );
+                selectedRectangle.setEffect(null);
             }
             // new selection
             selectedRectangle = r;
@@ -345,10 +343,10 @@ public class Controller implements Initializable {
      */
     private void highlightSquareGreen(MouseEvent mouseEvent) {
         Rectangle r = pickRectangle(mouseEvent);
-        if( r != selectedRectangle ) {
-            if( selectedRectangle != null ) {
+        if (r != selectedRectangle) {
+            if (selectedRectangle != null) {
                 // deselect previous
-                selectedRectangle.setEffect( null );
+                selectedRectangle.setEffect(null);
             }
             // new selection
             selectedRectangle = r;
@@ -365,10 +363,10 @@ public class Controller implements Initializable {
      * @param mouseEvent
      */
     public void leaveBoard(MouseEvent mouseEvent) {
-        if( movingPiece ) {
+        if (pieceIsMoving) {
             final Timeline timeline = new Timeline();
             offset = new Point2D(0.0d, 0.0d);
-            movingPiece = false;
+            pieceIsMoving = false;
             timeline.getKeyFrames().add(
                     new KeyFrame(Duration.millis(200),
                             new KeyValue(selectedPiece.layoutXProperty(), startLayoutX),

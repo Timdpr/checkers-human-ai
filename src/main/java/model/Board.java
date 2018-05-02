@@ -163,30 +163,6 @@ public class Board {
     }
 
     /**
-     * Prints a text representation of the current board
-     */
-    public void printBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (board[i][j] != null) {
-                    Piece p = getPiece(i, j);
-                    if (p.isKing()) {
-                        if (p.getColour() == 'r') {
-                            System.out.print("R ");
-                        } else {
-                            System.out.print("W ");
-                        }
-                    } else {
-                        System.out.print(board[i][j].getColour() + " ");
-                    }
-                } else {
-                    System.out.print("- ");
-                }
-            } System.out.println();
-        }
-    }
-
-    /**
      *
      * @return
      */
