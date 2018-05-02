@@ -374,11 +374,11 @@ public class Controller implements Initializable {
             }
             // make selectedRectangle the new rectangle and add colour
             selectedRectangle = r;
-            ColorInput color = new ColorInput();
-            color.setPaint(Color.color(0,1,0, 0.6));
-            color.setHeight(60);
-            color.setWidth(60);
-            selectedRectangle.setEffect(color);
+            ColorInput colour = new ColorInput();
+            colour.setPaint(Color.color(0,1,0, 0.6));
+            colour.setHeight(60);
+            colour.setWidth(60);
+            selectedRectangle.setEffect(colour);
         }
     }
 
