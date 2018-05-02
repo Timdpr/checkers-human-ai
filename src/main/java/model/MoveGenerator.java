@@ -1,10 +1,11 @@
 package main.java.model;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
- *
+ * This class can be used to generate all valid moves for a given player and board state, as well as detecting whether
+ * there is a multi-move available
  */
 public class MoveGenerator {
 
@@ -29,10 +30,11 @@ public class MoveGenerator {
     }
 
     /**
-     *
-     * @param validMoves
-     * @param colour
-     * @return
+     * Kings are generated here using valid move lists and a given colour, and setting 'kingPiece' in
+     * the Moves, which can later be updated. This is more optimised than checking the board itself!
+     * @param validMoves a list of moves to check and update
+     * @param colour the colour of the pieces in the moves
+     * @return the updated Move list
      */
     private ArrayList<Move> updateKings(ArrayList<Move> validMoves, char colour) {
         for (Move m : validMoves) {
@@ -46,10 +48,10 @@ public class MoveGenerator {
     }
 
     /**
-     * Populates validMoves with all valid slide moves for pieces of the given colour
-     *
+     * Returns move list with all valid slide moves for pieces of the given colour
      * @param board the internal board state
      * @param colour the colour of pieces to generate moves for ('r' or 'w')
+     * @return move list with all valid slide moves for pieces of the given colour
      */
     private ArrayList<Move> getValidSlides(Board board, char colour) {
         ArrayList<Move> validSlides = new ArrayList<>();
@@ -89,10 +91,10 @@ public class MoveGenerator {
     }
 
     /**
-     * Populates validMoves with all valid jump moves for pieces of the given colour
-     *
+     * Returns move list with all valid jump moves for pieces of the given colour
      * @param board the internal board state
      * @param colour the colour of pieces to generate moves for ('r' or 'w')
+     * @return move list with all valid slide moves for pieces of the given colour
      */
     private ArrayList<Move> getValidJumps(Board board, char colour) {
         ArrayList<Move> validJumps = new ArrayList<>();
