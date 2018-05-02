@@ -14,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/main/res/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/main/res/view.fxml"));
         primaryStage.setTitle("Minimax Checkers");
 
         primaryStage.getIcons().addAll(

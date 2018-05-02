@@ -387,7 +387,7 @@ public class Controller implements Initializable {
      * snap back to its original position.
      * @param mouseEvent seemingly redundant but needed to fix bug where piece gets stuck
      */
-    private void leaveBoard(MouseEvent mouseEvent) {
+    public void leaveBoard(MouseEvent mouseEvent) {
         if (pieceIsMoving) {
             final Timeline timeline = new Timeline();
             offset = new Point2D(0.0d, 0.0d);
