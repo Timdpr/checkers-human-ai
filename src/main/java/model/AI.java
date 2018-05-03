@@ -112,8 +112,8 @@ public class AI {
             return color == 'w' ? Integer.MAX_VALUE : Integer.MIN_VALUE;
         }
 
-        int whiteState = board.getWhitePieces() + (board.getWhiteKings()*2);
-        int redState = board.getRedPieces() + (board.getRedKings()*2);
+        int whiteState = board.getWhitePieces() + (board.getWhiteKings());
+        int redState = board.getRedPieces() + (board.getRedKings());
 
         return (color=='r') ? redState-whiteState : whiteState-redState;
     }
