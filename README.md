@@ -1,6 +1,7 @@
 # ![Logo](https://i.imgur.com/n3Gronz.png) Checkers: Human vs AI ![Logo](https://i.imgur.com/n3Gronz.png)
 
 #### Welcome, fellow human. Ready to crush the AI uprising via the medium of checkers?
+A clean, simple, drag-and-drop checkers/draughts game with an α-β minimax AI
 
 ## Download?
 
