@@ -5,7 +5,7 @@ A clean, simple, drag-and-drop checkers/draughts game with an α-β minimax AI
 
 ## Download?
 
-[Download.](https://github.com/Timdpr/ist-checkers/releases/download/v1.0/checkers.exe) Also see the [releases](https://github.com/Timdpr/ist-checkers/releases) page.
+[Download.](https://github.com/Timdpr/checkers-human-ai/releases/download/v1.0.1/checkers.exe) Also see the [releases](https://github.com/Timdpr/ist-checkers/releases) page.
 
 ## Built with
 
