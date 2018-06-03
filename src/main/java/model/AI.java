@@ -112,8 +112,23 @@ public class AI {
             return color == 'w' ? Integer.MAX_VALUE : Integer.MIN_VALUE;
         }
 
-        int whiteState = board.getWhitePieces() + (board.getWhiteKings());
-        int redState = board.getRedPieces() + (board.getRedKings());
+        // +2 for pawn, +4 for king
+        int whiteState = (board.getWhitePieces() + board.getWhiteKings()) * 2;
+        int redState = (board.getRedPieces() + board.getRedKings()) * 2;
+
+        Piece[][] boardArray = board.getBoard();
+        for (int i = 0; i < 8; i++) {
+            for (int j = (i + 1) % 2; j < 8; j += 2) {
+                Piece piece = boardArray[i][j];
+                if (piece != null && (j == 0 || j == 7)) {
+                    if (piece.getColour() == 'w') { // +1 for piece on edge of board
+                        whiteState += 1;
+                    } else {
+                        redState += 1;
+                    }
+                }
+            }
+        }
 
         return (color=='r') ? redState-whiteState : whiteState-redState;
     }
