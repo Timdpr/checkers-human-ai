@@ -178,6 +178,13 @@ public class Board {
     }
 
     /**
+     * @return total # pieces on board
+     */
+    public int getPieces() {
+        return whitePieces + redPieces;
+    }
+
+    /**
      * @return # white pieces on board
      */
     public int getWhitePieces() {
@@ -203,5 +210,27 @@ public class Board {
      */
     public int getRedKings() {
         return redKings;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder boardString = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = board[i][j];
+                if (piece == null) {
+                    boardString.append('-');
+                } else {
+                    if (piece.isKing()) {
+                        boardString.append(Character.toUpperCase(piece.getColour()));
+                    } else {
+                        boardString.append(piece.getColour());
+                    }
+                }
+                boardString.append(" ");
+            }
+            boardString.append("\n");
+        }
+        return boardString.toString();
     }
 }

@@ -26,7 +26,7 @@ import main.java.model.Board;
 import main.java.model.Move;
 import main.java.model.MoveGenerator;
 
-import java.awt.Point;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -587,7 +587,7 @@ public class Controller implements Initializable {
         buttonRestart.setStyle("-fx-background-color:#DCDCDC");
         buttonRestart.setOnAction(event -> { // set restart action: loads the jar again and closes the current instance
             try {
-                Runtime.getRuntime().exec("java -jar ist-checkers.jar");
+                Runtime.getRuntime().exec("java -jar checkers.jar");
             } catch (IOException e) {
                 e.printStackTrace();
             }

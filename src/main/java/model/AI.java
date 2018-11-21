@@ -12,6 +12,14 @@ import java.util.HashMap;
 public class AI {
 
     private MoveGenerator moveGenerator = new MoveGenerator();
+    private static final int[][] positionWeightLookup = {{0, 4, 0, 4, 0, 4, 0, 4},
+                                                         {4, 0, 3, 0, 3, 0, 3, 0},
+                                                         {0, 3, 0, 2, 0, 2, 0, 4},
+                                                         {4, 0, 2, 0, 1, 0, 3, 0},
+                                                         {0, 3, 0, 1, 0, 2, 0, 4},
+                                                         {4, 0, 2, 0, 2, 0, 3, 0},
+                                                         {0, 3, 0, 3, 0, 3, 0, 4},
+                                                         {4, 0, 4, 0, 4, 0, 4, 0}};
 
     /**
      * Runs the minimax algorithm on all moves given in the list parameter, and returns the best one
@@ -21,7 +29,7 @@ public class AI {
      * @return the best move to play from the moves list, as evaluated by the minimax algorithm
      */
     public Move play(Board board, int depth, ArrayList<Move> moves) {
-        HashMap<Integer, Move> scores = new HashMap<>();
+        HashMap<Double, Move> scores = new HashMap<>();
         for (Move move : moves) {
             scores.put(minimax(board.updateLocation(move), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, 'w', move), move);
         }
@@ -38,16 +46,17 @@ public class AI {
      * @param move the last move, used in reversing moves
      * @return the best score possible for the AI (given that the human plays with the same technique!)
      */
-    private int minimax(Board board, int depth, int alpha, int beta, char color, Move move) {
+    private double minimax(Board board, int depth, double alpha, double beta, char color, Move move) {
+//        System.out.println(board.toString());
         if (depth == 0 || board.winCheck() != 0) { // if at depth limit or at leaf node
-            return heuristic(board, color); // return node value
+            return complexHeuristic(board, color); // return node value
         }
 
         if (color == 'w') { // if player == MAX
-            int bestValue = Integer.MIN_VALUE;
+            double bestValue = Integer.MIN_VALUE;
             ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
             for (Move m : children) { // for each child of node
-                int eval = 0;
+                double eval = 0;
                 Board childBoard = board.updateLocation(m); // (make child)
                 ArrayList<Move> multiMoves = moveGenerator.detectMultiMove(childBoard, 'w', m.getDestination());
                 if (multiMoves.size() > 0) { // if there is a multimove, recursively call MAX again...
@@ -69,10 +78,10 @@ public class AI {
         }
 
         if (color == 'r') { // if player == MIN
-            int bestValue = Integer.MAX_VALUE;
+            double bestValue = Integer.MAX_VALUE;
             ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
             for (Move m : children) { // for each child of node
-                int eval = 0;
+                double eval = 0;
                 Board childBoard = board.updateLocation(m); // (make child)
                 ArrayList<Move> multiMoves = moveGenerator.detectMultiMove(childBoard, 'r', m.getDestination());
                 if (multiMoves.size() > 0) { // if there is a multimove, recursively call MIN again...
@@ -131,5 +140,100 @@ public class AI {
         }
 
         return (color=='r') ? redState-whiteState : whiteState-redState;
+    }
+
+    private int weightedHeuristic(Board board, char color) {
+        // TODO: if there is more than one color check, make two heuristics and have one check when the method is called!
+        int win = board.winCheck();
+        if (win == 1) {
+            return color == 'r' ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+        if (win == -1) {
+            return color == 'w' ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
+        int redState = 0;
+        int whiteState = 0;
+
+        Piece[][] boardArray = board.getBoard();
+        for (int i = 0; i < 8; i++) {
+            for (int j = (i + 1) % 2; j < 8; j += 2) {
+                Piece piece = boardArray[i][j];
+                if (piece != null) {
+                    if (piece.getColour() == 'r') {
+                        redState += piece.isKing() ? (5 * positionWeightLookup[i][j]) : (3 * positionWeightLookup[i][j]);
+                    } else {
+                        whiteState += piece.isKing() ? (5 * positionWeightLookup[i][j]) : (3 * positionWeightLookup[i][j]);
+                    }
+                }
+            }
+        }
+        return (color=='r') ? redState-whiteState : whiteState-redState;
+    }
+
+    private double complexHeuristic(Board board, char color) {
+        int win = board.winCheck();
+        if (win == 1) {
+            return color == 'r' ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+        if (win == -1) {
+            return color == 'w' ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
+        double kingFactor = 1.5;
+        double cellFactor = 0.75;
+
+        int redCellWeight = 0;
+        int whiteCellWeight = 0;
+
+        int redKings = board.getRedKings();
+        int whiteKings = board.getWhiteKings();
+
+        int redPieces = board.getRedPieces() - board.getRedKings();
+        int whitePieces = board.getWhitePieces() - board.getWhiteKings();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = (i + 1) % 2; j < 8; j += 2) {
+                if (board.getBoard()[i][j] != null) {
+                    if (board.getBoard()[i][j].getColour() == 'r') {
+                        redCellWeight += positionWeightLookup[i][j];
+                    } else {
+                        whiteCellWeight += positionWeightLookup[i][j];
+                    }
+                }
+            }
+        }
+
+
+        int trade = 0;
+        if (color == 'r') {
+            if (board.getRedPieces() > board.getWhitePieces()) {
+                trade = 24 - board.getPieces();
+            } else {
+                trade = 24 + board.getPieces();
+            }
+//            System.out.println(((redPieces-whitePieces) + (kingFactor * (redKings-whiteKings)) + (cellFactor * (redCellWeight-whiteCellWeight)) * 1000) + trade);
+            return ((redPieces-whitePieces) + (kingFactor * (redKings-whiteKings)) + (cellFactor * (redCellWeight-whiteCellWeight)) * 1000) + trade;
+
+        } else {
+            if (board.getWhitePieces() > board.getRedPieces()) {
+                trade = 24 - board.getPieces();
+            } else {
+                trade = 24 + board.getPieces();
+            }
+//            System.out.println(((whitePieces-redPieces) + (kingFactor * (whiteKings-redKings)) + (cellFactor * (whiteCellWeight-redCellWeight)) * 1000) + trade);
+            return ((whitePieces-redPieces) + (kingFactor * (whiteKings-redKings)) + (cellFactor * (whiteCellWeight-redCellWeight)) * 1000) + trade;
+        }
+
+
+        /*
+        if (color == 'r') {
+            System.out.println(((redPieces-whitePieces) + (kingFactor * (redKings-whiteKings)) + (cellFactor * (redCellWeight-whiteCellWeight))) * 1000);
+            return (redPieces-whitePieces) + (kingFactor * (redKings-whiteKings)) + (cellFactor * (redCellWeight-whiteCellWeight));
+        } else {
+            System.out.println(((whitePieces-redPieces) + (kingFactor * (whiteKings-redKings)) + (cellFactor * (whiteCellWeight-redCellWeight))) * 1000);
+            return (whitePieces-redPieces) + (kingFactor * (whiteKings-redKings)) + (cellFactor * (whiteCellWeight-redCellWeight));
+        }
+        */
     }
 }
