@@ -76,10 +76,10 @@ public class Controller implements Initializable {
     private double startLayoutX;
     private double startLayoutY;
 
-    private AI ai = new AI();
+    private final AI ai = new AI();
     private boolean aiTurn;
     private Board internalBoard;
-    private MoveGenerator moveGenerator = new MoveGenerator();
+    private final MoveGenerator moveGenerator = new MoveGenerator();
 
     /**
      * Called after window has finished loading.
@@ -201,7 +201,9 @@ public class Controller implements Initializable {
                 internalBoard = internalBoard.updateLocation(playerMove); // update piece's location in internal board
 
                 if (playerMove.hasPieceToRemove()) { // if it was a jump move, delete intermediate piece from the GUI
-                    removePiece(selectCircle(playerMove.getPieceToRemove().x, playerMove.getPieceToRemove().y));
+                    for (Point pieceToRemove : playerMove.getPiecesToRemove()) {
+                        removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
+                    }
                 }
                 timeline.play(); // play animation
 
@@ -256,8 +258,8 @@ public class Controller implements Initializable {
         turnText.setText(" AI");
         Move aiMove = runMinimax(); // Minimax!
         internalBoard = internalBoard.updateLocation(aiMove); // update model board
-        updateAIPiece(aiMove); // update GUI board
         checkForWin('w'); // check (& execute) whether the AI has won
+        updateAIPiece(aiMove); // update GUI board
 
         if ((moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
             aiTurn = true; // play again if it has a multi-move available!
@@ -275,7 +277,7 @@ public class Controller implements Initializable {
      * @return the 'best' AI move as determined by minimax
      */
     private Move runMinimax() {
-        return ai.play(new Board(internalBoard.getBoard()), (int)sliderDifficulty.getValue(), findValidMoves('w'));
+        return ai.playTimeLimited(new Board(internalBoard.getBoard()), (int)sliderDifficulty.getValue(), findValidMoves('w'));
     }
 
     /**
@@ -375,7 +377,7 @@ public class Controller implements Initializable {
             // make selectedRectangle the new rectangle and add colour
             selectedRectangle = r;
             ColorInput colour = new ColorInput();
-            colour.setPaint(Color.color(0,1,0, 0.6));
+            colour.setPaint(Color.rgb(15,180,70, 0.8));
             colour.setHeight(60);
             colour.setWidth(60);
             selectedRectangle.setEffect(colour);
@@ -469,11 +471,17 @@ public class Controller implements Initializable {
         circle.setLayoutY(indexToPixel(move.getDestination().x));
         circle.setLayoutX(indexToPixel(move.getDestination().y));
         if (move.hasPieceToRemove()) { // remove jumped piece if applicable
-            removePiece(selectCircle(move.getPieceToRemove().x, move.getPieceToRemove().y));
+            for (Point pieceToRemove : move.getPiecesToRemove()) {
+                removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
+            }
         }
         if (circle.getLayoutY() == 450.0) { // make GUI piece a king if on human's home row
             makeKing(circle, 'w');
         }
+
+//        Path path = new Path();
+//        path.getElements().add(new MoveTo(20,20));
+
     }
 
     /**
@@ -552,18 +560,18 @@ public class Controller implements Initializable {
      * @param colour colour of the player
      */
     private void checkForWin(char colour) {
-        if (findValidMoves(colour).size() == 0) {
+        if (internalBoard.winCheck() != 0) {
+            if (internalBoard.winCheck() < 0) {
+                createFinishedPopup("Congratulations!", "You win! The robot uprising has been crushed!");
+            } else {
+                createFinishedPopup("Commiserations!", "You lose. Please welcome your new masters.");
+            }
+        }
+        else if ((findValidMoves('w').size() == 0) || (findValidMoves('r').size() == 0)) {
             if (colour=='w') {
                 createFinishedPopup("Congratulations!", "AI is out of moves.\nYou win! The robot uprising has been crushed!");
             } else {
                 createFinishedPopup("Commiserations!", "You are out of moves!\nYou lose. Please welcome your new masters.");
-            }
-        }
-        if (internalBoard.winCheck() != 0) {
-            if (internalBoard.winCheck() > 0) {
-                createFinishedPopup("Congratulations!", "You win! The robot uprising has been crushed!");
-            } else {
-                createFinishedPopup("Commiserations!", "You lose. Please welcome your new masters.");
             }
         }
     }
