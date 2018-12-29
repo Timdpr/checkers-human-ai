@@ -1,6 +1,7 @@
 package main.java.model;
 
-import java.awt.Point;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -11,10 +12,10 @@ import java.util.Objects;
  */
 public class Move {
 
-    protected Point origin;
-    protected Point destination;
-    protected Point pieceToRemove;
-    protected boolean kingPiece;
+    final Point origin;
+    final Point destination;
+    final ArrayList<Point> piecesToRemove;
+    boolean kingPiece;
 
     /**
      * Creates a new Move object with just an origin and destination Point
@@ -24,7 +25,7 @@ public class Move {
     public Move(Point origin, Point destination) {
         this.origin = origin;
         this.destination = destination;
-        this.pieceToRemove = null;
+        this.piecesToRemove = null;
         this.kingPiece = false;
     }
 
@@ -37,7 +38,25 @@ public class Move {
     public Move(Point origin, Point destination, Point pieceToRemove) {
         this.origin = origin;
         this.destination = destination;
-        this.pieceToRemove = pieceToRemove;
+        this.piecesToRemove = new ArrayList<>();
+        this.piecesToRemove.add(pieceToRemove);
+    }
+
+    public Move(Point origin, Point destination, ArrayList<Point> piecesToRemove) {
+        this.origin = origin;
+        this.destination = destination;
+        this.piecesToRemove = piecesToRemove;
+    }
+
+    public Move(ArrayList<Move> previousMoves, Move newMove) {
+        this.origin = new Point(previousMoves.get(0).origin.x, previousMoves.get(0).origin.y);
+        this.destination = new Point(newMove.destination.x, newMove.destination.y);
+
+        this.piecesToRemove = new ArrayList<>();
+        for (int i = 0; i < previousMoves.size(); i++) {
+            this.piecesToRemove.add(previousMoves.get(i).getPiecesToRemove().get(0));
+        }
+        piecesToRemove.add(newMove.getPiecesToRemove().get(0));
     }
 
     /**
@@ -60,8 +79,8 @@ public class Move {
      * Returns the 'piece to remove' Point of the move
      * @return the 'piece to remove' Point of the move
      */
-    public Point getPieceToRemove() {
-        return pieceToRemove;
+    public ArrayList<Point> getPiecesToRemove() {
+        return piecesToRemove;
     }
 
     /**
@@ -69,7 +88,7 @@ public class Move {
      * @return true if there is a 'piece to remove' set in the move (and therefore the move is a jump move!), else false
      */
     public boolean hasPieceToRemove() {
-        return this.pieceToRemove != null;
+        return this.piecesToRemove != null;
     }
 
     /**
@@ -79,25 +98,22 @@ public class Move {
         this.kingPiece = true;
     }
 
-    /**
-     * @return whether given object has the same origin and destination as this one
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Move move = (Move) o;
-        return Objects.equals(origin.x, move.origin.x) &&
-                Objects.equals(destination.x, move.destination.x) &&
-                Objects.equals(origin.y, move.origin.y) &&
-                Objects.equals(destination.y, move.destination.y);
+        return Objects.equals(origin, move.origin) &&
+                Objects.equals(destination, move.destination);
     }
 
-    /**
-     * @return the object's hashcode, using origin and destination
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(origin.x, origin.y, destination.x, destination.y);
+        return Objects.hash(origin, destination);
+    }
+
+    @Override
+    public String toString() {
+        return origin.x + "," + origin.y + " - " + destination.x + "," + destination.y;
     }
 }
