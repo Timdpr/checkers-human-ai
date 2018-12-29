@@ -102,6 +102,19 @@ public class Board {
         return board[row][col];
     }
 
+    public Piece[][] deepCopy(Piece[][] original) {
+        Piece[][] result = new Piece[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = (i+1)%2; j < 8; j+=2) {
+                Piece oldPiece = original[i][j];
+                if (oldPiece != null) {
+                    result[i][j] = new Piece(oldPiece.getColour(), oldPiece.isKing());
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * Returns a copy of the current board after being updated with the given move.
      * This also includes updating kings and piece counts.
@@ -109,7 +122,7 @@ public class Board {
      * @return a copy of the current board after being updated with the given move
      */
     public Board updateLocation(Move move) {
-        Piece[][] boardCopy = new Board(board).getBoard();
+        Piece[][] boardCopy = deepCopy(board);
         // Store piece at origin and delete it from board
         Piece originPiece = boardCopy[move.origin.x][move.origin.y];
         if (move.kingPiece) {
@@ -121,7 +134,7 @@ public class Board {
         // If there is an intermediate piece (in a jump), update piece counts then remove it
         if (move.hasPieceToRemove()) {
             for (Point pieceToRemove : move.getPiecesToRemove()) {
-                decreaseCounts(boardCopy[pieceToRemove.x][pieceToRemove.y]);
+//                decreaseCounts(boardCopy[pieceToRemove.x][pieceToRemove.y]);
                 boardCopy[pieceToRemove.x][pieceToRemove.y] = null;
             }
         }
