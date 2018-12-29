@@ -6,16 +6,16 @@ package main.java.model;
  *
  * @author tp275
  */
-public class Piece {
+class Piece {
 
-    private char colour;
+    private final char colour;
     private boolean isKing;
 
     /**
      * Creates a new piece with given colour. isKing = false by default.
      * @param colour the colour to set the piece as
      */
-    public Piece(char colour) {
+    Piece(char colour) {
         this.colour = colour;
         this.isKing = false;
     }
@@ -25,7 +25,7 @@ public class Piece {
      * @param colour the colour to set the piece as
      * @param isKing sets whether the Piece is a king or not
      */
-    public Piece(char colour, boolean isKing) {
+    Piece(char colour, boolean isKing) {
         this.colour = colour;
         this.isKing = isKing;
     }
@@ -34,7 +34,7 @@ public class Piece {
      * Returns the piece's colour
      * @return the piece's colour as a char
      */
-    public char getColour() {
+    char getColour() {
         return colour;
     }
 
@@ -42,7 +42,7 @@ public class Piece {
      * Returns whether the piece is a king
      * @return true if king, else false
      */
-    public boolean isKing() {
+    boolean isKing() {
         return isKing;
     }
 
@@ -50,7 +50,7 @@ public class Piece {
      * Sets the status of isKing
      * @param isKing true to set piece as a king, and vice-versa
      */
-    public void setKing(boolean isKing) {
+    void setKing(boolean isKing) {
         this.isKing = isKing;
     }
 }
