@@ -277,7 +277,8 @@ public class Controller implements Initializable {
      * @return the 'best' AI move as determined by minimax
      */
     private Move runMinimax() {
-        return ai.playTimeLimited(new Board(internalBoard.getBoard()), (int)sliderDifficulty.getValue(), findValidMoves('w'));
+        int timeLimitSeconds = (int)sliderDifficulty.getValue();
+        return ai.playTimeLimited(new Board(internalBoard.getBoard()), timeLimitSeconds, findValidMoves('w'));
     }
 
     /**
