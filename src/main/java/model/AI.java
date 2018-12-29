@@ -242,7 +242,7 @@ public class AI {
                 Piece piece = boardArray[i][j];
                 if (piece != null) {
                     if (piece.getColour() == 'r') {
-                        redState += piece.isKing() ? 14 : (5 + (8 - i));
+                        redState += piece.isKing() ? 14 : (5 + (7 - i));
                     } else {
                         whiteState += piece.isKing() ? 14 : (5 + i);
                     }
