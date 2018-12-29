@@ -114,7 +114,7 @@ public class Board {
         Piece originPiece = boardCopy[move.origin.x][move.origin.y];
         if (move.kingPiece) {
             if (originPiece != null) {
-                originPiece.setKing(true);
+                originPiece.setKing();
             }
         }
         boardCopy[move.origin.x][move.origin.y] = null;

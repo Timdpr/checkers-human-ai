@@ -47,10 +47,9 @@ class Piece {
     }
 
     /**
-     * Sets the status of isKing
-     * @param isKing true to set piece as a king, and vice-versa
+     * Sets isKing to true
      */
-    void setKing(boolean isKing) {
-        this.isKing = isKing;
+    void setKing() {
+        this.isKing = true;
     }
 }
