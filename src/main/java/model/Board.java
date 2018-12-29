@@ -1,5 +1,7 @@
 package main.java.model;
 
+import java.awt.*;
+
 /**
  * The state representation: an 8x8 2d array holding Piece objects.
  *
@@ -118,8 +120,10 @@ public class Board {
         boardCopy[move.origin.x][move.origin.y] = null;
         // If there is an intermediate piece (in a jump), update piece counts then remove it
         if (move.hasPieceToRemove()) {
-            decreaseCounts(boardCopy[move.pieceToRemove.x][move.pieceToRemove.y]);
-            boardCopy[move.pieceToRemove.x][move.pieceToRemove.y] = null;
+            for (Point pieceToRemove : move.getPiecesToRemove()) {
+                decreaseCounts(boardCopy[pieceToRemove.x][pieceToRemove.y]);
+                boardCopy[pieceToRemove.x][pieceToRemove.y] = null;
+            }
         }
         // Now insert the original piece at the destination
         boardCopy[move.destination.x][move.destination.y] = originPiece;
@@ -156,10 +160,16 @@ public class Board {
         this.board[move.origin.x][move.origin.y] = dest;
         this.board[move.destination.x][move.destination.y] = null;
         if (move.hasPieceToRemove()) {
-            if (color=='r') {
-                this.board[move.pieceToRemove.x][move.pieceToRemove.y] = new Piece('w');
-            } else {
-                this.board[move.pieceToRemove.x][move.pieceToRemove.y] = new Piece('r');
+            for (Point pieceToRemove : move.getPiecesToRemove()) {
+                if (color == 'r') {
+                    Piece pieceToAdd = new Piece('w');
+                    this.board[pieceToRemove.x][pieceToRemove.y] = pieceToAdd;
+                    increaseCounts(pieceToAdd);
+                } else {
+                    Piece pieceToAdd = new Piece('r');
+                    this.board[pieceToRemove.x][pieceToRemove.y] = pieceToAdd;
+                    increaseCounts(pieceToAdd);
+                }
             }
         }
     }
@@ -170,9 +180,18 @@ public class Board {
      */
     public int winCheck() {
         if (this.whitePieces == 0) {
-            return 1;
+            return AI.NEGATIVE_INFINITY;
         } else if (this.redPieces == 0) {
-            return -1;
+            return AI.POSITIVE_INFINITY;
+        }
+        return 0;
+    }
+
+    public int winCheck(MoveGenerator moveGenerator) {
+        if (this.whitePieces == 0 || moveGenerator.findValidMoves(this, 'w').size() == 0) {
+            return AI.NEGATIVE_INFINITY;
+        } else if (this.redPieces == 0 || moveGenerator.findValidMoves(this, 'r').size() == 0) {
+            return AI.POSITIVE_INFINITY;
         }
         return 0;
     }
