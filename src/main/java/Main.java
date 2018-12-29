@@ -26,6 +26,9 @@ public class Main extends Application {
                 new Image(getClass().getResourceAsStream("/main/res/icon_128.png")));
 
         primaryStage.setScene(new Scene(root, 800, 480));
+        primaryStage.setMinHeight(480 + 22);
+        primaryStage.setMaxHeight(480 + 22);
+        primaryStage.setMinWidth(700);
         primaryStage.show();
     }
 
