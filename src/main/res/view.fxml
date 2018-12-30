@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXSlider?>
@@ -30,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
+<StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
    <children>
        <GridPane gridLinesVisible="true" prefHeight="480.0" prefWidth="800.0">
            <columnConstraints>
@@ -1090,9 +1081,9 @@
                      </HBox>
                      <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="2">
                         <children>
-                            <Label text="Difficulty">
+                            <Label text="Difficulty (seconds)">
                                 <tooltip>
-                                    <Tooltip style="-fx-font-size: 12px" text="Controls the skill level of the AI by limiting tree depth.&#13;8,9 and 10 can take a long time, especially mid-game." />
+                                    <Tooltip style="-fx-font-size: 12px" text="Controls the skill level of the AI by limiting the time it has to compute its best move." />
                                 </tooltip>
                                 <font>
                                     <Font size="14.0" />
@@ -1109,12 +1100,12 @@
                              <Insets bottom="5.0" />
                          </GridPane.margin>
                      </HBox>
-                     <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" value="6.0" GridPane.rowIndex="3">
+                     <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1" max="11.0" min="1" minorTickCount="0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="6.0" GridPane.rowIndex="3">
                          <GridPane.margin>
                              <Insets left="50.0" right="50.0" />
                          </GridPane.margin>
                          <tooltip>
-                             <Tooltip style="-fx-font-size: 12px" text="Controls the skill level of the AI by limiting tree depth.&#13;8,9 and 10 can take a long time, especially mid-game." />
+                             <Tooltip style="-fx-font-size: 12px" text="Controls the skill level of the AI by limiting the time it has to compute its best move." />
                          </tooltip>
                      </JFXSlider>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
