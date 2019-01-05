@@ -46,7 +46,9 @@ public class AI {
         moves = moveGenerator.updateValidMovesWithJumps(board, moves, 'w');
         LocalTime localTimeLimit = LocalTime.now().plusSeconds(timeLimitSeconds);
         HashMap<Integer, Move> scores = getScores(board, localTimeLimit, moves);
-        return scores.get(Collections.max(scores.keySet()));
+        Move bestMove = scores.get(Collections.max(scores.keySet()));
+        System.out.println("Selected move: " + bestMove);
+        return bestMove;
     }
 
     private HashMap<Integer, Move> getScores(Board board, LocalTime localTimeLimit, ArrayList<Move> moves) {
@@ -66,6 +68,11 @@ public class AI {
         if (moves.size() == 1) {
             System.out.println("Only one move to take!");
             scores.put(1, moves.get(0));
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return scores;
         }
 
@@ -79,7 +86,7 @@ public class AI {
                     System.out.print(result + ", ");
                 } else {
                     if (!scores.isEmpty()) {
-                        System.out.println("Time up! Best score was: " + Collections.max(scores.keySet()));
+                        System.out.println("Time up!\nBest score: " + Collections.max(scores.keySet()));
                     }
                     return scores;
                 }

@@ -14,8 +14,9 @@ public class Move {
 
     final Point origin;
     final Point destination;
-    final ArrayList<Point> piecesToRemove;
-    boolean kingPiece;
+    private final ArrayList<Point> piecesToRemove;
+    public boolean kingPiece;
+    private final ArrayList<Move> previousMoves;
 
     /**
      * Creates a new Move object with just an origin and destination Point
@@ -27,6 +28,7 @@ public class Move {
         this.destination = destination;
         this.piecesToRemove = null;
         this.kingPiece = false;
+        this.previousMoves = null;
     }
 
     /**
@@ -40,12 +42,14 @@ public class Move {
         this.destination = destination;
         this.piecesToRemove = new ArrayList<>();
         this.piecesToRemove.add(pieceToRemove);
+        this.previousMoves = null;
     }
 
     public Move(Point origin, Point destination, ArrayList<Point> piecesToRemove) {
         this.origin = origin;
         this.destination = destination;
         this.piecesToRemove = piecesToRemove;
+        this.previousMoves = null;
     }
 
     public Move(ArrayList<Move> previousMoves, Move newMove) {
@@ -57,6 +61,8 @@ public class Move {
             this.piecesToRemove.add(previousMoves.get(i).getPiecesToRemove().get(0));
         }
         piecesToRemove.add(newMove.getPiecesToRemove().get(0));
+
+        this.previousMoves = previousMoves;
     }
 
     /**
@@ -98,6 +104,10 @@ public class Move {
         this.kingPiece = true;
     }
 
+    public ArrayList<Move> getPreviousMoves() {
+        return this.previousMoves;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,8 +122,13 @@ public class Move {
         return Objects.hash(origin, destination);
     }
 
+    private String getCharForNumber(int i) {
+        return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
+    }
+
     @Override
     public String toString() {
-        return origin.x + "," + origin.y + " - " + destination.x + "," + destination.y;
+        String testChar = getCharForNumber(origin.y+1);
+        return getCharForNumber(origin.y+1) + (origin.x+1) + " - " + getCharForNumber(destination.y+1) + (destination.x+1);
     }
 }

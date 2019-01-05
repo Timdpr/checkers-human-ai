@@ -29,10 +29,8 @@ import main.java.model.MoveGenerator;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * The Controller class, neatly wedged in-between the .fxml view and the /model game model.
@@ -80,6 +78,7 @@ public class Controller implements Initializable {
     private boolean aiTurn;
     private Board internalBoard;
     private final MoveGenerator moveGenerator = new MoveGenerator();
+    private boolean win = false;
 
     /**
      * Called after window has finished loading.
@@ -101,6 +100,9 @@ public class Controller implements Initializable {
      */
     @FXML
     public void startMovingPiece(MouseEvent mouseEvent) {
+        if (aiTurn) {
+            return;
+        }
         selectedPiece = (Circle)mouseEvent.getSource(); // get the Circle object being moved
 
         Point2D mousePoint = new Point2D(mouseEvent.getX(), mouseEvent.getY()); // get mouse location
@@ -160,6 +162,9 @@ public class Controller implements Initializable {
      * @param mouseEvent the MouseEvent on drag finished
      */
     public void finishMovingPiece(MouseEvent mouseEvent) {
+        if (aiTurn) {
+            return;
+        }
         offset = new Point2D(0.0d, 0.0d);
         // Get cursor's location in the scene
         Point2D mousePointScene = selectedPiece.localToScene(new Point2D(mouseEvent.getX(), mouseEvent.getY()));
@@ -170,8 +175,8 @@ public class Controller implements Initializable {
         pieceIsMoving = false;
 
         ///// AI MOVE: /////
-        if (aiTurn) {
-            playAITurn();
+        if (aiTurn && !win) {
+            new Thread(this::playAITurn).start();
         }
     }
 
@@ -182,8 +187,6 @@ public class Controller implements Initializable {
      */
     private void playHumanTurn(Rectangle rec) {
         Timeline timeline = new Timeline(); // setup piece animation
-        timeline.setCycleCount(1);
-        timeline.setAutoReverse(false);
 
         if (rec != null && !aiTurn) {
             Point2D rectScene = rec.localToScene(rec.getX(), rec.getY()); // get pt in scene that the rectangle is at
@@ -195,14 +198,21 @@ public class Controller implements Initializable {
             int moveIndex = moves.indexOf(new Move(humanMoveOrigin, destination));
 
             if (moveIndex >= 0) { // if human move was valid:
-                timeline = getValidMoveTimeline(timeline, parent); // create move animation
+                timeline = getValidMoveTimeline(parent); // create move animation
 
                 Move playerMove = moves.get(moveIndex); // get the move by taking it from the valid move list
                 internalBoard = internalBoard.updateLocation(playerMove); // update piece's location in internal board
 
                 if (playerMove.hasPieceToRemove()) { // if it was a jump move, delete intermediate piece from the GUI
                     for (Point pieceToRemove : playerMove.getPiecesToRemove()) {
-                        removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
+                        if (selectCircle(pieceToRemove.x, pieceToRemove.y) != null) {
+                            Timeline removalTimeline = new Timeline();
+                            removalTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(selectCircle(pieceToRemove.x, pieceToRemove.y).opacityProperty(), 0.0d)));
+                            removalTimeline.setOnFinished(e -> removePiece(pieceToRemove));
+                            removalTimeline.play();
+                        } else {
+                            removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
+                        }
                     }
                 }
                 timeline.play(); // play animation
@@ -214,7 +224,7 @@ public class Controller implements Initializable {
                 checkForHumanMultiJump(playerMove); // check (& handle) whether the player can take another jump
 
             } else { // if move is not valid, move the circle back to its original position
-                timeline = getInvalidMoveTimeline(timeline);
+                timeline = getInvalidMoveTimeline();
                 timeline.play();
             }
         } else { // return circle's opacity to 0 if move unsuccessful because it was the ai's turn
@@ -255,20 +265,17 @@ public class Controller implements Initializable {
      * Plays the AI's turn. Gets the 'best' valid move using minimax, updates model, GUI and checks for a win and multi-move
      */
     private void playAITurn() {
-        turnText.setText(" AI");
+        turnText.setText(" AI is thinking...");
+
         Move aiMove = runMinimax(); // Minimax!
         internalBoard = internalBoard.updateLocation(aiMove); // update model board
-        checkForWin('w'); // check (& execute) whether the AI has won
+        System.out.println(internalBoard.toString()); // TODO: Remove printing
+        // TODO: Swapped these around:
         updateAIPiece(aiMove); // update GUI board
-
-        if ((moveGenerator.detectMultiMove(internalBoard, 'w', aiMove.getDestination()).size() > 0) && aiMove.hasPieceToRemove()) {
-            aiTurn = true; // play again if it has a multi-move available!
-            turnText.setText(" AI multi-jump!");
-            playAITurn();
-        } else {
-            aiTurn = false;
-            turnText.setText(" Human");
-        }
+        // check (& execute) whether the AI has won
+        Platform.runLater(() -> checkForWin('w'));
+        aiTurn = false;
+        turnText.setText(" Human");
     }
 
     /**
@@ -453,14 +460,33 @@ public class Controller implements Initializable {
     private Circle selectCircle(int row, int col) {
         for (Circle c : circles) {
             if (c.getLayoutY() == indexToPixel(row) && c.getLayoutX() == indexToPixel(col)) { // if Circle has correct x,y
-                int i = Arrays.asList(boardPane.getChildren().toArray()).indexOf(c); // get actual Circles from boardPane
-                try {
-                    return (Circle) Arrays.asList(boardPane.getChildren().toArray()).get(i);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Circle was not found in array");
+                List<Node> boardPaneCircleList = boardPane.getChildren().subList(8, boardPane.getChildren().size());
+                for (Node n : boardPaneCircleList) {
+                    Circle circle = (Circle) n;
+                    if (circle.getId().equals(c.getId())) {
+                        return circle;
+                    } else {
+                        int i = Arrays.asList(boardPane.getChildren().toArray()).indexOf(c); // get actual Circles from boardPane
+                        try {
+                            return (Circle) Arrays.asList(boardPane.getChildren().toArray()).get(i);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+//                            System.out.println("Circle was not found in array");
+                            deleteBoardPaneCirclesNotInCircleList();
+                        }
+                    }
                 }
             }
         } return null;
+    }
+
+    private void deleteBoardPaneCirclesNotInCircleList() {
+        List<Node> boardPaneCircleList = boardPane.getChildren().subList(8, boardPane.getChildren().size());
+        for (Node n : boardPaneCircleList) {
+            Circle circle = (Circle) n;
+            if (!circles.contains(circle)) {
+                removePiece(circle);
+            }
+        }
     }
 
     /**
@@ -469,20 +495,76 @@ public class Controller implements Initializable {
      */
     private void updateAIPiece(Move move) {
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y); // get Circle in GUI from Move's x,y
-        circle.setLayoutY(indexToPixel(move.getDestination().x));
-        circle.setLayoutX(indexToPixel(move.getDestination().y));
-        if (move.hasPieceToRemove()) { // remove jumped piece if applicable
-            for (Point pieceToRemove : move.getPiecesToRemove()) {
-                removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
+        ArrayList<Timeline> timelineList = new ArrayList<>();
+
+        if (move.getPreviousMoves() != null && move.getPreviousMoves().size() > 0) {
+            for (Move previousMove : move.getPreviousMoves()) {
+                Timeline timeline = getAIMoveTimeline(circle, previousMove);
+                timelineList.add(timeline);
             }
         }
-        if (circle.getLayoutY() == 450.0) { // make GUI piece a king if on human's home row
+
+        Timeline timeline = getAIMoveTimeline(circle, move);
+        timeline.setOnFinished(e -> makeKingAndRemovePieces(move, circle));
+        timelineList.add(timeline);
+
+        Iterator timelineListIterator = timelineList.iterator();
+        while (timelineListIterator.hasNext()) {
+            Timeline tl = (Timeline) timelineListIterator.next();
+            int index = timelineList.indexOf(tl) + 1;
+            if (timelineListIterator.hasNext()) {
+                tl.setOnFinished(e -> play(timelineList, index));
+            }
+        }
+        play(timelineList, 0);
+    }
+
+    private void play(ArrayList<Timeline> timelines, int index) {
+        if (index != 0) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        timelines.get(index).play();
+    }
+
+    private void makeKingAndRemovePieces(Move move, Circle circle) {
+        // Update the GUI if a piece should become a king
+        boolean setKing = false;
+        if (move.getPreviousMoves() != null) {
+            for (Move previousMove : move.getPreviousMoves()) {
+                if (previousMove.getDestination().x == 7) {
+                    setKing = true;
+                }
+            }
+        }
+        if (move.kingPiece || setKing) { // || circle.getLayoutY() == 450.0) { // make GUI piece a king if on human's home row
             makeKing(circle, 'w');
         }
 
-//        Path path = new Path();
-//        path.getElements().add(new MoveTo(20,20));
+        // Remove all GUI pieces that were jumped over during the move
+        if (move.hasPieceToRemove()) { // remove jumped piece if applicable
+            ArrayList<Timeline> timelineList = new ArrayList<>();
+            for (Point pieceToRemove : move.getPiecesToRemove()) { // = move.getPiecesToRemove().get(move.getPiecesToRemove().size()-1);
+                if (selectCircle(pieceToRemove.x, pieceToRemove.y) != null) {
+                    Timeline timeline = new Timeline();
+                    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(selectCircle(pieceToRemove.x, pieceToRemove.y).opacityProperty(), 0.0d)));
+                    timeline.setOnFinished(e -> removePiece(pieceToRemove));
+                    timelineList.add(timeline);
+                } else {
+                    removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
+                }
+            }
+            for (Timeline timeline : timelineList) {
+                timeline.play();
+            }
+        }
+    }
 
+    private void removePiece(Point pieceToRemove) {
+        removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
     }
 
     /**
@@ -527,26 +609,20 @@ public class Controller implements Initializable {
 
     /**
      * Creates and returns a Timeline animation for a valid move.
-     * @param timeline the timeline to add to
      * @param parent the parent rectangle location
      * @return the full timeline, ready to play
      */
-    private Timeline getValidMoveTimeline(Timeline timeline, Point2D parent) {
-        timeline.getKeyFrames().add(
-                new KeyFrame(Duration.millis(100),
-                        new KeyValue(selectedPiece.layoutXProperty(), parent.getX() + 30),
-                        new KeyValue(selectedPiece.layoutYProperty(), parent.getY() + 30),
-                        new KeyValue(selectedPiece.opacityProperty(), 1.0d)
-                ));
-        return timeline;
+    private Timeline getValidMoveTimeline(Point2D parent) {
+        Timeline timeline = new Timeline();
+        return getTimeline(timeline, selectedPiece, parent);
     }
 
     /**
      * Creates and returns a Timeline animation for an invalid move (ie. moving back to the piece's original location)
-     * @param timeline the timeline to add to
      * @return the full timeline, ready to play
      */
-    private Timeline getInvalidMoveTimeline(Timeline timeline) {
+    private Timeline getInvalidMoveTimeline() {
+        Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(100),
                         new KeyValue(selectedPiece.layoutXProperty(), selectedPiece.getLayoutX() - (selectedPiece.getLayoutX() - originRectangle.getLayoutX()-30)),
@@ -556,19 +632,48 @@ public class Controller implements Initializable {
         return timeline;
     }
 
+    private Timeline getTimeline(Timeline timeline, Circle parent, Point2D destination) {
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.millis(100),
+                        new KeyValue(parent.layoutXProperty(), destination.getX() + 30),
+                        new KeyValue(parent.layoutYProperty(), destination.getY() + 30),
+                        new KeyValue(parent.opacityProperty(), 1.0d)
+                ));
+        return timeline;
+    }
+
+    private Timeline getAIMoveTimeline(Circle parent, Move move) {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(getAIKeyFrame(parent, getAIDestinationPoint(move)));
+        return timeline;
+    }
+
+    private KeyFrame getAIKeyFrame(Circle parent, Point2D destination) {
+        return new KeyFrame(Duration.millis(200),
+                new KeyValue(parent.layoutXProperty(), destination.getX()),
+                new KeyValue(parent.layoutYProperty(), destination.getY()));
+    }
+
+    private Point2D getAIDestinationPoint(Move move) {
+        return new Point2D(indexToPixel(move.getDestination().y), indexToPixel(move.getDestination().x));
+    }
+
     /**
      * Checks whether the given player has won or lost, and shows a relevant popup if so
      * @param colour colour of the player
      */
     private void checkForWin(char colour) {
+        // TODO: Run this in FX application thread!!
         if (internalBoard.winCheck() != 0) {
+            this.win = true;
             if (internalBoard.winCheck() < 0) {
                 createFinishedPopup("Congratulations!", "You win! The robot uprising has been crushed!");
             } else {
                 createFinishedPopup("Commiserations!", "You lose. Please welcome your new masters.");
             }
         }
-        else if ((findValidMoves('w').size() == 0) || (findValidMoves('r').size() == 0)) {
+        else if (colour != 'r' && ((findValidMoves('w').size() == 0) || (findValidMoves('r').size() == 0))) {
+            this.win = true;
             if (colour=='w') {
                 createFinishedPopup("Congratulations!", "AI is out of moves.\nYou win! The robot uprising has been crushed!");
             } else {
@@ -583,6 +688,7 @@ public class Controller implements Initializable {
      * @param body the dialog body text
      */
     private void createFinishedPopup(String title, String body) {
+        aiTurn = true; // stop user being able to move pieces
         JFXDialogLayout dialogLayout = new JFXDialogLayout(); // create the dialog...
         dialogLayout.setHeading(new Text(title));
         dialogLayout.setBody(new Text(body));
@@ -603,6 +709,7 @@ public class Controller implements Initializable {
             System.exit(0);
         });
         dialogLayout.setActions(buttonExit, buttonRestart);
+        dialog.setOverlayClose(false);
         dialog.show();
     }
 

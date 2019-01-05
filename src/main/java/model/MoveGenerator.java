@@ -217,10 +217,11 @@ public class MoveGenerator {
         Board updatedBoard = new Board(board.getBoard());
         boolean previousMoveKing = false;
         for (Move previousMove : previousMoves) {
-            updatedBoard = updatedBoard.updateLocation(previousMove);
             if (move.kingPiece) {
                 previousMoveKing = true;
             }
+            previousMove.setKingPiece();
+            updatedBoard = updatedBoard.updateLocation(previousMove);
         }
         return getValidJumpsFromMove(updatedBoard, color, move, previousMoveKing);
     }

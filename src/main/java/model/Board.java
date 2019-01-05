@@ -247,8 +247,12 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder boardString = new StringBuilder();
+        boardString.append("  a b c d e f g h\n");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
+                if (j == 0) {
+                    boardString.append(i + 1).append(" ");
+                }
                 Piece piece = board[i][j];
                 if (piece == null) {
                     boardString.append('-');
@@ -261,8 +265,9 @@ public class Board {
                 }
                 boardString.append(" ");
             }
-            boardString.append("\n");
+            boardString.append(i + 1).append("\n");
         }
+        boardString.append("  a b c d e f g h\n");
         return boardString.toString();
     }
 }
