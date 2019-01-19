@@ -29,8 +29,8 @@ import main.java.model.MoveGenerator;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * The Controller class, neatly wedged in-between the .fxml view and the /model game model.
@@ -62,6 +62,8 @@ public class Controller implements Initializable {
     @FXML private Text turnText;
     @FXML private JFXSlider sliderDifficulty;
     @FXML private JFXCheckBox highlightCheckBox;
+    @FXML private JFXSpinner spinner;
+    @FXML private JFXToggleButton vsToggle;
 
     private Circle selectedPiece;
     private Rectangle selectedRectangle;
@@ -79,18 +81,34 @@ public class Controller implements Initializable {
     private Board internalBoard;
     private final MoveGenerator moveGenerator = new MoveGenerator();
     private boolean win = false;
+    private boolean aiVsAI = false;
+    private char currentAIColor;
 
     /**
      * Called after window has finished loading.
      * Sets up gui pieces, sets the turn to the human player, and loads a new internal board.
      */
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
         panes.addAll(Arrays.asList(row_a, row_b, row_c, row_d, row_e, row_f, row_g, row_h));
         circles.addAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18,
                 c19, c20, c21, c22, c23, c24));
         aiTurn = false;
         internalBoard = new Board();
+    }
+
+    private void playAIVsAI() {
+        aiTurn = true;
+        currentAIColor = 'r';
+        while (!win && aiVsAI) {
+            final char finalcurrentAIColor = currentAIColor;
+            Thread thread = new Thread(() -> Controller.this.playAITurn(finalcurrentAIColor));
+            thread.start();
+            while (thread.isAlive()) {
+                continue;
+            }
+            currentAIColor = currentAIColor == 'w' ? 'r' : 'w';
+        }
+        afterAIVsAI();
     }
 
     /**
@@ -123,6 +141,9 @@ public class Controller implements Initializable {
      */
     @FXML
     public void movePiece(MouseEvent mouseEvent) {
+        if (aiTurn) {
+            return;
+        }
         Point2D mousePoint = new Point2D(mouseEvent.getX()-30, mouseEvent.getY()-30);
         Point2D mousePointScene = new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY());
         if(notInBoard(mousePointScene) || aiTurn) { // check for piece being in board or it not being human's turn
@@ -176,6 +197,8 @@ public class Controller implements Initializable {
 
         ///// AI MOVE: /////
         if (aiTurn && !win) {
+            spinner.setVisible(true);
+            vsToggle.setDisable(true);
             new Thread(this::playAITurn).start();
         }
     }
@@ -206,10 +229,7 @@ public class Controller implements Initializable {
                 if (playerMove.hasPieceToRemove()) { // if it was a jump move, delete intermediate piece from the GUI
                     for (Point pieceToRemove : playerMove.getPiecesToRemove()) {
                         if (selectCircle(pieceToRemove.x, pieceToRemove.y) != null) {
-                            Timeline removalTimeline = new Timeline();
-                            removalTimeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(selectCircle(pieceToRemove.x, pieceToRemove.y).opacityProperty(), 0.0d)));
-                            removalTimeline.setOnFinished(e -> removePiece(pieceToRemove));
-                            removalTimeline.play();
+                            getRemovalTimeline(pieceToRemove).play();
                         } else {
                             removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
                         }
@@ -271,11 +291,26 @@ public class Controller implements Initializable {
         internalBoard = internalBoard.updateLocation(aiMove); // update model board
         System.out.println(internalBoard.toString()); // TODO: Remove printing
         // TODO: Swapped these around:
-        updateAIPiece(aiMove); // update GUI board
+        updateAIPiece(aiMove, 'w'); // update GUI board
         // check (& execute) whether the AI has won
         Platform.runLater(() -> checkForWin('w'));
+        Platform.runLater(() -> spinner.setVisible(false));
+        Platform.runLater(() -> vsToggle.setDisable(false));
         aiTurn = false;
         turnText.setText(" Human");
+    }
+
+    private void playAITurn(char color) {
+        turnText.setText(" AI is thinking...");
+
+        Move aiMove = runMinimax(color); // Minimax!
+        internalBoard = internalBoard.updateLocation(aiMove); // update model board
+        System.out.println(internalBoard.toString()); // TODO: Remove printing
+        // TODO: Swapped these around:
+        updateAIPiece(aiMove, color); // update GUI board
+        // check (& execute) whether the AI has won
+        Platform.runLater(() -> checkForWin(color));
+        aiTurn = true;
     }
 
     /**
@@ -285,7 +320,12 @@ public class Controller implements Initializable {
      */
     private Move runMinimax() {
         int timeLimitSeconds = (int)sliderDifficulty.getValue();
-        return ai.playTimeLimited(new Board(internalBoard.getBoard()), timeLimitSeconds, findValidMoves('w'));
+        return ai.playTimeLimited(new Board(internalBoard.getBoard()), timeLimitSeconds, findValidMoves('w'), 'w');
+    }
+
+    private Move runMinimax(char color) {
+        int timeLimitSeconds = (int)sliderDifficulty.getValue();
+        return ai.playTimeLimited(new Board(internalBoard.getBoard()), timeLimitSeconds, findValidMoves(color), color);
     }
 
     /**
@@ -413,6 +453,34 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    public void toggleController() {
+        if (vsToggle.isSelected()) {
+            aiVsAI = true;
+            spinner.setVisible(true);
+            new Thread(this::playAIVsAI).start();
+        } else {
+            vsToggle.setDisable(true);
+            aiVsAI = false;
+        }
+    }
+
+    private void afterAIVsAI() {
+        if (currentAIColor == 'w') {
+            aiTurn = true;
+            ///// AI MOVE: /////
+            if (aiTurn && !win) {
+                spinner.setVisible(true);
+                new Thread(this::playAITurn).start();
+            }
+        } else {
+            vsToggle.setDisable(false);
+            spinner.setVisible(false);
+            aiTurn = false;
+            turnText.setText(" Human");
+        }
+    }
+
     /**
      * Displays the help popup when the help button is pressed
      */
@@ -493,7 +561,7 @@ public class Controller implements Initializable {
      * Updates the GUI with the given AI Move
      * @param move the Move to update the GUI with
      */
-    private void updateAIPiece(Move move) {
+    private void updateAIPiece(Move move, char color) {
         Circle circle = selectCircle(move.getOrigin().x, move.getOrigin().y); // get Circle in GUI from Move's x,y
         ArrayList<Timeline> timelineList = new ArrayList<>();
 
@@ -505,7 +573,7 @@ public class Controller implements Initializable {
         }
 
         Timeline timeline = getAIMoveTimeline(circle, move);
-        timeline.setOnFinished(e -> makeKingAndRemovePieces(move, circle));
+        timeline.setOnFinished(e -> makeKingAndRemovePieces(move, circle, color));
         timelineList.add(timeline);
 
         Iterator timelineListIterator = timelineList.iterator();
@@ -530,7 +598,7 @@ public class Controller implements Initializable {
         timelines.get(index).play();
     }
 
-    private void makeKingAndRemovePieces(Move move, Circle circle) {
+    private void makeKingAndRemovePieces(Move move, Circle circle, char color) {
         // Update the GUI if a piece should become a king
         boolean setKing = false;
         if (move.getPreviousMoves() != null) {
@@ -541,7 +609,7 @@ public class Controller implements Initializable {
             }
         }
         if (move.kingPiece || setKing) { // || circle.getLayoutY() == 450.0) { // make GUI piece a king if on human's home row
-            makeKing(circle, 'w');
+            makeKing(circle, color);
         }
 
         // Remove all GUI pieces that were jumped over during the move
@@ -549,10 +617,7 @@ public class Controller implements Initializable {
             ArrayList<Timeline> timelineList = new ArrayList<>();
             for (Point pieceToRemove : move.getPiecesToRemove()) { // = move.getPiecesToRemove().get(move.getPiecesToRemove().size()-1);
                 if (selectCircle(pieceToRemove.x, pieceToRemove.y) != null) {
-                    Timeline timeline = new Timeline();
-                    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(selectCircle(pieceToRemove.x, pieceToRemove.y).opacityProperty(), 0.0d)));
-                    timeline.setOnFinished(e -> removePiece(pieceToRemove));
-                    timelineList.add(timeline);
+                    timelineList.add(getRemovalTimeline(pieceToRemove));
                 } else {
                     removePiece(selectCircle(pieceToRemove.x, pieceToRemove.y));
                 }
@@ -561,6 +626,13 @@ public class Controller implements Initializable {
                 timeline.play();
             }
         }
+    }
+
+    private Timeline getRemovalTimeline(Point pieceToRemove) {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), new KeyValue(selectCircle(pieceToRemove.x, pieceToRemove.y).opacityProperty(), 0.0d)));
+        timeline.setOnFinished(e -> removePiece(pieceToRemove));
+        return timeline;
     }
 
     private void removePiece(Point pieceToRemove) {
@@ -711,6 +783,15 @@ public class Controller implements Initializable {
         dialogLayout.setActions(buttonExit, buttonRestart);
         dialog.setOverlayClose(false);
         dialog.show();
+    }
+
+    public void newGamePopup() {
+        try {
+            Runtime.getRuntime().exec("java -jar checkers.jar");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 
     /**

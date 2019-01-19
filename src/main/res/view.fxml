@@ -3,6 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
@@ -1031,16 +1033,38 @@
                   </columnConstraints>
                   <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="190.0" minHeight="10.0" prefHeight="108.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="246.0" minHeight="10.0" prefHeight="238.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="263.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="273.0" minHeight="10.0" prefHeight="197.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="170.0" minHeight="0.0" prefHeight="29.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="241.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                  <children>
-                     <HBox alignment="BOTTOM_CENTER" prefHeight="113.0" prefWidth="320.0" GridPane.rowIndex="5">
+                     <HBox alignment="BOTTOM_CENTER" prefHeight="113.0" prefWidth="320.0" GridPane.rowIndex="8">
                         <children>
-                            <JFXButton fx:id="buttonHelp" buttonType="RAISED" layoutX="174.0" layoutY="140.0" onAction="#displayHelp" prefHeight="34.0" prefWidth="75.0" style="-fx-background-color: #DCDCDC;" text="Help">
+                        <JFXButton fx:id="buttonNewGame" buttonType="RAISED" layoutX="133.0" layoutY="26.0" onAction="#newGamePopup" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #DCDCDC;" text="New Game">
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <ripplerFill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#ff5454" />
+                                    <Stop color="#360000" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </ripplerFill>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </JFXButton>
+                            <JFXButton fx:id="buttonHelp" buttonType="RAISED" layoutX="174.0" layoutY="140.0" onAction="#displayHelp" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #DCDCDC;" text="Help">
                                 <padding>
                                     <Insets bottom="5.0" />
                                 </padding>
@@ -1055,6 +1079,9 @@
                                         </stops>
                                     </RadialGradient>
                                 </ripplerFill>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
                             </JFXButton>
                         </children>
                      </HBox>
@@ -1079,7 +1106,7 @@
                             </Label>
                         </children>
                      </HBox>
-                     <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="2">
+                     <HBox alignment="BOTTOM_CENTER" GridPane.rowIndex="5">
                         <children>
                             <Label text="Difficulty (seconds)">
                                 <tooltip>
@@ -1100,7 +1127,7 @@
                              <Insets bottom="5.0" />
                          </GridPane.margin>
                      </HBox>
-                     <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1" max="11.0" min="1" minorTickCount="0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="6.0" GridPane.rowIndex="3">
+                     <JFXSlider fx:id="sliderDifficulty" blockIncrement="1.0" majorTickUnit="1" max="11.0" min="1" minorTickCount="0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="6.0" GridPane.rowIndex="6">
                          <GridPane.margin>
                              <Insets left="50.0" right="50.0" />
                          </GridPane.margin>
@@ -1108,7 +1135,7 @@
                              <Tooltip style="-fx-font-size: 12px" text="Controls the skill level of the AI by limiting the time it has to compute its best move." />
                          </tooltip>
                      </JFXSlider>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                  <HBox alignment="CENTER" prefHeight="23.0" prefWidth="320.0" GridPane.rowIndex="2">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Turn:">
                            <font>
@@ -1122,7 +1149,7 @@
                         </Text>
                      </children>
                   </HBox>
-                  <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="320.0" GridPane.rowIndex="4">
+                  <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="320.0" GridPane.rowIndex="7">
                      <children>
                         <JFXCheckBox fx:id="highlightCheckBox" text="Highlight valid moves">
                            <HBox.margin>
@@ -1134,6 +1161,28 @@
                         </JFXCheckBox>
                      </children>
                   </HBox>
+                  <JFXToggleButton fx:id="vsToggle" contentDisplay="GRAPHIC_ONLY" onAction="#toggleController" toggleColor="#fafafa" toggleLineColor="#999999" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hu vs AI" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="62.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AI vs AI" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets right="66.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <JFXSpinner fx:id="spinner" prefWidth="320.0" visible="false" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="150.0" />
+                     </GridPane.margin>
+                  </JFXSpinner>
                  </children>
               </GridPane>
           </children>

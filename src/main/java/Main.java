@@ -23,7 +23,10 @@ public class Main extends Application {
                 new Image(getClass().getResourceAsStream("/main/res/icon_32.png")),
                 new Image(getClass().getResourceAsStream("/main/res/icon_48.png")),
                 new Image(getClass().getResourceAsStream("/main/res/icon_64.png")),
-                new Image(getClass().getResourceAsStream("/main/res/icon_128.png")));
+                new Image(getClass().getResourceAsStream("/main/res/icon_128.png")),
+                new Image(getClass().getResourceAsStream("/main/res/icon_256.png")),
+                new Image(getClass().getResourceAsStream("/main/res/icon_512.png"))
+        );
 
         primaryStage.setScene(new Scene(root, 800, 480));
         primaryStage.setMinHeight(480 + 22);

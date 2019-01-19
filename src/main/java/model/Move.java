@@ -123,7 +123,7 @@ public class Move {
     }
 
     private String getCharForNumber(int i) {
-        return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
+        return i > 0 && i < 27 ? String.valueOf((char)(i + 96)) : null;
     }
 
     @Override

@@ -42,16 +42,18 @@ public class AI {
     }
     */
 
-    public Move playTimeLimited(Board board, int timeLimitSeconds, ArrayList<Move> moves) {
-        moves = moveGenerator.updateValidMovesWithJumps(board, moves, 'w');
+    public Move playTimeLimited(Board board, int timeLimitSeconds, ArrayList<Move> moves, char color) {
+        moves = moveGenerator.updateValidMovesWithJumps(board, moves, color);
         LocalTime localTimeLimit = LocalTime.now().plusSeconds(timeLimitSeconds);
-        HashMap<Integer, Move> scores = getScores(board, localTimeLimit, moves);
+        System.out.println("Colour = " + color);
+        HashMap<Integer, Move> scores = getScores(board, localTimeLimit, moves, color);
+//        Move bestMove = color == 'w' ? scores.get(Collections.max(scores.keySet())) : scores.get(Collections.min(scores.keySet()));
         Move bestMove = scores.get(Collections.max(scores.keySet()));
         System.out.println("Selected move: " + bestMove);
         return bestMove;
     }
 
-    private HashMap<Integer, Move> getScores(Board board, LocalTime localTimeLimit, ArrayList<Move> moves) {
+    private HashMap<Integer, Move> getScores(Board board, LocalTime localTimeLimit, ArrayList<Move> moves, char color) {
         for (Move move : moves) {
             System.out.print("{" + move + "} ");
         }
@@ -76,12 +78,13 @@ public class AI {
             return scores;
         }
 
-        for (int depth = 4; depth < POSITIVE_INFINITY; depth++) {
+        for (int depth = 1; depth < POSITIVE_INFINITY; depth++) {
             HashMap<Integer, Move> currentDepthScores = new HashMap<>();
             System.out.print("Depth = " + depth + ": ");
             for (Move move : moves) {
                 if (LocalTime.now().isBefore(localTimeLimit)) {
-                    int result = minimaxJumpUpdate(board.updateLocation(move), depth, NEGATIVE_INFINITY, POSITIVE_INFINITY, 'r', move);
+                    int result = (color == 'w') ? minimaxWhiteMaximising(board.updateLocation(move), depth, NEGATIVE_INFINITY, POSITIVE_INFINITY, 'r')
+                                                : minimaxRedMaximising(board.updateLocation(move), depth, NEGATIVE_INFINITY, POSITIVE_INFINITY, 'w');
                     currentDepthScores.put(result, move);
                     System.out.print(result + ", ");
                 } else {
@@ -133,12 +136,11 @@ public class AI {
      * @param alpha alpha pruning parameter
      * @param beta beta pruning parameter
      * @param color essentially MIN/MAX player, here 'w' == MAX
-     * @param move the last move, used in reversing moves
      * @return the best score possible for the AI (given that the human plays with the same technique!)
      */
-    private int minimaxJumpUpdate(Board board, int depth, double alpha, double beta, char color, Move move) {
+    private int minimaxWhiteMaximising(Board board, int depth, double alpha, double beta, char color) {
         if (depth == 0) { // if at depth limit
-            return pieceAndRowHeuristic(board);
+            return weightedHeuristic(board);
         }
 
         int win = board.winCheck();
@@ -156,8 +158,8 @@ public class AI {
             for (Move m : children) { // for each child of node
                 int eval;
                 Board childBoard = board.updateLocation(m); // (make child)
-                // recursively call minimaxJumpUpdate with MIN
-                eval = minimaxJumpUpdate(childBoard, depth-1, alpha, beta, 'r', m);
+                // recursively call minimaxWhiteMaximising with MIN
+                eval = minimaxWhiteMaximising(childBoard, depth-1, alpha, beta, 'r');
                 bestValue = Math.max(bestValue, eval); // best value is max
                 alpha = Math.max(alpha, bestValue); // alpha is max
                 if (alpha > beta) { // pruning
@@ -177,8 +179,8 @@ public class AI {
             for (Move m : children) { // for each child of node
                 int eval;
                 Board childBoard = board.updateLocation(m); // (make child)
-                // recursively call minimaxJumpUpdate with MAX
-                eval = minimaxJumpUpdate(childBoard, depth-1, alpha, beta, 'w', m);
+                // recursively call minimaxWhiteMaximising with MAX
+                eval = minimaxWhiteMaximising(childBoard, depth-1, alpha, beta, 'w');
                 bestValue = Math.min(bestValue, eval); // best value is min
                 beta = Math.min(beta, bestValue); // beta is min
                 if (alpha > beta) { // pruning
@@ -187,7 +189,62 @@ public class AI {
             }
             return bestValue;
         }
-        System.out.println("minimaxJumpUpdate did not return correctly");
+        System.out.println("minimaxWhiteMaximising did not return correctly");
+        return 0;
+    }
+
+    private int minimaxRedMaximising(Board board, int depth, double alpha, double beta, char color) {
+        if (depth == 0) { // if at depth limit
+            return pieceAndRowHeuristicFlipped(board);
+        }
+
+        int win = board.winCheck();
+        if (win != 0) { // if at leaf node
+            return -win;
+        }
+
+        if (color == 'r') { // if player == MAX
+            int bestValue = NEGATIVE_INFINITY;
+            ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
+            if (children.isEmpty()) {
+                return NEGATIVE_INFINITY;
+            }
+            children = moveGenerator.updateValidMovesWithJumps(board, children, color);
+            for (Move m : children) { // for each child of node
+                int eval;
+                Board childBoard = board.updateLocation(m); // (make child)
+                // recursively call minimaxWhiteMaximising with MIN
+                eval = minimaxRedMaximising(childBoard, depth-1, alpha, beta, 'w');
+                bestValue = Math.max(bestValue, eval); // best value is max
+                alpha = Math.max(alpha, bestValue); // alpha is max
+                if (alpha > beta) { // pruning
+                    break;
+                }
+            }
+            return bestValue;
+        }
+
+        if (color == 'w') { // if player == MIN
+            int bestValue = POSITIVE_INFINITY;
+            ArrayList<Move> children = moveGenerator.findValidMoves(board, color);
+            if (children.isEmpty()) {
+                return POSITIVE_INFINITY;
+            }
+            children = moveGenerator.updateValidMovesWithJumps(board, children, color);
+            for (Move m : children) { // for each child of node
+                int eval;
+                Board childBoard = board.updateLocation(m); // (make child)
+                // recursively call minimaxWhiteMaximising with MAX
+                eval = minimaxRedMaximising(childBoard, depth-1, alpha, beta, 'r');
+                bestValue = Math.min(bestValue, eval); // best value is min
+                beta = Math.min(beta, bestValue); // beta is min
+                if (alpha > beta) { // pruning
+                    break;
+                }
+            }
+            return bestValue;
+        }
+        System.out.println("minimaxWhiteMaximising did not return correctly");
         return 0;
     }
 
@@ -257,6 +314,26 @@ public class AI {
             }
         }
         return whiteState - redState;
+    }
+
+    private int pieceAndRowHeuristicFlipped(Board board) {
+        int redState = 0;
+        int whiteState = 0;
+
+        Piece[][] boardArray = board.getBoard();
+        for (int i = 0; i < 8; i++) {
+            for (int j = (i + 1) % 2; j < 8; j += 2) {
+                Piece piece = boardArray[i][j];
+                if (piece != null) {
+                    if (piece.getColour() == 'r') {
+                        redState += piece.isKing() ? 14 : (5 + (7 - i));
+                    } else {
+                        whiteState += piece.isKing() ? 14 : (5 + i);
+                    }
+                }
+            }
+        }
+        return redState - whiteState;
     }
 
     private int pieceAndRowAndWeightedHeuristic(Board board) {
